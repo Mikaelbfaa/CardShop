@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardShop - E-commerce de TCG</title>
+</head>
+
+<body>
+    <header>
+        <h1>CardShop - E-commerce de Trading Card Games</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Sobre o Projeto</h2>
+            <p>
+                O CardShop é uma plataforma de e-commerce voltada para o comércio de cartas colecionáveis
+                de Trading Card Games, com foco em <em>Magic: The Gathering</em> e <em>Yu-Gi-Oh!</em>.
+                O objetivo é criar um espaço onde jogadores e colecionadores possam comprar cartas de forma prática e
+                segura.
+            </p>
+            <p>
+                A aplicação conta com funcionalidades completas tanto para clientes quanto para administradores.
+                Usuários podem navegar pelo catálogo, adicionar produtos ao carrinho e finalizar compras,
+                enquanto administradores têm acesso à gestão de estoque, usuários e pedidos.
+            </p>
+        </section>
+
+        <section>
+            <h2>Tecnologias Utilizadas</h2>
+
+            <h3>Backend</h3>
+            <ul>
+                <li><strong>Node.js</strong> - Ambiente de execução JavaScript</li>
+                <li><strong>Express.js</strong> - Framework web para criação da API</li>
+                <li><strong>TypeScript</strong> - Superset JavaScript com tipagem estática</li>
+                <li><strong>Arquitetura MVC</strong> - Separação em camadas (rotas, controladores e serviços)</li>
+            </ul>
+
+            <h3>Banco de Dados</h3>
+            <ul>
+                <li><strong>PostgreSQL</strong> - Banco de dados relacional robusto e escalável</li>
+                <li>Garantia de integridade de dados e suporte a transações complexas</li>
+            </ul>
+
+            <h3>Frontend</h3>
+            <ul>
+                <li><strong>React</strong> - Biblioteca para criação de interfaces interativas</li>
+                <li><strong>CSS</strong> - Estilização moderna e profissional</li>
+            </ul>
+
+            <h3>Segurança</h3>
+            <ul>
+                <li><strong>JWT (JSON Web Tokens)</strong> - Autenticação segura</li>
+                <li>Sistema de autorização diferenciando usuários comuns e administradores</li>
+                <li>Validação de entradas e tratamento adequado de erros</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Principais Funcionalidades</h2>
+
+            <h3>Para Clientes</h3>
+            <ol>
+                <li>Navegação pelo catálogo de cartas</li>
+                <li>Filtros por jogo (Magic, Yu-Gi-Oh!) e categorias</li>
+                <li>Adição de produtos ao carrinho de compras</li>
+                <li>Gerenciamento do carrinho (adicionar, remover, alterar quantidades)</li>
+                <li>Finalização de pedidos</li>
+                <li>Visualização do histórico de compras</li>
+                <li>Gerenciamento de perfil de usuário</li>
+            </ol>
+
+            <h3>Para Administradores</h3>
+            <ol>
+                <li>Gestão completa de produtos (adicionar, editar, remover cartas)</li>
+                <li>Controle de estoque</li>
+                <li>Gerenciamento de categorias</li>
+                <li>Visualização e gerenciamento de todos os pedidos</li>
+                <li>Atualização de status de pedidos</li>
+                <li>Gestão de usuários do sistema</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Entidades do Sistema</h2>
+            <p>O sistema trabalha com cinco entidades principais:</p>
+            <ul>
+                <li><strong>Usuários</strong> - Gerenciamento de contas e perfis de clientes e administradores</li>
+                <li><strong>Produtos (Cartas)</strong> - Catálogo completo de cartas colecionáveis disponíveis para
+                    compra</li>
+                <li><strong>Pedidos</strong> - Histórico e gerenciamento de todas as compras realizadas</li>
+                <li><strong>Carrinho</strong> - Armazenamento temporário de itens antes da finalização da compra</li>
+                <li><strong>Categorias</strong> - Organização das cartas por jogo (Magic, Yu-Gi-Oh!) e tipos</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Rotas da API REST</h2>
+
+            <h3>Autenticação</h3>
+            <ul>
+                <li><code>POST /api/auth/register</code> - Registrar novo usuário</li>
+                <li><code>POST /api/auth/login</code> - Login e geração de token JWT</li>
+                <li><code>POST /api/auth/logout</code> - Logout do usuário</li>
+            </ul>
+
+            <h3>Produtos (Cartas)</h3>
+            <ul>
+                <li><code>GET /api/products</code> - Listar todos os produtos</li>
+                <li><code>GET /api/products/:id</code> - Buscar produto específico</li>
+                <li><code>POST /api/products</code> - Criar novo produto (admin)</li>
+                <li><code>PUT /api/products/:id</code> - Atualizar produto (admin)</li>
+                <li><code>DELETE /api/products/:id</code> - Deletar produto (admin)</li>
+            </ul>
+
+            <h3>Carrinho de Compras</h3>
+            <ul>
+                <li><code>GET /api/cart</code> - Visualizar carrinho do usuário</li>
+                <li><code>POST /api/cart/items</code> - Adicionar item ao carrinho</li>
+                <li><code>PUT /api/cart/items/:id</code> - Atualizar quantidade</li>
+                <li><code>DELETE /api/cart/items/:id</code> - Remover item</li>
+                <li><code>DELETE /api/cart</code> - Limpar carrinho</li>
+            </ul>
+
+            <h3>Pedidos</h3>
+            <ul>
+                <li><code>GET /api/orders</code> - Listar pedidos do usuário</li>
+                <li><code>GET /api/orders/:id</code> - Buscar pedido específico</li>
+                <li><code>POST /api/orders</code> - Criar novo pedido</li>
+                <li><code>PUT /api/orders/:id</code> - Atualizar status (admin)</li>
+                <li><code>DELETE /api/orders/:id</code> - Cancelar pedido</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Diferenciais do Projeto</h2>
+            <ul>
+                <li>Arquitetura MVC bem estruturada e organizada</li>
+                <li>API RESTful completa com operações CRUD</li>
+                <li>Segurança robusta com autenticação JWT</li>
+                <li>Sistema de autorização por níveis de acesso</li>
+                <li>Banco de dados relacional com PostgreSQL</li>
+                <li>Interface moderna e responsiva com React</li>
+                <li>Validação de dados e tratamento de erros</li>
+                <li>Código escrito em TypeScript para maior confiabilidade</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Diagrama do Banco de Dados</h2>
+            <p>Estrutura prevista do banco de dados com todas as entidades e seus relacionamentos:</p>
+            <img src="database-diagram.png" alt="Diagrama ER do Banco de Dados CardShop" style="max-width: 100%; height: auto;">
+        </section>
+    </main>
+</body>
+
+</html>

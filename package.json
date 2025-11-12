@@ -1,0 +1,24 @@
+{
+  "name": "cardshop",
+  "version": "1.0.0",
+  "description": "O CardShop é uma plataforma de e-commerce voltada para o comércio de cartas colecionáveis de Trading Card Games, com foco inicial em Yu-Gi-Oh! e Magic: The Gathering.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mikaelbfaa/CardShop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mikaelbfaa/CardShop/issues"
+  },
+  "homepage": "https://github.com/Mikaelbfaa/CardShop#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
