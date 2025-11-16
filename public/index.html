@@ -33,27 +33,27 @@
 
             <h3>Backend</h3>
             <ul>
-                <li><strong>Node.js</strong> - Ambiente de execução JavaScript</li>
-                <li><strong>Express.js</strong> - Framework web para criação da API</li>
-                <li><strong>TypeScript</strong> - Superset JavaScript com tipagem estática</li>
-                <li><strong>Arquitetura MVC</strong> - Separação em camadas (rotas, controladores e serviços)</li>
+                <li>Node.js - Ambiente de execução JavaScript</li>
+                <li>Express.js - Framework web para criação da API</li>
+                <li>TypeScript - Superset JavaScript com tipagem estática</li>
+                <li>Arquitetura MVC - Separação em camadas (rotas, controladores e serviços)</li>
             </ul>
 
             <h3>Banco de Dados</h3>
             <ul>
-                <li><strong>PostgreSQL</strong> - Banco de dados relacional robusto e escalável</li>
+                <li>PostgreSQL - Banco de dados relacional robusto e escalável</li>
                 <li>Garantia de integridade de dados e suporte a transações complexas</li>
             </ul>
 
             <h3>Frontend</h3>
             <ul>
-                <li><strong>React</strong> - Biblioteca para criação de interfaces interativas</li>
-                <li><strong>CSS</strong> - Estilização moderna e profissional</li>
+                <li>React - Biblioteca para criação de interfaces interativas</li>
+                <li>CSS - Estilização moderna e profissional</li>
             </ul>
 
             <h3>Segurança</h3>
             <ul>
-                <li><strong>JWT (JSON Web Tokens)</strong> - Autenticação segura</li>
+                <li>JWT (JSON Web Tokens) - Autenticação segura</li>
                 <li>Sistema de autorização diferenciando usuários comuns e administradores</li>
                 <li>Validação de entradas e tratamento adequado de erros</li>
             </ul>
@@ -70,7 +70,6 @@
                 <li>Gerenciamento do carrinho (adicionar, remover, alterar quantidades)</li>
                 <li>Finalização de pedidos</li>
                 <li>Visualização do histórico de compras</li>
-                <li>Gerenciamento de perfil de usuário</li>
             </ol>
 
             <h3>Para Administradores</h3>
@@ -80,7 +79,6 @@
                 <li>Gerenciamento de categorias</li>
                 <li>Visualização e gerenciamento de todos os pedidos</li>
                 <li>Atualização de status de pedidos</li>
-                <li>Gestão de usuários do sistema</li>
             </ol>
         </section>
 
@@ -88,12 +86,12 @@
             <h2>Entidades do Sistema</h2>
             <p>O sistema trabalha com cinco entidades principais:</p>
             <ul>
-                <li><strong>Usuários</strong> - Gerenciamento de contas e perfis de clientes e administradores</li>
-                <li><strong>Produtos (Cartas)</strong> - Catálogo completo de cartas colecionáveis disponíveis para
+                <li>Usuários - Gerenciamento de contas e perfis de clientes e administradores</li>
+                <li>Produtos (Cartas) - Catálogo completo de cartas colecionáveis disponíveis para
                     compra</li>
-                <li><strong>Pedidos</strong> - Histórico e gerenciamento de todas as compras realizadas</li>
-                <li><strong>Carrinho</strong> - Armazenamento temporário de itens antes da finalização da compra</li>
-                <li><strong>Categorias</strong> - Organização das cartas por jogo (Magic, Yu-Gi-Oh!) e tipos</li>
+                <li>Pedidos - Histórico e gerenciamento de todas as compras realizadas</li>
+                <li>Carrinho - Armazenamento temporário de itens antes da finalização da compra</li>
+                <li>Categorias - Organização das cartas por jogo (Magic, Yu-Gi-Oh!) e tipos</li>
             </ul>
         </section>
 
@@ -136,19 +134,40 @@
         </section>
 
         <section>
-            <h2>Diferenciais do Projeto</h2>
+            <h2>Características técnicas do projeto - seguindo recomendações do slide</h2>
             <ul>
                 <li>Arquitetura MVC bem estruturada e organizada</li>
                 <li>API RESTful completa com operações CRUD</li>
-                <li>Segurança robusta com autenticação JWT</li>
+                <li>Segurança com autenticação JWT</li>
                 <li>Sistema de autorização por níveis de acesso</li>
                 <li>Banco de dados relacional com PostgreSQL</li>
                 <li>Interface moderna e responsiva com React</li>
-                <li>Validação de dados e tratamento de erros</li>
-                <li>Código escrito em TypeScript para maior confiabilidade</li>
+                <li>Validação de dados e tratamento de erros (provavelmente em Jest) </li>
+                <li>Código escrito em TypeScript</li>
             </ul>
         </section>
-
+        <section>
+            <h2>Perguntas</h2>
+            <h3>1. Quais são as principais funcionalidades que seu o sistema deve oferecer para atender às necessidades dos usuários?</h3>
+            <p>
+                Vou dividir as principais funcionalidades em duas partes, para clientes, as principais funcionalidades envolvem
+                navegar pelo catálogo de cartas, podendo filtrar pelo produto da carta (por exemplo, Magic the Gathering) ou categorias
+                como raridade da carta. Adicionar e remover produtos do carrinho, bem como editar alterar a quantidade de produtos
+                previamente adicionados. Finalizar o pedido e verificar o histórico de compras. Para administradores, as principais
+                funcionalidades são: gerir os produtos do catálogo, isso envolve adicionar ou remover e alterar atributos de produtos registados;
+                Gerenciar as categorias (criar, remover e editar). Controle de estoque das cartas 
+                (Nota para o professor: estamos na dúvida se isso vai aumentar muito o escopo e vamos tirar essa dúvida com o senhor na segunda);
+                Visualizar todos os pedidos feitos pelos clientes, bem como alterar o status deles.
+            </p>
+            <h3>2. Quais características de qualidade (como desempenho, segurança, usabilidade ou escalabilidade) são importantes para o seu sistema desenvolvido?</h3>
+            <p>
+                Segurança é uma característica vital para o projeto, para garantir a integridade do banco de dados, dados do usuário e a integridade da loja. 
+                Um bom desempenho é necessário para o sucesso da loja: a lentidão é uma das maiores causas para usuários saírem do site e redução da taxa de conversão;
+                A usabilidade é fundamental para facilitar a navegação e o gerenciamento do carrinho, nessa seção a responsividade é muito importante para melhorar a usabilidade do sistema;
+                A escalabilidade deve ser levada em conta também, é a partir dela que podemos suportar um crescimento de número de usuários e pedidos simultâneos;
+                Finalmente, a manuntenibilidade também é desejável, pois o mesmo facilita refatorações, manutenções e a evolução do código a longo prazo.
+            </p>
+        </section>
         <section>
             <h2>Diagrama do Banco de Dados</h2>
             <p>Estrutura prevista do banco de dados com todas as entidades e seus relacionamentos:</p>
