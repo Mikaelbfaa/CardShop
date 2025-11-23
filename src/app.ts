@@ -1,5 +1,6 @@
-const express = require('express');
-const path = require('path');
+import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
+import productRoutes from './controllers/product_routes';
 
 const app = express();
 
@@ -7,15 +8,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
-const productRoutes = require('./controllers/product_routes');
-
 app.use('/api/products', productRoutes);
 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.use((err, req, res, next) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     console.error(err.stack);
     res.status(err.status || 500).json({
         error: {
@@ -25,7 +24,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-app.use((req, res) => {
+app.use((req: Request, res: Response) => {
     res.status(404).json({
         error: {
             message: 'Rota não encontrada',
@@ -34,4 +33,4 @@ app.use((req, res) => {
     });
 });
 
-module.exports = app;
+export default app;

@@ -2,11 +2,12 @@
   "name": "cardshop",
   "version": "1.0.0",
   "description": "O CardShop é uma plataforma de e-commerce voltada para o comércio de cartas colecionáveis de Trading Card Games, com foco inicial em Yu-Gi-Oh! e Magic: The Gathering.",
-  "main": "src/server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server.js",
-    "dev": "node src/server.js"
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,12 @@
   "homepage": "https://github.com/Mikaelbfaa/CardShop#readme",
   "dependencies": {
     "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   }
 }
