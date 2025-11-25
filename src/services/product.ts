@@ -129,9 +129,9 @@ class ProductService {
             throw new Error('Estoque não pode ser negativo');
         }
 
-        const validGames = ['Magic: The Gathering', 'Yu-Gi-Oh!'];
+        const validGames = ['mtg', 'yugioh'];
         if (!validGames.includes(productData.game)) {
-            throw new Error('Jogo inválido. Opções: Magic: The Gathering, Yu-Gi-Oh!');
+            throw new Error('Jogo inválido. Opções: mtg, yugioh');
         }
     }
 }
