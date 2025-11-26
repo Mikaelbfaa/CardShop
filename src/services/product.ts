@@ -67,6 +67,10 @@ class ProductService {
      */
     async updateProduct(productId: string, updateData: UpdateProductDTO): Promise<Product | null> {
         try {
+            if (!updateData || Object.keys(updateData).length === 0) {
+                throw new Error('Dados de atualização são obrigatórios');
+            }
+
             const existingProduct = await productRepository.findById(productId);
             if (!existingProduct) {
                 return null;

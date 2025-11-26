@@ -17,8 +17,8 @@ enum Role {
 }
 
 enum Game {
-  MTG
-  YUGIOH
+  mtg
+  yugioh
 }
 
 enum OrderStatus {
