@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import productService from '../services/product';
+import { ProductFilters } from '../repository/product';
 
 /**
  * Controller de Produtos
@@ -11,10 +12,12 @@ class ProductController {
     /**
      * Listar todos os produtos
      */
-    async getAllProducts(req: Request, res: Response, next: NextFunction) {
+    async getAllProducts(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { game, category } = req.query;
-            const filters = { game, category };
+            const filters: ProductFilters = {
+                game: typeof req.query.game === 'string' ? req.query.game : undefined,
+                category: typeof req.query.category === 'string' ? req.query.category : undefined,
+            };
 
             const products = await productService.getAllProducts(filters);
 
@@ -31,17 +34,18 @@ class ProductController {
     /**
      * Buscar produto por ID
      */
-    async getProductById(req: Request, res: Response, next: NextFunction) {
+    async getProductById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id } = req.params;
 
             const product = await productService.getProductById(id);
 
             if (!product) {
-                return res.status(404).json({
+                res.status(404).json({
                     success: false,
                     message: 'Produto não encontrado'
                 });
+                return;
             }
 
             res.status(200).json({
@@ -56,7 +60,7 @@ class ProductController {
     /**
      * Criar novo produto
      */
-    async createProduct(req: Request, res: Response, next: NextFunction) {
+    async createProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const productData = req.body;
 
@@ -75,7 +79,7 @@ class ProductController {
     /**
      * Atualizar produto
      */
-    async updateProduct(req: Request, res: Response, next: NextFunction) {
+    async updateProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id } = req.params;
             const updateData = req.body;
@@ -83,10 +87,11 @@ class ProductController {
             const updatedProduct = await productService.updateProduct(id, updateData);
 
             if (!updatedProduct) {
-                return res.status(404).json({
+                res.status(404).json({
                     success: false,
                     message: 'Produto não encontrado'
                 });
+                return;
             }
 
             res.status(200).json({
@@ -102,17 +107,18 @@ class ProductController {
     /**
      * Deletar produto
      */
-    async deleteProduct(req: Request, res: Response, next: NextFunction) {
+    async deleteProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const { id } = req.params;
 
             const deleted = await productService.deleteProduct(id);
 
             if (!deleted) {
-                return res.status(404).json({
+                res.status(404).json({
                     success: false,
                     message: 'Produto não encontrado'
                 });
+                return;
             }
 
             res.status(200).json({

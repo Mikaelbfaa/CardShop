@@ -1,52 +1,5 @@
-/**
- * Interface que representa um produto (carta) no sistema
- */
-export interface Product {
-    id: number;
-    name: string;
-    description?: string;
-    price: number;
-    stock: number;
-    game: 'mtg' | 'yugioh';
-    category?: string;
-    rarity?: string;
-    image?: string | null;
-    createdAt?: Date;
-    updatedAt?: Date;
-}
+// Re-exporta os tipos gerados pelo Prisma
+export { Product, Game, Category, Prisma } from '@prisma/client';
 
-/**
- * Interface para filtros de busca de produtos
- */
-export interface ProductFilters {
-    game?: string;
-    category?: string;
-}
-
-/**
- * DTO (Data Transfer Object) para criação de produto
- */
-export interface CreateProductDTO {
-    name: string;
-    description?: string;
-    price: number;
-    stock: number;
-    game: 'mtg' | 'yugioh';
-    category?: string;
-    rarity?: string;
-    image?: string;
-}
-
-/**
- * DTO (Data Transfer Object) para atualização de produto
- */
-export interface UpdateProductDTO {
-    name?: string;
-    description?: string;
-    price?: number;
-    stock?: number;
-    game?: 'mtg' | 'yugioh';
-    category?: string;
-    rarity?: string;
-    image?: string;
-}
+// Re-exporta os DTOs do repository
+export { ProductFilters, CreateProductDTO, UpdateProductDTO } from '../repository/product';

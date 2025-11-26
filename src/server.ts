@@ -1,32 +1,36 @@
-import fs from 'fs';
-import path from 'path';
+import 'dotenv/config';
 import app from './app';
-import config from './config/server';
-import pool from './database/connection';
+import prisma from './database/prisma';
 
-const PORT = config.port || 3000;
+const PORT = process.env.PORT || 3000;
 
-async function initDatabase() {
+async function startServer() {
     try {
-        const initSql = fs.readFileSync(
-            path.join(__dirname, 'database', 'init.sql'),
-            'utf-8'
-        );
-        await pool.query(initSql);
-        console.log('Banco de dados inicializado com sucesso');
+        // Testa a conexão com o banco de dados
+        await prisma.$connect();
+        console.log('Conectado ao banco de dados PostgreSQL via Prisma');
+
+        app.listen(PORT, () => {
+            console.log(`Servidor CardShop rodando em http://localhost:${PORT}`);
+            console.log(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
+        });
     } catch (error) {
-        console.error('Erro ao inicializar banco de dados:', error);
+        console.error('Erro ao conectar ao banco de dados:', error);
         process.exit(1);
     }
 }
 
-async function startServer() {
-    await initDatabase();
+// Graceful shutdown
+process.on('SIGINT', async () => {
+    await prisma.$disconnect();
+    console.log('Conexão com o banco de dados encerrada');
+    process.exit(0);
+});
 
-    app.listen(PORT, () => {
-        console.log(`Servidor CardShop rodando em http://localhost:${PORT}`);
-        console.log(`Ambiente: ${config.environment}`);
-    });
-}
+process.on('SIGTERM', async () => {
+    await prisma.$disconnect();
+    console.log('Conexão com o banco de dados encerrada');
+    process.exit(0);
+});
 
 startServer();

@@ -1,5 +1,5 @@
-import productRepository from '../repository/product';
-import { Product, ProductFilters, CreateProductDTO, UpdateProductDTO } from '../models/product';
+import productRepository, { ProductFilters, CreateProductDTO, UpdateProductDTO } from '../repository/product';
+import { Product } from '@prisma/client';
 
 class ProductService {
     /**
@@ -20,10 +20,10 @@ class ProductService {
     /**
      * Buscar produto por ID
      * @param productId - ID do produto a ser buscado
-     * @returns Promise com produto encontrado ou undefined
+     * @returns Promise com produto encontrado ou null
      * @throws Error se ID não for fornecido ou houver falha na busca
      */
-    async getProductById(productId: string): Promise<Product | undefined> {
+    async getProductById(productId: string): Promise<Product | null> {
         try {
             if (!productId) {
                 throw new Error('ID do produto é obrigatório');
@@ -72,11 +72,11 @@ class ProductService {
                 return null;
             }
 
-            if (updateData.price && updateData.price < 0) {
+            if (updateData.price !== undefined && updateData.price < 0) {
                 throw new Error('Preço não pode ser negativo');
             }
 
-            if (updateData.stock && updateData.stock < 0) {
+            if (updateData.stock !== undefined && updateData.stock < 0) {
                 throw new Error('Estoque não pode ser negativo');
             }
 
@@ -113,10 +113,10 @@ class ProductService {
      * @throws Error se dados inválidos (campos obrigatórios, valores negativos, jogo inválido)
      */
     validateProductData(productData: CreateProductDTO): void {
-        const requiredFields = ['name', 'price', 'stock', 'game'];
+        const requiredFields: (keyof CreateProductDTO)[] = ['name', 'price', 'stock', 'game'];
 
         for (const field of requiredFields) {
-            if (!productData[field as keyof CreateProductDTO]) {
+            if (productData[field] === undefined || productData[field] === null) {
                 throw new Error(`Campo ${field} é obrigatório`);
             }
         }
@@ -129,9 +129,9 @@ class ProductService {
             throw new Error('Estoque não pode ser negativo');
         }
 
-        const validGames = ['mtg', 'yugioh'];
-        if (!validGames.includes(productData.game)) {
-            throw new Error('Jogo inválido. Opções: mtg, yugioh');
+        const validGames = ['MTG', 'YUGIOH'];
+        if (!validGames.includes(productData.game.toUpperCase())) {
+            throw new Error('Jogo inválido. Opções: MTG, YUGIOH');
         }
     }
 }

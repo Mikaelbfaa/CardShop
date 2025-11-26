@@ -10,11 +10,11 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/api/products', productRoutes);
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     console.error(err.stack);
     res.status(err.status || 500).json({
         error: {
@@ -24,7 +24,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-app.use((req: Request, res: Response) => {
+app.use((_req: Request, res: Response) => {
     res.status(404).json({
         error: {
             message: 'Rota não encontrada',

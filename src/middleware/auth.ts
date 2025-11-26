@@ -1,26 +1,25 @@
-/**
- * Middleware de Autenticação
- * A ser implementado com JWT
- */
+import { Request, Response, NextFunction } from 'express';
 
 class AuthMiddleware {
     /**
      * Verificar se o token JWT é válido
      */
-    async verifyToken(req, res, next) {
+    async verifyToken(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const token = req.headers.authorization?.split(' ')[1];
 
             if (!token) {
-                return res.status(401).json({
+                res.status(401).json({
                     success: false,
                     message: 'Token não fornecido'
                 });
+                return;
             }
 
+            // TODO: Implementar verificação real do JWT
             next();
-        } catch (error) {
-            return res.status(401).json({
+        } catch {
+            res.status(401).json({
                 success: false,
                 message: 'Token inválido'
             });
@@ -30,11 +29,12 @@ class AuthMiddleware {
     /**
      * Verificar se o usuário é administrador
      */
-    async isAdmin(req, res, next) {
+    async isAdmin(_req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
+            // TODO: Implementar verificação real de admin
             next();
-        } catch (error) {
-            return res.status(500).json({
+        } catch {
+            res.status(500).json({
                 success: false,
                 message: 'Erro ao verificar permissões'
             });
@@ -42,4 +42,4 @@ class AuthMiddleware {
     }
 }
 
-module.exports = new AuthMiddleware();
+export default new AuthMiddleware();
