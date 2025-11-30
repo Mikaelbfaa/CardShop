@@ -161,9 +161,7 @@ class OrderService {
                 'CANCELLED',
             ];
             if (!validStatuses.includes(status)) {
-                throw new Error(
-                    `Status inválido. Opções: ${validStatuses.join(', ')}`
-                );
+                throw new Error(`Status inválido. Opções: ${validStatuses.join(', ')}`);
             }
 
             const order = await orderRepository.findById(orderId);
