@@ -1,4 +1,8 @@
-import productRepository, { ProductFilters, CreateProductDTO, UpdateProductDTO } from '../repository/product';
+import productRepository, {
+    ProductFilters,
+    CreateProductDTO,
+    UpdateProductDTO,
+} from '../repository/product';
 import { Product } from '@prisma/client';
 
 class ProductService {

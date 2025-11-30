@@ -88,7 +88,11 @@ class CartRepository {
     /**
      * Atualizar quantidade de item existente
      */
-    async updateItemQuantity(cartId: number, productId: number, quantity: number): Promise<CartItem> {
+    async updateItemQuantity(
+        cartId: number,
+        productId: number,
+        quantity: number
+    ): Promise<CartItem> {
         return prisma.cartItem.update({
             where: {
                 cartId_productId: {

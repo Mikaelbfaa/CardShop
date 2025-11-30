@@ -13,7 +13,9 @@
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
     "db:push": "prisma db push",
-    "db:seed": "ts-node prisma/seed.ts"
+    "db:seed": "ts-node prisma/seed.ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\""
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,7 @@
     "@types/express": "^5.0.5",
     "@types/node": "^24.10.1",
     "@types/pg": "^8.15.6",
+    "prettier": "^3.7.3",
     "prisma": "^7.0.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",

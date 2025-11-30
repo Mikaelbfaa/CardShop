@@ -56,7 +56,9 @@ class CartService {
             const newTotalQuantity = currentQuantityInCart + data.quantity;
 
             if (newTotalQuantity > product.stock) {
-                throw new Error(`Estoque insuficiente. Disponível: ${product.stock}, No carrinho: ${currentQuantityInCart}`);
+                throw new Error(
+                    `Estoque insuficiente. Disponível: ${product.stock}, No carrinho: ${currentQuantityInCart}`
+                );
             }
 
             if (existingItem) {
@@ -74,7 +76,11 @@ class CartService {
     /**
      * Atualizar quantidade de item no carrinho (RN01: valida estoque, RN02: quantidade >= 1)
      */
-    async updateQuantity(userId: number, productId: number, quantity: number): Promise<CartWithItems> {
+    async updateQuantity(
+        userId: number,
+        productId: number,
+        quantity: number
+    ): Promise<CartWithItems> {
         try {
             if (!userId) {
                 throw new Error('userId é obrigatório');

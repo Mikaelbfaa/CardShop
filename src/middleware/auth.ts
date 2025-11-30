@@ -11,7 +11,7 @@ class AuthMiddleware {
             if (!token) {
                 res.status(401).json({
                     success: false,
-                    message: 'Token não fornecido'
+                    message: 'Token não fornecido',
                 });
                 return;
             }
@@ -21,7 +21,7 @@ class AuthMiddleware {
         } catch {
             res.status(401).json({
                 success: false,
-                message: 'Token inválido'
+                message: 'Token inválido',
             });
         }
     }
@@ -36,7 +36,7 @@ class AuthMiddleware {
         } catch {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao verificar permissões'
+                message: 'Erro ao verificar permissões',
             });
         }
     }
