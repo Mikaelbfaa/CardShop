@@ -16,12 +16,13 @@ app.get('/', (_req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+app.use((err: Error & { status?: number }, _req: Request, res: Response, _next: NextFunction) => {
     console.error(err.stack);
-    res.status(err.status || 500).json({
+    const status = err.status || 500;
+    res.status(status).json({
         error: {
             message: err.message || 'Erro interno do servidor',
-            status: err.status || 500,
+            status,
         },
     });
 });
