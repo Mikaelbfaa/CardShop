@@ -4,6 +4,11 @@ O CardShop é uma plataforma de e-commerce voltada para o comércio de cartas co
 
 ---
 
+## Autores
+
+- Mikael Brasileiro Ferreira de Almeida Amaral
+- Ana Kethylen Sousa Fernandes
+
 ## Visão Geral
 
 O sistema permite que usuários naveguem por um catálogo de cartas, adicionem produtos ao carrinho de compras e finalizem pedidos. Administradores podem gerenciar o catálogo de produtos e acompanhar/atualizar o status dos pedidos.
@@ -71,26 +76,16 @@ CardShop/
 │   │   └── order.ts           # Acesso a dados de pedidos
 │   │
 │   └── middleware/
-│       ├── auth.ts            # Middleware de autenticação
-│       └── validation.ts      # Middleware de validação
+│       ├── auth.ts            # Middleware de autenticação (TODO)
+│       └── validation.ts      # Middleware de validação (TODO)
 │
 ├── scripts/
 │   ├── test-api.sh            # Script de teste (Bash)
-│   └── test-api.ps1           # Script de teste (PowerShell)
-│
-├── docs/
-│   └── DIAGRAMAS.md           # Diagramas do sistema (Mermaid)
-│
-├── diagrams/
-│   └── Diagrama Entidade Relacionamento.png
 │
 ├── public/                    # Arquivos estáticos
 ├── client/                    # Frontend React (planejado)
 ├── tests/                     # Testes automatizados
 │
-├── REQUISITOS.md              # Documentação de requisitos
-├── ARQUITETURA.md             # Documentação de arquitetura
-├── CLAUDE.md                  # Instruções para Claude Code
 └── package.json
 ```
 
