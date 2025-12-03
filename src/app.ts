@@ -1,5 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger';
 import productRoutes from './controllers/product_routes';
 import cartRoutes from './controllers/cart_routes';
 import orderRoutes from './controllers/order_routes';
@@ -10,6 +12,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
+
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api-docs.json', (_req: Request, res: Response) => {
+    res.json(swaggerSpec);
+});
 
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);

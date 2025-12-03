@@ -16,7 +16,7 @@ class ProductController {
         try {
             const filters: ProductFilters = {
                 game: typeof req.query.game === 'string' ? req.query.game : undefined,
-                category: typeof req.query.category === 'string' ? req.query.category : undefined,
+                cardType: typeof req.query.cardType === 'string' ? req.query.cardType : undefined,
             };
 
             const products = await productService.getAllProducts(filters);

@@ -1,8 +1,31 @@
-# Testes das Rotas de Produtos
+# Testes das Rotas da API CardShop
 
-## Criar Produto (POST /api/products)
+## Base URL
+```
+http://localhost:3000/api
+```
 
-### Carta de Yu-Gi-Oh!
+---
+
+## 1. Produtos (`/api/products`)
+
+### 1.1 Listar todos os produtos
+```bash
+GET /api/products
+GET /api/products?game=yugioh
+GET /api/products?game=mtg
+GET /api/products?cardType=MONSTER
+GET /api/products?game=yugioh&cardType=SPELL
+```
+
+### 1.2 Buscar produto por ID
+```bash
+GET /api/products/:id
+```
+
+### 1.3 Criar produto (Admin)
+
+**Carta de Yu-Gi-Oh! (Monster)**
 ```json
 {
   "name": "Dark Magician",
@@ -10,12 +33,51 @@
   "price": 45.90,
   "stock": 10,
   "game": "yugioh",
-  "category": "Monster",
+  "cardType": "MONSTER",
   "rarity": "Ultra Rare"
 }
 ```
 
-### Carta de Magic: The Gathering
+**Carta de Yu-Gi-Oh! (Spell)**
+```json
+{
+  "name": "Pot of Greed",
+  "description": "Compre 2 cartas do seu deck",
+  "price": 120.00,
+  "stock": 5,
+  "game": "yugioh",
+  "cardType": "SPELL",
+  "rarity": "Secret Rare"
+}
+```
+
+**Carta de Yu-Gi-Oh! (Trap)**
+```json
+{
+  "name": "Mirror Force",
+  "description": "Quando um monstro adversário declarar um ataque: destrua todos os monstros de ataque do oponente",
+  "price": 35.00,
+  "stock": 8,
+  "game": "yugioh",
+  "cardType": "TRAP",
+  "rarity": "Rare"
+}
+```
+
+**Carta de Magic: The Gathering (Creature)**
+```json
+{
+  "name": "Llanowar Elves",
+  "description": "Criatura elfo que gera mana verde",
+  "price": 5.00,
+  "stock": 50,
+  "game": "mtg",
+  "cardType": "CREATURE",
+  "rarity": "Common"
+}
+```
+
+**Carta de Magic: The Gathering (Instant)**
 ```json
 {
   "name": "Lightning Bolt",
@@ -23,24 +85,25 @@
   "price": 25.00,
   "stock": 20,
   "game": "mtg",
-  "category": "Instant",
+  "cardType": "INSTANT",
   "rarity": "Common"
 }
 ```
 
-### Mais exemplos
+**Carta de Magic: The Gathering (Sorcery)**
 ```json
 {
-  "name": "Exodia the Forbidden One",
-  "description": "Cabeça do Exodia - vitória instantânea ao reunir as 5 peças",
-  "price": 350.00,
-  "stock": 2,
-  "game": "yugioh",
-  "category": "Monster",
-  "rarity": "Secret Rare"
+  "name": "Wrath of God",
+  "description": "Destrói todas as criaturas. Elas não podem ser regeneradas",
+  "price": 45.00,
+  "stock": 10,
+  "game": "mtg",
+  "cardType": "SORCERY",
+  "rarity": "Rare"
 }
 ```
 
+**Carta de Magic: The Gathering (Artifact)**
 ```json
 {
   "name": "Sol Ring",
@@ -48,15 +111,54 @@
   "price": 89.90,
   "stock": 15,
   "game": "mtg",
-  "category": "Artifact",
+  "cardType": "ARTIFACT",
   "rarity": "Uncommon"
 }
 ```
 
----
+**Carta de Magic: The Gathering (Enchantment)**
+```json
+{
+  "name": "Rhystic Study",
+  "description": "Sempre que um oponente conjura uma magia, você pode comprar uma carta a menos que ele pague 1",
+  "price": 150.00,
+  "stock": 3,
+  "game": "mtg",
+  "cardType": "ENCHANTMENT",
+  "rarity": "Rare"
+}
+```
 
-## Atualizar Produto (PUT /api/products/:id)
+**Carta de Magic: The Gathering (Land)**
+```json
+{
+  "name": "Command Tower",
+  "description": "Terreno que gera mana de qualquer cor da identidade do seu comandante",
+  "price": 2.50,
+  "stock": 100,
+  "game": "mtg",
+  "cardType": "LAND",
+  "rarity": "Common"
+}
+```
 
+**Carta de Magic: The Gathering (Planeswalker)**
+```json
+{
+  "name": "Jace, the Mind Sculptor",
+  "description": "Planeswalker lendário com 4 habilidades",
+  "price": 280.00,
+  "stock": 2,
+  "game": "mtg",
+  "cardType": "PLANESWALKER",
+  "rarity": "Mythic Rare"
+}
+```
+
+### 1.4 Atualizar produto (Admin)
+```bash
+PUT /api/products/:id
+```
 ```json
 {
   "price": 55.00,
@@ -64,37 +166,176 @@
 }
 ```
 
+### 1.5 Deletar produto (Admin)
+```bash
+DELETE /api/products/:id
+```
+
+---
+
+## 2. Carrinho (`/api/cart`)
+
+### 2.1 Visualizar carrinho
+```bash
+GET /api/cart?userId=1
+```
+
+### 2.2 Adicionar item ao carrinho
+```bash
+POST /api/cart/items
+```
 ```json
 {
-  "description": "Descrição atualizada do produto",
-  "rarity": "Secret Rare"
+  "userId": 1,
+  "productId": 1,
+  "quantity": 2
+}
+```
+
+### 2.3 Atualizar quantidade de item
+```bash
+PUT /api/cart/items/:productId?userId=1
+```
+```json
+{
+  "quantity": 5
+}
+```
+
+### 2.4 Remover item do carrinho
+```bash
+DELETE /api/cart/items/:productId?userId=1
+```
+
+### 2.5 Limpar carrinho
+```bash
+DELETE /api/cart?userId=1
+```
+
+---
+
+## 3. Pedidos (`/api/orders`)
+
+### 3.1 Listar pedidos do usuário
+```bash
+GET /api/orders?userId=1
+```
+
+### 3.2 Buscar pedido por ID
+```bash
+GET /api/orders/:id
+```
+
+### 3.3 Criar pedido (a partir do carrinho)
+```bash
+POST /api/orders
+```
+```json
+{
+  "userId": 1,
+  "shippingAddress": "Rua das Flores, 123 - São Paulo, SP - CEP 01234-567"
 }
 ```
 
 ---
 
-## Testar com curl
+## 4. Pedidos - Admin (`/api/admin/orders`)
 
+### 4.1 Listar todos os pedidos
+```bash
+GET /api/admin/orders
+```
+
+### 4.2 Atualizar status do pedido
+```bash
+PATCH /api/admin/orders/:id/status
+```
+```json
+{
+  "status": "PROCESSING"
+}
+```
+
+**Status disponíveis:** `PENDING`, `PROCESSING`, `SHIPPED`, `DELIVERED`, `CANCELLED`
+
+---
+
+## Exemplos com curl
+
+### Produtos
 ```bash
 # Listar todos
 curl http://localhost:3000/api/products
 
-# Criar produto
-curl -X POST http://localhost:3000/api/products \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Dark Magician","price":45.90,"stock":10,"game":"yugioh"}'
+# Filtrar por jogo
+curl "http://localhost:3000/api/products?game=yugioh"
+
+# Filtrar por tipo de carta
+curl "http://localhost:3000/api/products?cardType=MONSTER"
+
+# Filtrar por jogo e tipo
+curl "http://localhost:3000/api/products?game=mtg&cardType=INSTANT"
 
 # Buscar por ID
 curl http://localhost:3000/api/products/1
 
-# Atualizar
+# Criar produto
+curl -X POST http://localhost:3000/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Dark Magician","price":45.90,"stock":10,"game":"yugioh","cardType":"MONSTER"}'
+
+# Atualizar produto
 curl -X PUT http://localhost:3000/api/products/1 \
   -H "Content-Type: application/json" \
   -d '{"price":50.00}'
 
-# Deletar
-curl -X DELETE http://localhost:3000/api/products/3
+# Deletar produto
+curl -X DELETE http://localhost:3000/api/products/1
+```
 
-# Filtrar por jogo
-curl "http://localhost:3000/api/products?game=yugioh"
+### Carrinho
+```bash
+# Visualizar carrinho
+curl "http://localhost:3000/api/cart?userId=1"
+
+# Adicionar item
+curl -X POST http://localhost:3000/api/cart/items \
+  -H "Content-Type: application/json" \
+  -d '{"userId":1,"productId":1,"quantity":2}'
+
+# Atualizar quantidade
+curl -X PUT "http://localhost:3000/api/cart/items/1?userId=1" \
+  -H "Content-Type: application/json" \
+  -d '{"quantity":5}'
+
+# Remover item
+curl -X DELETE "http://localhost:3000/api/cart/items/1?userId=1"
+
+# Limpar carrinho
+curl -X DELETE "http://localhost:3000/api/cart?userId=1"
+```
+
+### Pedidos
+```bash
+# Listar pedidos do usuário
+curl "http://localhost:3000/api/orders?userId=1"
+
+# Buscar pedido por ID
+curl http://localhost:3000/api/orders/1
+
+# Criar pedido
+curl -X POST http://localhost:3000/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{"userId":1,"shippingAddress":"Rua das Flores, 123 - São Paulo, SP"}'
+```
+
+### Admin - Pedidos
+```bash
+# Listar todos os pedidos
+curl http://localhost:3000/api/admin/orders
+
+# Atualizar status
+curl -X PATCH http://localhost:3000/api/admin/orders/1/status \
+  -H "Content-Type: application/json" \
+  -d '{"status":"PROCESSING"}'
 ```
