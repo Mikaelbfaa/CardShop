@@ -3,12 +3,24 @@ import productRepository, {
     CreateProductDTO,
     UpdateProductDTO,
 } from '../repository/product';
-import { Product } from '@prisma/client';
+import { Product, CardType } from '@prisma/client';
+
+// Tipos de carta válidos por jogo
+const YUGIOH_CARD_TYPES: CardType[] = ['MONSTER', 'SPELL', 'TRAP'];
+const MTG_CARD_TYPES: CardType[] = [
+    'CREATURE',
+    'INSTANT',
+    'SORCERY',
+    'ENCHANTMENT',
+    'ARTIFACT',
+    'LAND',
+    'PLANESWALKER',
+];
 
 class ProductService {
     /**
      * Listar todos os produtos com filtros opcionais
-     * @param filters - Filtros opcionais para busca (game, category)
+     * @param filters - Filtros opcionais para busca (game, cardType)
      * @returns Promise com array de produtos
      * @throws Error se houver falha ao buscar produtos
      */
@@ -88,6 +100,14 @@ class ProductService {
                 throw new Error('Estoque não pode ser negativo');
             }
 
+            // Validar tipo de carta compatível com o jogo
+            const finalGame = updateData.game || existingProduct.game;
+            const finalCardType = updateData.cardType ?? existingProduct.cardType;
+
+            if (finalCardType) {
+                this.validateCardTypeForGame(finalCardType, finalGame);
+            }
+
             const updatedProduct = await productRepository.update(productId, updateData);
             return updatedProduct;
         } catch (error) {
@@ -118,7 +138,7 @@ class ProductService {
     /**
      * Validar dados do produto
      * @param productData - Dados do produto a serem validados
-     * @throws Error se dados inválidos (campos obrigatórios, valores negativos, jogo inválido)
+     * @throws Error se dados inválidos (campos obrigatórios, valores negativos, jogo inválido, tipo de carta incompatível)
      */
     validateProductData(productData: CreateProductDTO): void {
         const requiredFields: (keyof CreateProductDTO)[] = ['name', 'price', 'stock', 'game'];
@@ -137,9 +157,36 @@ class ProductService {
             throw new Error('Estoque não pode ser negativo');
         }
 
-        const validGames = ['MTG', 'YUGIOH'];
-        if (!validGames.includes(productData.game.toUpperCase())) {
-            throw new Error('Jogo inválido. Opções: MTG, YUGIOH');
+        const validGames = ['mtg', 'yugioh'];
+        if (!validGames.includes(productData.game.toLowerCase())) {
+            throw new Error('Jogo inválido. Opções: mtg, yugioh');
+        }
+
+        // Validar tipo de carta compatível com o jogo
+        if (productData.cardType) {
+            this.validateCardTypeForGame(productData.cardType, productData.game);
+        }
+    }
+
+    /**
+     * Validar se o tipo de carta é compatível com o jogo
+     * @param cardType - Tipo da carta
+     * @param game - Jogo (mtg ou yugioh)
+     * @throws Error se tipo de carta incompatível com o jogo
+     */
+    validateCardTypeForGame(cardType: CardType, game: 'mtg' | 'yugioh'): void {
+        const gameLower = game.toLowerCase();
+
+        if (gameLower === 'yugioh' && !YUGIOH_CARD_TYPES.includes(cardType)) {
+            throw new Error(
+                `Tipo de carta inválido para Yu-Gi-Oh!. Opções: ${YUGIOH_CARD_TYPES.join(', ')}`
+            );
+        }
+
+        if (gameLower === 'mtg' && !MTG_CARD_TYPES.includes(cardType)) {
+            throw new Error(
+                `Tipo de carta inválido para Magic: The Gathering. Opções: ${MTG_CARD_TYPES.join(', ')}`
+            );
         }
     }
 }

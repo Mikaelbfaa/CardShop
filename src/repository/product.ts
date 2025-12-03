@@ -1,12 +1,12 @@
 import prisma from '../database/prisma';
-import { Product, Game, Prisma } from '@prisma/client';
+import { Product, Game, CardType, Prisma } from '@prisma/client';
 
 /**
  * Interface para filtros de busca de produtos
  */
 export interface ProductFilters {
     game?: string;
-    category?: string;
+    cardType?: string;
 }
 
 /**
@@ -17,10 +17,10 @@ export interface CreateProductDTO {
     description?: string;
     price: number;
     stock: number;
-    game: 'MTG' | 'YUGIOH';
+    game: 'mtg' | 'yugioh';
+    cardType?: CardType;
     rarity?: string;
     image?: string;
-    categoryId?: number;
 }
 
 /**
@@ -31,10 +31,10 @@ export interface UpdateProductDTO {
     description?: string;
     price?: number;
     stock?: number;
-    game?: 'MTG' | 'YUGIOH';
+    game?: 'mtg' | 'yugioh';
+    cardType?: CardType;
     rarity?: string;
     image?: string;
-    categoryId?: number;
 }
 
 /**
@@ -49,23 +49,15 @@ class ProductRepository {
         const where: Prisma.ProductWhereInput = {};
 
         if (filters.game) {
-            where.game = filters.game.toUpperCase() as Game;
+            where.game = filters.game.toLowerCase() as Game;
         }
 
-        if (filters.category) {
-            where.category = {
-                name: {
-                    contains: filters.category,
-                    mode: 'insensitive',
-                },
-            };
+        if (filters.cardType) {
+            where.cardType = filters.cardType.toUpperCase() as CardType;
         }
 
         return prisma.product.findMany({
             where,
-            include: {
-                category: true,
-            },
             orderBy: {
                 id: 'asc',
             },
@@ -78,9 +70,6 @@ class ProductRepository {
     async findById(id: string): Promise<Product | null> {
         return prisma.product.findUnique({
             where: { id: parseInt(id) },
-            include: {
-                category: true,
-            },
         });
     }
 
@@ -94,9 +83,6 @@ class ProductRepository {
                     equals: name,
                     mode: 'insensitive',
                 },
-            },
-            include: {
-                category: true,
             },
         });
     }
@@ -112,12 +98,9 @@ class ProductRepository {
                 price: new Prisma.Decimal(productData.price),
                 stock: productData.stock,
                 game: productData.game as Game,
+                cardType: productData.cardType,
                 rarity: productData.rarity,
                 image: productData.image,
-                categoryId: productData.categoryId,
-            },
-            include: {
-                category: true,
             },
         });
     }
@@ -141,20 +124,13 @@ class ProductRepository {
         if (updateData.price !== undefined) data.price = new Prisma.Decimal(updateData.price);
         if (updateData.stock !== undefined) data.stock = updateData.stock;
         if (updateData.game !== undefined) data.game = updateData.game as Game;
+        if (updateData.cardType !== undefined) data.cardType = updateData.cardType;
         if (updateData.rarity !== undefined) data.rarity = updateData.rarity;
         if (updateData.image !== undefined) data.image = updateData.image;
-        if (updateData.categoryId !== undefined) {
-            data.category = updateData.categoryId
-                ? { connect: { id: updateData.categoryId } }
-                : { disconnect: true };
-        }
 
         return prisma.product.update({
             where: { id: parseInt(id) },
             data,
-            include: {
-                category: true,
-            },
         });
     }
 
