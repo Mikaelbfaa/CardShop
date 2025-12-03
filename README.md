@@ -4,6 +4,11 @@ O CardShop é uma plataforma de e-commerce voltada para o comércio de cartas co
 
 ---
 
+## Autores
+
+- Mikael Brasileiro Ferreira de Almeida Amaral
+- Ana Kethylen Sousa Fernandes
+
 ## Visão Geral
 
 O sistema permite que usuários naveguem por um catálogo de cartas, adicionem produtos ao carrinho de compras e finalizem pedidos. Administradores podem gerenciar o catálogo de produtos e acompanhar/atualizar o status dos pedidos.
