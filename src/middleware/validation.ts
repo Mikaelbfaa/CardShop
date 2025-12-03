@@ -15,7 +15,7 @@ class ValidationMiddleware {
         if (!id || isNaN(Number(id))) {
             res.status(400).json({
                 success: false,
-                message: 'ID inválido'
+                message: 'ID inválido',
             });
             return;
         }
@@ -30,7 +30,7 @@ class ValidationMiddleware {
         if (!req.body || Object.keys(req.body).length === 0) {
             res.status(400).json({
                 success: false,
-                message: 'Corpo da requisição não pode estar vazio'
+                message: 'Corpo da requisição não pode estar vazio',
             });
             return;
         }
@@ -55,7 +55,7 @@ class ValidationMiddleware {
                 res.status(400).json({
                     success: false,
                     message: 'Campos obrigatórios ausentes',
-                    missingFields
+                    missingFields,
                 });
                 return;
             }

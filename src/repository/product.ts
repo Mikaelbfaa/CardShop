@@ -144,7 +144,9 @@ class ProductRepository {
         if (updateData.rarity !== undefined) data.rarity = updateData.rarity;
         if (updateData.image !== undefined) data.image = updateData.image;
         if (updateData.categoryId !== undefined) {
-            data.category = updateData.categoryId ? { connect: { id: updateData.categoryId } } : { disconnect: true };
+            data.category = updateData.categoryId
+                ? { connect: { id: updateData.categoryId } }
+                : { disconnect: true };
         }
 
         return prisma.product.update({

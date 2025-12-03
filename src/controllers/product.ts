@@ -24,7 +24,7 @@ class ProductController {
             res.status(200).json({
                 success: true,
                 count: products.length,
-                data: products
+                data: products,
             });
         } catch (error) {
             next(error);
@@ -43,14 +43,14 @@ class ProductController {
             if (!product) {
                 res.status(404).json({
                     success: false,
-                    message: 'Produto não encontrado'
+                    message: 'Produto não encontrado',
                 });
                 return;
             }
 
             res.status(200).json({
                 success: true,
-                data: product
+                data: product,
             });
         } catch (error) {
             next(error);
@@ -69,7 +69,7 @@ class ProductController {
             res.status(201).json({
                 success: true,
                 message: 'Produto criado com sucesso',
-                data: newProduct
+                data: newProduct,
             });
         } catch (error) {
             next(error);
@@ -89,7 +89,7 @@ class ProductController {
             if (!updatedProduct) {
                 res.status(404).json({
                     success: false,
-                    message: 'Produto não encontrado'
+                    message: 'Produto não encontrado',
                 });
                 return;
             }
@@ -97,7 +97,7 @@ class ProductController {
             res.status(200).json({
                 success: true,
                 message: 'Produto atualizado com sucesso',
-                data: updatedProduct
+                data: updatedProduct,
             });
         } catch (error) {
             next(error);
@@ -116,14 +116,14 @@ class ProductController {
             if (!deleted) {
                 res.status(404).json({
                     success: false,
-                    message: 'Produto não encontrado'
+                    message: 'Produto não encontrado',
                 });
                 return;
             }
 
             res.status(200).json({
                 success: true,
-                message: 'Produto deletado com sucesso'
+                message: 'Produto deletado com sucesso',
             });
         } catch (error) {
             next(error);
