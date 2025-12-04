@@ -1,10 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 
-/**
- * Middleware de Validação
- * Validações genéricas para requisições
- */
-
 class ValidationMiddleware {
     /**
      * Validar ID numérico nos parâmetros

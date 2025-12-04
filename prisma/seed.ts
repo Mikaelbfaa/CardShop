@@ -47,7 +47,7 @@ async function main() {
     });
     console.log(`Usuário cliente criado: ${customer.email} (ID: ${customer.id})`);
 
-    // Criar produtos Yu-Gi-Oh!
+    // Criar produtos Yugioh
     const yugiohProducts = [
         {
             name: 'Dark Magician',
@@ -88,7 +88,7 @@ async function main() {
         },
     ];
 
-    // Criar produtos Magic: The Gathering
+    // Criar produtos Magic the Gathering
     const mtgProducts = [
         {
             name: 'Lightning Bolt',

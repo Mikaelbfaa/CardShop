@@ -3,14 +3,16 @@ import productService from '../services/product';
 import { ProductFilters } from '../repository/product';
 
 /**
- * Controller de Produtos
+ * Controller de Produtos.
  * Camada responsável por receber requisições HTTP,
- * validar dados de entrada e retornar respostas apropriadas
+ * validar dados de entrada e retornar respostas apropriadas.
  */
-
 class ProductController {
     /**
-     * Listar todos os produtos
+     * Listar todos os produtos.
+     * @param req - Objeto de requisição Express (query: game, cardType).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async getAllProducts(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -32,7 +34,10 @@ class ProductController {
     }
 
     /**
-     * Buscar produto por ID
+     * Buscar produto por ID.
+     * @param req - Objeto de requisição Express (params: id).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async getProductById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -58,7 +63,10 @@ class ProductController {
     }
 
     /**
-     * Criar novo produto
+     * Criar novo produto.
+     * @param req - Objeto de requisição Express (body: dados do produto).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async createProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -77,7 +85,10 @@ class ProductController {
     }
 
     /**
-     * Atualizar produto
+     * Atualizar produto.
+     * @param req - Objeto de requisição Express (params: id, body: dados).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async updateProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -105,7 +116,10 @@ class ProductController {
     }
 
     /**
-     * Deletar produto
+     * Deletar produto.
+     * @param req - Objeto de requisição Express (params: id).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async deleteProduct(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -126,6 +140,14 @@ class ProductController {
                 message: 'Produto deletado com sucesso',
             });
         } catch (error) {
+            const err = error as Error;
+            if (err.message.includes('em uso')) {
+                res.status(409).json({
+                    success: false,
+                    message: err.message,
+                });
+                return;
+            }
             next(error);
         }
     }

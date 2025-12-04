@@ -5,7 +5,6 @@ import productRepository, {
 } from '../repository/product';
 import { Product, CardType } from '@prisma/client';
 
-// Tipos de carta válidos por jogo
 const YUGIOH_CARD_TYPES: CardType[] = ['MONSTER', 'SPELL', 'TRAP'];
 const MTG_CARD_TYPES: CardType[] = [
     'CREATURE',
@@ -100,7 +99,6 @@ class ProductService {
                 throw new Error('Estoque não pode ser negativo');
             }
 
-            // Validar tipo de carta compatível com o jogo
             const finalGame = updateData.game || existingProduct.game;
             const finalCardType = updateData.cardType ?? existingProduct.cardType;
 
@@ -119,7 +117,7 @@ class ProductService {
      * Deletar produto
      * @param productId - ID do produto a ser deletado
      * @returns Promise com true se deletado, null se não encontrado
-     * @throws Error se houver falha ao deletar
+     * @throws Error se houver falha ao deletar (ex: produto em uso)
      */
     async deleteProduct(productId: string): Promise<boolean | null> {
         try {
@@ -128,10 +126,17 @@ class ProductService {
                 return null;
             }
 
-            const deleted = await productRepository.delete(productId);
-            return deleted;
+            await productRepository.delete(productId);
+            return true;
         } catch (error) {
-            throw new Error(`Erro ao deletar produto: ${(error as Error).message}`);
+            const err = error as Error;
+            const msg = err.message.toLowerCase();
+            if (msg.includes('foreign key') || msg.includes('fkey') || msg.includes('restrict')) {
+                throw new Error(
+                    'Produto não pode ser deletado pois está em uso (carrinho ou pedido)'
+                );
+            }
+            throw new Error(`Erro ao deletar produto: ${err.message}`);
         }
     }
 
@@ -162,7 +167,6 @@ class ProductService {
             throw new Error('Jogo inválido. Opções: mtg, yugioh');
         }
 
-        // Validar tipo de carta compatível com o jogo
         if (productData.cardType) {
             this.validateCardTypeForGame(productData.cardType, productData.game);
         }
@@ -179,13 +183,13 @@ class ProductService {
 
         if (gameLower === 'yugioh' && !YUGIOH_CARD_TYPES.includes(cardType)) {
             throw new Error(
-                `Tipo de carta inválido para Yu-Gi-Oh!. Opções: ${YUGIOH_CARD_TYPES.join(', ')}`
+                `Tipo de carta inválido para Yugioh. Opções: ${YUGIOH_CARD_TYPES.join(', ')}`
             );
         }
 
         if (gameLower === 'mtg' && !MTG_CARD_TYPES.includes(cardType)) {
             throw new Error(
-                `Tipo de carta inválido para Magic: The Gathering. Opções: ${MTG_CARD_TYPES.join(', ')}`
+                `Tipo de carta inválido para Magic the Gathering. Opções: ${MTG_CARD_TYPES.join(', ')}`
             );
         }
     }

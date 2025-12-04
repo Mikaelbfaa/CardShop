@@ -1,8 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { User } from '@prisma/client';
+import { JWT_SECRET } from '../config/server';
 
-// Interface para o payload do JWT (para tipagem)
+/**
+ * Payload do token JWT.
+ */
 interface JwtPayload {
     userId: number;
     role: User['role'];
@@ -10,8 +13,13 @@ interface JwtPayload {
     exp: number;
 }
 
-// Chave Secreta
-const JWT_SECRET = process.env.JWT_SECRET || 'SEGREDO_FORTE';
+/**
+ * Request com dados do usuário autenticado.
+ */
+export interface AuthenticatedRequest extends Request {
+    userId?: number;
+    userRole?: User['role'];
+}
 
 class AuthMiddleware {
     /**
@@ -28,8 +36,7 @@ class AuthMiddleware {
             return;
         }
 
-        // Extrai 'Bearer' e o token
-        const [scheme, token] = authHeader.split(' '); 
+        const [scheme, token] = authHeader.split(' ');
 
         if (scheme !== 'Bearer' || !token) {
             res.status(401).json({
@@ -40,17 +47,12 @@ class AuthMiddleware {
         }
 
         try {
-            // Verifica o token usando a chave secreta
             const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+            (req as AuthenticatedRequest).userId = decoded.userId;
+            (req as AuthenticatedRequest).userRole = decoded.role;
 
-            // Injeta dados do usuário na requisição
-            (req as any).userId = decoded.userId;
-            (req as any).userRole = decoded.role;
-            
             next();
-
-        } catch (error) {
-            // Captura token inválido ou expirado
+        } catch {
             res.status(401).json({
                 success: false,
                 message: 'Token inválido ou expirado.',
@@ -62,8 +64,7 @@ class AuthMiddleware {
      * Verificar se o usuário é administrador (Deve ser chamado após verifyToken).
      */
     async isAdmin(req: Request, res: Response, next: NextFunction): Promise<void> {
-        // userRole é injetado pelo verifyToken
-        const userRole = (req as any).userRole;
+        const userRole = (req as AuthenticatedRequest).userRole;
 
         if (userRole !== 'ADMIN') {
             res.status(403).json({
@@ -72,8 +73,7 @@ class AuthMiddleware {
             });
             return;
         }
-        
-        // Se for ADMIN, permite seguir
+
         next();
     }
 }

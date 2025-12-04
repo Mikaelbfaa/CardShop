@@ -2,15 +2,12 @@ import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
 
-// Pool de conexões do PostgreSQL
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
 });
 
-// Adapter do Prisma para PostgreSQL
 const adapter = new PrismaPg(pool);
 
-// Instância global do PrismaClient para evitar múltiplas conexões em desenvolvimento
 const globalForPrisma = globalThis as unknown as {
     prisma: PrismaClient | undefined;
 };

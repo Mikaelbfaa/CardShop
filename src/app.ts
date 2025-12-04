@@ -2,21 +2,18 @@ import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
-import productRoutes from './controllers/product_routes';
-import cartRoutes from './controllers/cart_routes';
-import orderRoutes from './controllers/order_routes';
-import adminOrderRoutes from './controllers/admin_order_routes';
-import userRoutes from './controllers/user.routes'; 
-
+import productRoutes from './routes/product';
+import cartRoutes from './routes/cart';
+import orderRoutes from './routes/order';
+import adminRoutes from './routes/admin';
+import userRoutes from './routes/user';
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/api/v1/users', userRoutes); 
 
-// Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/api-docs.json', (_req: Request, res: Response) => {
     res.json(swaggerSpec);
@@ -25,7 +22,8 @@ app.get('/api-docs.json', (_req: Request, res: Response) => {
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/admin/orders', adminOrderRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/users', userRoutes);
 
 app.get('/', (_req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
