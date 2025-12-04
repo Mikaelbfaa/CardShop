@@ -6,12 +6,15 @@ import productRoutes from './controllers/product_routes';
 import cartRoutes from './controllers/cart_routes';
 import orderRoutes from './controllers/order_routes';
 import adminOrderRoutes from './controllers/admin_order_routes';
+import userRoutes from './controllers/user.routes'; 
+
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
+app.use('/api/v1/users', userRoutes); 
 
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
