@@ -95,7 +95,6 @@ model Cart {
 }
 
 model CartItem {
-  id        Int      @id @default(autoincrement())
   quantity  Int
   createdAt DateTime @default(now())
 
@@ -104,7 +103,7 @@ model CartItem {
   productId Int
   product   Product @relation(fields: [productId], references: [id])
 
-  @@unique([cartId, productId])
+  @@id([cartId, productId])
   @@map("cart_items")
 }
 
