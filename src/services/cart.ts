@@ -1,9 +1,16 @@
 import cartRepository, { CartWithItems, AddItemDTO } from '../repository/cart';
 import prisma from '../database/prisma';
 
+/**
+ * Service de Carrinho.
+ * Camada responsável pela lógica de negócio e validações.
+ */
 class CartService {
     /**
-     * Buscar carrinho do usuário
+     * Buscar carrinho do usuário.
+     * @param userId - ID do usuário.
+     * @returns Carrinho do usuário.
+     * @throws Error se o usuário não existir.
      */
     async getCart(userId: number): Promise<CartWithItems> {
         try {
@@ -23,7 +30,12 @@ class CartService {
     }
 
     /**
-     * Adicionar item ao carrinho (RN01: valida estoque, RN02: quantidade >= 1)
+     * Adicionar item ao carrinho.
+     * Valida estoque e quantidade mínima de 1.
+     * @param userId - ID do usuário.
+     * @param data - Dados do item (productId, quantity).
+     * @returns Carrinho atualizado.
+     * @throws Error se estoque insuficiente ou dados inválidos.
      */
     async addToCart(userId: number, data: AddItemDTO): Promise<CartWithItems> {
         try {
@@ -74,7 +86,13 @@ class CartService {
     }
 
     /**
-     * Atualizar quantidade de item no carrinho (RN01: valida estoque, RN02: quantidade >= 1)
+     * Atualizar quantidade de item no carrinho.
+     * Valida estoque e quantidade mínima de 1.
+     * @param userId - ID do usuário.
+     * @param productId - ID do produto.
+     * @param quantity - Nova quantidade.
+     * @returns Carrinho atualizado.
+     * @throws Error se estoque insuficiente ou item não encontrado.
      */
     async updateQuantity(
         userId: number,
@@ -122,7 +140,11 @@ class CartService {
     }
 
     /**
-     * Remover item do carrinho
+     * Remover item do carrinho.
+     * @param userId - ID do usuário.
+     * @param productId - ID do produto a remover.
+     * @returns Carrinho atualizado.
+     * @throws Error se o item não existir no carrinho.
      */
     async removeFromCart(userId: number, productId: number): Promise<CartWithItems> {
         try {
@@ -153,7 +175,10 @@ class CartService {
     }
 
     /**
-     * Limpar carrinho
+     * Limpar carrinho.
+     * @param userId - ID do usuário.
+     * @returns Carrinho vazio.
+     * @throws Error se o carrinho não existir.
      */
     async clearCart(userId: number): Promise<CartWithItems> {
         try {

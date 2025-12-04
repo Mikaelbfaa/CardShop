@@ -3,6 +3,10 @@ import cartRepository from '../repository/cart';
 import prisma from '../database/prisma';
 import { OrderStatus } from '@prisma/client';
 
+/**
+ * Mapa de transições de status válidas.
+ * Define quais status podem ser alcançados a partir de cada status atual.
+ */
 const VALID_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
     PENDING: ['PROCESSING', 'CANCELLED'],
     PROCESSING: ['SHIPPED', 'CANCELLED'],
@@ -11,9 +15,15 @@ const VALID_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
     CANCELLED: [],
 };
 
+/**
+ * Service de Pedidos.
+ * Camada responsável pela lógica de negócio e validações.
+ */
 class OrderService {
     /**
-     * Listar todos os pedidos (admin)
+     * Listar todos os pedidos (admin).
+     * @param filters - Filtros opcionais (status).
+     * @returns Lista de pedidos.
      */
     async getAllOrders(filters: OrderFilters = {}): Promise<OrderWithItems[]> {
         try {
@@ -24,7 +34,9 @@ class OrderService {
     }
 
     /**
-     * Buscar pedido por ID
+     * Buscar pedido por ID.
+     * @param orderId - ID do pedido.
+     * @returns Pedido encontrado ou null.
      */
     async getOrderById(orderId: number): Promise<OrderWithItems | null> {
         try {
@@ -39,7 +51,10 @@ class OrderService {
     }
 
     /**
-     * Listar pedidos de um usuário
+     * Listar pedidos de um usuário.
+     * @param userId - ID do usuário.
+     * @returns Lista de pedidos do usuário.
+     * @throws Error se o usuário não existir.
      */
     async getOrdersByUser(userId: number): Promise<OrderWithItems[]> {
         try {
@@ -59,7 +74,12 @@ class OrderService {
     }
 
     /**
-     * Criar pedido a partir do carrinho (RF16, RN06)
+     * Criar pedido a partir do carrinho.
+     * Valida estoque, cria pedido, decrementa estoque e limpa carrinho.
+     * @param userId - ID do usuário.
+     * @param shippingAddress - Endereço de entrega.
+     * @returns Pedido criado.
+     * @throws Error se carrinho vazio ou estoque insuficiente.
      */
     async createOrder(userId: number, shippingAddress: string): Promise<OrderWithItems> {
         try {
@@ -141,7 +161,12 @@ class OrderService {
     }
 
     /**
-     * Atualizar status do pedido (RF20)
+     * Atualizar status do pedido.
+     * Valida transições de status permitidas.
+     * @param orderId - ID do pedido.
+     * @param status - Novo status do pedido.
+     * @returns Pedido atualizado.
+     * @throws Error se transição de status inválida.
      */
     async updateOrderStatus(orderId: number, status: OrderStatus): Promise<OrderWithItems> {
         try {
@@ -184,6 +209,29 @@ class OrderService {
             return updatedOrder;
         } catch (error) {
             throw new Error(`Erro ao atualizar status: ${(error as Error).message}`);
+        }
+    }
+
+    /**
+     * Deletar pedido (admin).
+     * @param orderId - ID do pedido.
+     * @returns True se deletado, false se não encontrado.
+     */
+    async deleteOrder(orderId: number): Promise<boolean> {
+        try {
+            if (!orderId) {
+                throw new Error('orderId é obrigatório');
+            }
+
+            const order = await orderRepository.findById(orderId);
+            if (!order) {
+                return false;
+            }
+
+            await orderRepository.delete(orderId);
+            return true;
+        } catch (error) {
+            throw new Error(`Erro ao deletar pedido: ${(error as Error).message}`);
         }
     }
 }

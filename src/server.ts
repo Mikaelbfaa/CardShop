@@ -6,7 +6,6 @@ const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
-        // Testa a conexão com o banco de dados
         await prisma.$connect();
         console.log('Conectado ao banco de dados PostgreSQL via Prisma');
 
@@ -20,7 +19,6 @@ async function startServer() {
     }
 }
 
-// Graceful shutdown
 process.on('SIGINT', async () => {
     await prisma.$disconnect();
     console.log('Conexão com o banco de dados encerrada');

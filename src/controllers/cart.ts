@@ -1,9 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import cartService from '../services/cart';
 
+/**
+ * Controller de Carrinho.
+ * Camada responsável por receber requisições HTTP,
+ * validar dados de entrada e retornar respostas apropriadas.
+ */
 class CartController {
     /**
-     * Visualizar carrinho do usuário
+     * Visualizar carrinho do usuário.
+     * @param req - Objeto de requisição Express (query: userId).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async getCart(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -29,7 +37,10 @@ class CartController {
     }
 
     /**
-     * Adicionar item ao carrinho
+     * Adicionar item ao carrinho.
+     * @param req - Objeto de requisição Express (body: userId, productId, quantity).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async addItem(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -67,7 +78,10 @@ class CartController {
     }
 
     /**
-     * Atualizar quantidade de item no carrinho
+     * Atualizar quantidade de item no carrinho.
+     * @param req - Objeto de requisição Express (params: productId, query: userId, body: quantity).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async updateItem(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -112,7 +126,10 @@ class CartController {
     }
 
     /**
-     * Remover item do carrinho
+     * Remover item do carrinho.
+     * @param req - Objeto de requisição Express (params: productId, query: userId).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async removeItem(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
@@ -148,7 +165,10 @@ class CartController {
     }
 
     /**
-     * Limpar carrinho
+     * Limpar carrinho.
+     * @param req - Objeto de requisição Express (query: userId).
+     * @param res - Objeto de resposta Express.
+     * @param next - Função para passar erros ao middleware.
      */
     async clearCart(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {

@@ -27,3 +27,6 @@ build/
 *.swo
 *~
 /src/generated/prisma
+
+# Docs
+docs/

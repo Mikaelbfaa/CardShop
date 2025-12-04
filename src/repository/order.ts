@@ -1,17 +1,26 @@
 import prisma from '../database/prisma';
 import { OrderStatus, Prisma } from '@prisma/client';
 
+/**
+ * Interface para filtros de busca de pedidos.
+ */
 export interface OrderFilters {
     userId?: number;
     status?: OrderStatus;
 }
 
+/**
+ * DTO para criação de item do pedido.
+ */
 export interface CreateOrderItemDTO {
     productId: number;
     quantity: number;
     unitPrice: number;
 }
 
+/**
+ * DTO para criação de pedido.
+ */
 export interface CreateOrderDTO {
     userId: number;
     shippingAddress: string;
@@ -19,6 +28,9 @@ export interface CreateOrderDTO {
     items: CreateOrderItemDTO[];
 }
 
+/**
+ * Tipo de pedido com itens e produtos incluídos.
+ */
 export type OrderWithItems = Prisma.OrderGetPayload<{
     include: {
         items: {
@@ -29,9 +41,15 @@ export type OrderWithItems = Prisma.OrderGetPayload<{
     };
 }>;
 
+/**
+ * Repository de Pedidos.
+ * Camada responsável pelo acesso direto aos dados via Prisma.
+ */
 class OrderRepository {
     /**
-     * Buscar todos os pedidos com filtros opcionais
+     * Buscar todos os pedidos com filtros opcionais.
+     * @param filters - Filtros de busca (userId, status).
+     * @returns Lista de pedidos com itens.
      */
     async findAll(filters: OrderFilters = {}): Promise<OrderWithItems[]> {
         const where: Prisma.OrderWhereInput = {};
@@ -60,7 +78,9 @@ class OrderRepository {
     }
 
     /**
-     * Buscar pedido por ID
+     * Buscar pedido por ID.
+     * @param id - ID do pedido.
+     * @returns Pedido com itens ou null se não encontrado.
      */
     async findById(id: number): Promise<OrderWithItems | null> {
         return prisma.order.findUnique({
@@ -76,7 +96,9 @@ class OrderRepository {
     }
 
     /**
-     * Buscar pedidos de um usuário
+     * Buscar pedidos de um usuário.
+     * @param userId - ID do usuário.
+     * @returns Lista de pedidos do usuário.
      */
     async findByUserId(userId: number): Promise<OrderWithItems[]> {
         return prisma.order.findMany({
@@ -95,7 +117,9 @@ class OrderRepository {
     }
 
     /**
-     * Criar pedido com itens (usando transação)
+     * Criar pedido com itens.
+     * @param data - Dados do pedido a ser criado.
+     * @returns Pedido criado com itens.
      */
     async create(data: CreateOrderDTO): Promise<OrderWithItems> {
         return prisma.order.create({
@@ -122,7 +146,10 @@ class OrderRepository {
     }
 
     /**
-     * Atualizar status do pedido
+     * Atualizar status do pedido.
+     * @param id - ID do pedido.
+     * @param status - Novo status do pedido.
+     * @returns Pedido atualizado ou null se não encontrado.
      */
     async updateStatus(id: number, status: OrderStatus): Promise<OrderWithItems | null> {
         const existingOrder = await prisma.order.findUnique({ where: { id } });
@@ -141,6 +168,16 @@ class OrderRepository {
                     },
                 },
             },
+        });
+    }
+
+    /**
+     * Deletar pedido (cascade deleta order_items).
+     * @param id - ID do pedido.
+     */
+    async delete(id: number): Promise<void> {
+        await prisma.order.delete({
+            where: { id },
         });
     }
 }

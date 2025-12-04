@@ -2,7 +2,7 @@ import prisma from '../database/prisma';
 import { Product, Game, CardType, Prisma } from '@prisma/client';
 
 /**
- * Interface para filtros de busca de produtos
+ * Interface para filtros de busca de produtos.
  */
 export interface ProductFilters {
     game?: string;
@@ -10,7 +10,7 @@ export interface ProductFilters {
 }
 
 /**
- * DTO para criação de produto
+ * DTO para criação de produto.
  */
 export interface CreateProductDTO {
     name: string;
@@ -24,7 +24,7 @@ export interface CreateProductDTO {
 }
 
 /**
- * DTO para atualização de produto
+ * DTO para atualização de produto.
  */
 export interface UpdateProductDTO {
     name?: string;
@@ -38,12 +38,14 @@ export interface UpdateProductDTO {
 }
 
 /**
- * Repository de Produtos
- * Camada responsável pelo acesso direto aos dados via Prisma
+ * Repository de Produtos.
+ * Camada responsável pelo acesso direto aos dados via Prisma.
  */
 class ProductRepository {
     /**
-     * Buscar todos os produtos com filtros opcionais
+     * Buscar todos os produtos com filtros opcionais.
+     * @param filters - Filtros de busca (game, cardType).
+     * @returns Lista de produtos.
      */
     async findAll(filters: ProductFilters = {}): Promise<Product[]> {
         const where: Prisma.ProductWhereInput = {};
@@ -65,7 +67,9 @@ class ProductRepository {
     }
 
     /**
-     * Buscar produto por ID
+     * Buscar produto por ID.
+     * @param id - ID do produto.
+     * @returns Produto encontrado ou null.
      */
     async findById(id: string): Promise<Product | null> {
         return prisma.product.findUnique({
@@ -74,7 +78,9 @@ class ProductRepository {
     }
 
     /**
-     * Buscar produto por nome
+     * Buscar produto por nome.
+     * @param name - Nome do produto.
+     * @returns Produto encontrado ou null.
      */
     async findByName(name: string): Promise<Product | null> {
         return prisma.product.findFirst({
@@ -88,7 +94,9 @@ class ProductRepository {
     }
 
     /**
-     * Criar novo produto
+     * Criar novo produto.
+     * @param productData - Dados do produto a ser criado.
+     * @returns Produto criado.
      */
     async create(productData: CreateProductDTO): Promise<Product> {
         return prisma.product.create({
@@ -106,7 +114,10 @@ class ProductRepository {
     }
 
     /**
-     * Atualizar produto
+     * Atualizar produto.
+     * @param id - ID do produto.
+     * @param updateData - Dados a serem atualizados.
+     * @returns Produto atualizado ou null se não encontrado.
      */
     async update(id: string, updateData: UpdateProductDTO): Promise<Product | null> {
         const existingProduct = await prisma.product.findUnique({
@@ -135,17 +146,13 @@ class ProductRepository {
     }
 
     /**
-     * Deletar produto
+     * Deletar produto.
+     * @param id - ID do produto.
      */
-    async delete(id: string): Promise<boolean> {
-        try {
-            await prisma.product.delete({
-                where: { id: parseInt(id) },
-            });
-            return true;
-        } catch {
-            return false;
-        }
+    async delete(id: string): Promise<void> {
+        await prisma.product.delete({
+            where: { id: parseInt(id) },
+        });
     }
 }
 

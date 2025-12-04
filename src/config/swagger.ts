@@ -7,7 +7,7 @@ const options: swaggerJsdoc.Options = {
             title: 'CardShop API',
             version: '1.0.0',
             description:
-                'API REST para e-commerce de cartas colecionáveis (Yu-Gi-Oh! e Magic: The Gathering)',
+                'API REST para e-commerce de cartas colecionáveis (Yugioh e Magic the Gathering)',
             contact: {
                 name: 'CardShop',
             },
@@ -159,7 +159,7 @@ const options: swaggerJsdoc.Options = {
             },
         },
     },
-    apis: ['./src/controllers/*_routes.ts'],
+    apis: ['./src/routes/*.ts'],
 };
 
 const swaggerSpec = swaggerJsdoc(options);

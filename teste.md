@@ -258,6 +258,142 @@ PATCH /api/admin/orders/:id/status
 
 **Status disponíveis:** `PENDING`, `PROCESSING`, `SHIPPED`, `DELIVERED`, `CANCELLED`
 
+### 4.3 Deletar usuário
+```bash
+DELETE /api/admin/users/:id
+```
+
+**Resposta (200):**
+```json
+{
+  "success": true,
+  "message": "Usuário deletado com sucesso",
+  "data": {
+    "id": 1,
+    "name": "João Silva",
+    "email": "joao@exemplo.com"
+  }
+}
+```
+
+---
+
+## 5. Usuários (`/api/users`)
+
+### 5.1 Registrar novo usuário
+```bash
+POST /api/users/register
+```
+```json
+{
+  "name": "João Silva",
+  "email": "joao@exemplo.com",
+  "password": "senha123",
+  "cpf": "123.456.789-00"
+}
+```
+
+**Resposta (201):**
+```json
+{
+  "success": true,
+  "message": "Usuário cadastrado com sucesso",
+  "data": {
+    "id": 1,
+    "name": "João Silva",
+    "email": "joao@exemplo.com",
+    "cpf": "123.456.789-00"
+  }
+}
+```
+
+### 5.2 Login
+```bash
+POST /api/users/login
+```
+```json
+{
+  "email": "joao@exemplo.com",
+  "password": "senha123"
+}
+```
+
+**Resposta (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "id": 1,
+      "name": "João Silva",
+      "email": "joao@exemplo.com",
+      "role": "CUSTOMER"
+    }
+  }
+}
+```
+
+### 5.3 Visualizar perfil (autenticado)
+```bash
+GET /api/users/profile
+Authorization: Bearer <token>
+```
+
+**Resposta (200):**
+```json
+{
+  "success": true,
+  "data": {
+    "id": 1,
+    "name": "João Silva",
+    "email": "joao@exemplo.com",
+    "cpf": "123.456.789-00",
+    "role": "CUSTOMER",
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "updatedAt": "2024-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 5.4 Atualizar perfil (autenticado)
+```bash
+PATCH /api/users/profile
+Authorization: Bearer <token>
+```
+```json
+{
+  "name": "João Silva Atualizado"
+}
+```
+
+**Resposta (200):**
+```json
+{
+  "success": true,
+  "message": "Perfil atualizado com sucesso",
+  "data": {
+    "id": 1,
+    "name": "João Silva Atualizado",
+    "email": "joao@exemplo.com"
+  }
+}
+```
+
+### 5.5 Logout (autenticado)
+```bash
+POST /api/users/logout
+Authorization: Bearer <token>
+```
+
+**Resposta (200):**
+```json
+{
+  "success": true,
+  "message": "Logout realizado com sucesso"
+}
+```
+
 ---
 
 ## Exemplos com curl
@@ -338,4 +474,34 @@ curl http://localhost:3000/api/admin/orders
 curl -X PATCH http://localhost:3000/api/admin/orders/1/status \
   -H "Content-Type: application/json" \
   -d '{"status":"PROCESSING"}'
+
+# Deletar usuário
+curl -X DELETE http://localhost:3000/api/admin/users/1
+```
+
+### Usuários
+```bash
+# Registrar usuário
+curl -X POST http://localhost:3000/api/users/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"João Silva","email":"joao@exemplo.com","password":"senha123","cpf":"123.456.789-00"}'
+
+# Login (guarde o token retornado)
+curl -X POST http://localhost:3000/api/users/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"joao@exemplo.com","password":"senha123"}'
+
+# Visualizar perfil (substitua <TOKEN> pelo token obtido no login)
+curl http://localhost:3000/api/users/profile \
+  -H "Authorization: Bearer <TOKEN>"
+
+# Atualizar perfil
+curl -X PATCH http://localhost:3000/api/users/profile \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TOKEN>" \
+  -d '{"name":"João Silva Atualizado"}'
+
+# Logout
+curl -X POST http://localhost:3000/api/users/logout \
+  -H "Authorization: Bearer <TOKEN>"
 ```

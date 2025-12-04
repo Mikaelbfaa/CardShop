@@ -1,40 +1,40 @@
 import { Request, Response } from 'express';
-import UserService from '../services/user.service';
+import UserService from '../services/user';
 import { User } from '@prisma/client';
 
-// Interface para injetar dados do JWT na requisição (do middleware)
 interface AuthenticatedRequest extends Request {
     userId?: number;
     userRole?: User['role'];
 }
-
-// cadastro de usuário
 
 /**
  * Cadastra um novo usuário no sistema.
  */
 export const registerUser = async (req: Request, res: Response): Promise<Response> => {
     try {
-        const { name, email, password } = req.body;
-        
-        // Chamada direta ao Service (validações básicas de campos vazios foram movidas para o ValidationMiddleware)
-        const newUser = await UserService.registerNewUser({ name, email, password });
+        const { name, email, password, cpf } = req.body;
 
-        return res.status(201).json({ 
-            id: newUser.id, 
-            name: newUser.name, 
-            email: newUser.email, 
-            message: 'Usuário cadastrado com sucesso.' 
+        const newUser = await UserService.registerNewUser({ name, email, password, cpf });
+
+        return res.status(201).json({
+            success: true,
+            message: 'Usuário cadastrado com sucesso',
+            data: {
+                id: newUser.id,
+                name: newUser.name,
+                email: newUser.email,
+                cpf: newUser.cpf,
+            },
         });
-
-    } catch (error: any) {
-        // Trata erro de e-mail já existente (409) ou erro interno (500)
-        const status = error.message.includes('E-mail já registrado') ? 409 : 500;
-        return res.status(status).json({ message: error.message || 'Erro interno ao cadastrar usuário.' });
+    } catch (error: unknown) {
+        const err = error as Error;
+        const status = err.message.includes('E-mail já registrado') ? 409 : 500;
+        return res.status(status).json({
+            success: false,
+            message: err.message || 'Erro interno ao cadastrar usuário',
+        });
     }
 };
-
-// Login do usuário
 
 /**
  * Autentica o usuário e retorna o token JWT.
@@ -42,84 +42,149 @@ export const registerUser = async (req: Request, res: Response): Promise<Respons
 export const loginUser = async (req: Request, res: Response): Promise<Response> => {
     try {
         const { email, password } = req.body;
-        
-        // Chamada ao Service para autenticar e gerar o JWT
+
         const { token, user } = await UserService.authenticateUser(email, password);
 
-        return res.status(200).json({ 
-            token, 
-            user: { 
-                id: user.id, 
-                name: user.name, 
-                email: user.email, 
-                role: user.role 
-            } 
+        return res.status(200).json({
+            success: true,
+            data: {
+                token,
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                },
+            },
         });
-
-    } catch (error: any) {
-        // Trata erro de credenciais inválidas (401)
-        const status = error.message.includes('Credenciais inválidas') ? 401 : 500;
-        return res.status(status).json({ message: error.message || 'Erro interno ao realizar login.' });
+    } catch (error: unknown) {
+        const err = error as Error;
+        const status = err.message.includes('Credenciais inválidas') ? 401 : 500;
+        return res.status(status).json({
+            success: false,
+            message: err.message || 'Erro interno ao realizar login',
+        });
     }
 };
-
-// Visualiza o perfil
 
 /**
  * Retorna os dados do usuário logado.
  */
-export const getUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<Response> => {
-    // O userId vem do token, injetado pelo middleware 'verifyToken'
-    const userId = req.userId; 
+export const getUserProfile = async (
+    req: AuthenticatedRequest,
+    res: Response
+): Promise<Response> => {
+    const userId = req.userId;
 
     if (!userId) {
-        return res.status(401).json({ message: 'Usuário não autenticado.' });
+        return res.status(401).json({
+            success: false,
+            message: 'Usuário não autenticado',
+        });
     }
 
     try {
         const user = await UserService.findUserById(userId);
 
         if (!user) {
-            return res.status(404).json({ message: 'Perfil de usuário não encontrado.' });
+            return res.status(404).json({
+                success: false,
+                message: 'Perfil de usuário não encontrado',
+            });
         }
 
-        return res.status(200).json(user);
-
-    } catch (error: any) {
-        return res.status(500).json({ message: 'Erro ao buscar perfil.' });
+        return res.status(200).json({
+            success: true,
+            data: user,
+        });
+    } catch {
+        return res.status(500).json({
+            success: false,
+            message: 'Erro ao buscar perfil',
+        });
     }
 };
-
-// Edita o perfil
 
 /**
  * Atualiza o nome, email ou senha do perfil do usuário logado.
  */
-export const updateUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<Response> => {
+export const updateUserProfile = async (
+    req: AuthenticatedRequest,
+    res: Response
+): Promise<Response> => {
     const userId = req.userId;
     const updateData = req.body;
 
     if (!userId) {
-        return res.status(401).json({ message: 'Usuário não autenticado.' });
+        return res.status(401).json({
+            success: false,
+            message: 'Usuário não autenticado',
+        });
     }
 
     try {
         const updatedUser = await UserService.updateUserProfile(userId, updateData);
 
         return res.status(200).json({
-            id: updatedUser.id, 
-            name: updatedUser.name, 
-            email: updatedUser.email, 
-            message: 'Perfil atualizado com sucesso.'
+            success: true,
+            message: 'Perfil atualizado com sucesso',
+            data: {
+                id: updatedUser.id,
+                name: updatedUser.name,
+                email: updatedUser.email,
+            },
         });
-
-    } catch (error: any) {
-        const status = error.message.includes('E-mail já registrado') ? 409 : 500;
-        return res.status(status).json({ message: error.message || 'Erro interno ao atualizar perfil.' });
+    } catch (error: unknown) {
+        const err = error as Error;
+        const status = err.message.includes('E-mail já registrado') ? 409 : 500;
+        return res.status(status).json({
+            success: false,
+            message: err.message || 'Erro interno ao atualizar perfil',
+        });
     }
 };
 
-// Logout 
+/**
+ * Realiza o logout do usuário.
+ */
 export const logoutUser = async (_req: Request, res: Response): Promise<Response> => {
-    return res.status(200).json({ message: 'Logout realizado com sucesso. (Token deve ser descartado pelo cliente)' });
+    return res.status(200).json({
+        success: true,
+        message: 'Logout realizado com sucesso',
+    });
+};
+
+/**
+ * Deleta um usuário pelo ID (admin).
+ */
+export const deleteUser = async (req: Request, res: Response): Promise<Response> => {
+    const userId = parseInt(req.params.id, 10);
+
+    if (isNaN(userId)) {
+        return res.status(400).json({
+            success: false,
+            message: 'ID de usuário inválido',
+        });
+    }
+
+    try {
+        const deletedUser = await UserService.deleteUser(userId);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Usuário deletado com sucesso',
+            data: {
+                id: deletedUser.id,
+                name: deletedUser.name,
+                email: deletedUser.email,
+            },
+        });
+    } catch (error: unknown) {
+        const err = error as Error;
+        const status = err.message.includes('não encontrado') ? 404 : 500;
+        return res.status(status).json({
+            success: false,
+            message: err.message || 'Erro interno ao deletar usuário',
+        });
+    }
 };
