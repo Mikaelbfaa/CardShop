@@ -22,6 +22,8 @@ class UserRepository {
         email: true,
         name: true,
         cpf: true,
+        phone: true,
+        address: true,
         role: true,
         createdAt: true,
         updatedAt: true,

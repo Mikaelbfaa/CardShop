@@ -52,8 +52,8 @@ class UserService {
             }
 
             const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, {
-                expiresIn: JWT_EXPIRES_IN,
-            });
+                expiresIn: JWT_EXPIRES_IN as string,
+            } as jwt.SignOptions);
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { password: _pwd, ...userWithoutPassword } = user;
