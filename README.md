@@ -38,53 +38,54 @@ O sistema permite que usuários naveguem por um catálogo de cartas, adicionem p
 ```
 CardShop/
 ├── prisma/
-│   ├── schema.prisma          # Definição do banco de dados
-│   ├── seed.ts                # Script de seed do banco
-│   └── migrations/            # Histórico de migrações
+│   ├── migrations/
+│   ├── schema.prisma
+│   └── seed.ts
 │
 ├── src/
-│   ├── server.ts              # Ponto de entrada da aplicação
-│   ├── app.ts                 # Configuração do Express e middlewares
+│   ├── server.ts
+│   ├── app.ts
 │   │
 │   ├── config/
-│   │   ├── server.ts          # Configurações (porta, JWT)
-│   │   └── swagger.ts         # Configuração do Swagger
+│   │   ├── server.ts
+│   │   └── swagger.ts
 │   │
 │   ├── database/
-│   │   └── prisma.ts          # Instância do Prisma Client
+│   │   └── prisma.ts
 │   │
-│   ├── models/
-│   │   └── product.ts         # DTOs e tipos
+│   ├── routes/
+│   │   ├── product.ts
+│   │   ├── cart.ts
+│   │   ├── order.ts
+│   │   ├── user.ts
+│   │   └── admin.ts
 │   │
 │   ├── controllers/
-│   │   ├── product.ts         # Controller de produtos
-│   │   ├── product_routes.ts  # Rotas de produtos
-│   │   ├── cart.ts            # Controller do carrinho
-│   │   ├── cart_routes.ts     # Rotas do carrinho
-│   │   ├── order.ts           # Controller de pedidos
-│   │   ├── order_routes.ts    # Rotas de pedidos (usuário)
-│   │   └── admin_order_routes.ts  # Rotas de pedidos (admin)
+│   │   ├── product.ts
+│   │   ├── cart.ts
+│   │   ├── order.ts
+│   │   └── user.ts
 │   │
 │   ├── services/
-│   │   ├── product.ts         # Lógica de negócio de produtos
-│   │   ├── cart.ts            # Lógica de negócio do carrinho
-│   │   └── order.ts           # Lógica de negócio de pedidos
+│   │   ├── product.ts
+│   │   ├── cart.ts
+│   │   ├── order.ts
+│   │   └── user.ts
 │   │
 │   ├── repository/
-│   │   ├── product.ts         # Acesso a dados de produtos
-│   │   ├── cart.ts            # Acesso a dados do carrinho
-│   │   └── order.ts           # Acesso a dados de pedidos
+│   │   ├── product.ts
+│   │   ├── cart.ts
+│   │   ├── order.ts
+│   │   └── user.ts
 │   │
 │   └── middleware/
-│       ├── auth.ts            # Middleware de autenticação (TODO)
-│       └── validation.ts      # Middleware de validação (TODO)
+│       ├── auth.ts
+│       └── validation.ts
 │
 ├── scripts/
-│   ├── test-api.sh            # Script de teste (Bash)
-│
-├── public/                    # Arquivos estáticos
-├── client/                    # Frontend React (planejado)
-├── tests/                     # Testes automatizados
+├── public/
+├── client/
+├── tests/
 │
 └── package.json
 ```
