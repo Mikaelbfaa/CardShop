@@ -30,8 +30,8 @@ O sistema permite que usuários naveguem por um catálogo de cartas, adicionem p
 | **Banco de Dados** | PostgreSQL |
 | **ORM** | Prisma 7 com @prisma/adapter-pg |
 | **Documentação API** | Swagger (OpenAPI 3.0) |
+| **Autenticação** | JWT (jsonwebtoken + bcrypt) |
 | **Frontend** | React (planejado) |
-| **Autenticação** | JWT (planejado) |
 
 ## Estrutura de Diretórios
 
@@ -96,7 +96,7 @@ CardShop/
 
 A aplicação segue uma **arquitetura em camadas (N-Tier)**:
 
-![Fluxo de Requisição](diagrams/fluxograma.png)
+![Fluxo de Requisição](diagrams/ArquiteturaCamadas.png)
 
 ### Exemplo de Fluxo: Criar Pedido
 
@@ -117,7 +117,7 @@ A aplicação segue uma **arquitetura em camadas (N-Tier)**:
 
 ## Diagrama Entidade Relacionamento
 
-![Diagrama Entidade Relacionamento](diagrams/Diagrama%20Entidade%20Relacionamento.png)
+![Diagrama Entidade Relacionamento](diagrams/DiagramaER.png)
 
 ### Entidades Principais
 
@@ -171,12 +171,35 @@ A aplicação segue uma **arquitetura em camadas (N-Tier)**:
 | GET | `/api/orders/:id` | Buscar pedido por ID |
 | POST | `/api/orders` | Criar pedido |
 
-### Admin (`/api/admin/orders`)
+### Usuários (`/api/users`)
 
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| GET | `/api/admin/orders` | Listar todos os pedidos |
-| PATCH | `/api/admin/orders/:id/status` | Atualizar status |
+| Método | Rota | Descrição | Autenticação |
+|--------|------|-----------|--------------|
+| POST | `/api/users/register` | Cadastrar usuário | Não |
+| POST | `/api/users/login` | Login (retorna JWT) | Não |
+| GET | `/api/users/profile` | Visualizar perfil | Sim |
+| PATCH | `/api/users/profile` | Atualizar perfil | Sim |
+| POST | `/api/users/logout` | Logout | Sim |
+
+### Admin (`/api/admin`)
+
+| Método | Rota | Descrição | Autenticação |
+|--------|------|-----------|--------------|
+| GET | `/api/admin/orders` | Listar todos os pedidos | Admin |
+| PATCH | `/api/admin/orders/:id/status` | Atualizar status do pedido | Admin |
+| DELETE | `/api/admin/orders/:id` | Deletar pedido | Admin |
+| DELETE | `/api/admin/users/:id` | Deletar usuário | Admin |
+
+### Autenticação
+
+A API utiliza JWT (JSON Web Token) para autenticação. Para acessar rotas protegidas:
+
+1. Faça login em `POST /api/users/login` com email e senha
+2. Receba o token JWT na resposta
+3. Inclua o token no header das requisições:
+   ```
+   Authorization: Bearer <seu-token-jwt>
+   ```
 
 ### Documentação Interativa
 
@@ -269,19 +292,30 @@ Acesse a documentação Swagger em: `http://localhost:3000/api-docs`
 - Node.js 18+
 - PostgreSQL 14+
 
+### Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+DATABASE_URL="postgresql://usuario:senha@localhost:5432/cardshop"
+JWT_SECRET="senha"
+JWT_EXPIRES_IN="1d"    # opcional, default: 1d
+PORT=3000              # opcional, default: 3000
+```
+
+> **Importante**: `JWT_SECRET` é obrigatório. A aplicação não inicia sem esta variável.
+
 ### Instalação
 
 ```bash
 # Clonar repositório
-git clone https://github.com/seu-usuario/CardShop.git
+git clone https://github.com/Mikaelbfaa/CardShop.git
 cd CardShop
 
 # Instalar dependências
 npm install
 
-# Configurar variáveis de ambiente
-cp .env.example .env
-# Edite .env com suas configurações de banco
+# Configurar variáveis de ambiente (ver seção acima)
 
 # Gerar Prisma Client e aplicar schema
 npm run db:push
