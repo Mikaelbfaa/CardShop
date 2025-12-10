@@ -94,7 +94,7 @@ CardShop/
 
 ## Fluxo de Requisição
 
-A aplicação segue uma **arquitetura em camadas (N-Tier)**:
+A aplicação segue uma **arquitetura em N camadas**:
 
 ![Fluxo de Requisição](diagrams/ArquiteturaCamadas.png)
 
