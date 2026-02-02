@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import supertest from 'supertest';
 import app from '../../src/app';
 
-// Importar os módulos que serão stubados
 import productRepository from '../../src/repository/product';
 import UserService from '../../src/services/user';
 
