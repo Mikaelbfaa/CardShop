@@ -20,6 +20,14 @@ export default tseslint.config(
         },
     },
     {
+        files: ['tests/**/*.ts'],
+        rules: {
+            '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/no-unused-expressions': 'off',
+            'no-unused-expressions': 'off',
+        },
+    },
+    {
         ignores: ['dist/', 'node_modules/'],
     }
 );
