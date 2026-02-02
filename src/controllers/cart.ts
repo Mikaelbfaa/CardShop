@@ -1,5 +1,26 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../middleware/auth';
 import cartService from '../services/cart';
+
+function resolveUserId(req: AuthenticatedRequest, source: 'query' | 'body'): number | null {
+    const tokenUserId = req.userId!;
+    const tokenRole = req.userRole;
+    const paramUserId =
+        source === 'query'
+            ? parseInt(req.query.userId as string)
+            : parseInt(req.body.userId);
+
+    // No explicit userId provided, or same as token → use own
+    if (!paramUserId || isNaN(paramUserId) || paramUserId === tokenUserId) {
+        return tokenUserId;
+    }
+    // Different userId provided → admin only
+    if (tokenRole === 'ADMIN') {
+        return paramUserId;
+    }
+    // Non-admin trying to access another user's cart
+    return null;
+}
 
 /**
  * Controller de Carrinho.
@@ -13,14 +34,13 @@ class CartController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async getCart(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async getCart(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
         try {
-            const userId = parseInt(req.query.userId as string);
-
-            if (!userId || isNaN(userId)) {
-                res.status(400).json({
+            const userId = resolveUserId(req, 'query');
+            if (!userId) {
+                res.status(403).json({
                     success: false,
-                    message: 'userId é obrigatório',
+                    message: 'Acesso negado. Você só pode acessar seu próprio carrinho.',
                 });
                 return;
             }
@@ -38,21 +58,22 @@ class CartController {
 
     /**
      * Adicionar item ao carrinho.
-     * @param req - Objeto de requisição Express (body: userId, productId, quantity).
+     * @param req - Objeto de requisição Express (body: productId, quantity).
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async addItem(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async addItem(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { userId, productId, quantity } = req.body;
-
+            const userId = resolveUserId(req, 'body');
             if (!userId) {
-                res.status(400).json({
+                res.status(403).json({
                     success: false,
-                    message: 'userId é obrigatório',
+                    message: 'Acesso negado. Você só pode acessar seu próprio carrinho.',
                 });
                 return;
             }
+
+            const { productId, quantity } = req.body;
 
             if (!productId) {
                 res.status(400).json({
@@ -79,23 +100,27 @@ class CartController {
 
     /**
      * Atualizar quantidade de item no carrinho.
-     * @param req - Objeto de requisição Express (params: productId, query: userId, body: quantity).
+     * @param req - Objeto de requisição Express (params: productId, body: quantity).
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async updateItem(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async updateItem(
+        req: AuthenticatedRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
         try {
-            const productId = parseInt(req.params.productId);
-            const userId = parseInt(req.query.userId as string);
-            const { quantity } = req.body;
-
-            if (!userId || isNaN(userId)) {
-                res.status(400).json({
+            const userId = resolveUserId(req, 'query');
+            if (!userId) {
+                res.status(403).json({
                     success: false,
-                    message: 'userId é obrigatório',
+                    message: 'Acesso negado. Você só pode acessar seu próprio carrinho.',
                 });
                 return;
             }
+
+            const productId = parseInt(req.params.productId);
+            const { quantity } = req.body;
 
             if (!productId || isNaN(productId)) {
                 res.status(400).json({
@@ -127,22 +152,26 @@ class CartController {
 
     /**
      * Remover item do carrinho.
-     * @param req - Objeto de requisição Express (params: productId, query: userId).
+     * @param req - Objeto de requisição Express (params: productId).
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async removeItem(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async removeItem(
+        req: AuthenticatedRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
         try {
-            const productId = parseInt(req.params.productId);
-            const userId = parseInt(req.query.userId as string);
-
-            if (!userId || isNaN(userId)) {
-                res.status(400).json({
+            const userId = resolveUserId(req, 'query');
+            if (!userId) {
+                res.status(403).json({
                     success: false,
-                    message: 'userId é obrigatório',
+                    message: 'Acesso negado. Você só pode acessar seu próprio carrinho.',
                 });
                 return;
             }
+
+            const productId = parseInt(req.params.productId);
 
             if (!productId || isNaN(productId)) {
                 res.status(400).json({
@@ -166,18 +195,21 @@ class CartController {
 
     /**
      * Limpar carrinho.
-     * @param req - Objeto de requisição Express (query: userId).
+     * @param req - Objeto de requisição Express.
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async clearCart(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async clearCart(
+        req: AuthenticatedRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
         try {
-            const userId = parseInt(req.query.userId as string);
-
-            if (!userId || isNaN(userId)) {
-                res.status(400).json({
+            const userId = resolveUserId(req, 'query');
+            if (!userId) {
+                res.status(403).json({
                     success: false,
-                    message: 'userId é obrigatório',
+                    message: 'Acesso negado. Você só pode acessar seu próprio carrinho.',
                 });
                 return;
             }

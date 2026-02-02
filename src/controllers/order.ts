@@ -1,6 +1,27 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../middleware/auth';
 import orderService from '../services/order';
 import { OrderStatus } from '@prisma/client';
+
+function resolveUserId(req: AuthenticatedRequest, source: 'query' | 'body'): number | null {
+    const tokenUserId = req.userId!;
+    const tokenRole = req.userRole;
+    const paramUserId =
+        source === 'query'
+            ? parseInt(req.query.userId as string)
+            : parseInt(req.body.userId);
+
+    // No explicit userId provided, or same as token → use own
+    if (!paramUserId || isNaN(paramUserId) || paramUserId === tokenUserId) {
+        return tokenUserId;
+    }
+    // Different userId provided → admin only
+    if (tokenRole === 'ADMIN') {
+        return paramUserId;
+    }
+    // Non-admin trying to access another user's orders
+    return null;
+}
 
 /**
  * Controller de Pedidos.
@@ -14,14 +35,17 @@ class OrderController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async getOrdersByUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async getOrdersByUser(
+        req: AuthenticatedRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
         try {
-            const userId = parseInt(req.query.userId as string);
-
-            if (!userId || isNaN(userId)) {
-                res.status(400).json({
+            const userId = resolveUserId(req, 'query');
+            if (!userId) {
+                res.status(403).json({
                     success: false,
-                    message: 'userId é obrigatório',
+                    message: 'Acesso negado. Você só pode acessar seus próprios pedidos.',
                 });
                 return;
             }
@@ -44,7 +68,11 @@ class OrderController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async getOrderById(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async getOrderById(
+        req: AuthenticatedRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
         try {
             const orderId = parseInt(req.params.id);
 
@@ -66,6 +94,14 @@ class OrderController {
                 return;
             }
 
+            if (order.userId !== req.userId! && req.userRole !== 'ADMIN') {
+                res.status(403).json({
+                    success: false,
+                    message: 'Acesso negado. Você só pode acessar seus próprios pedidos.',
+                });
+                return;
+            }
+
             res.status(200).json({
                 success: true,
                 data: order,
@@ -81,17 +117,22 @@ class OrderController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async createOrder(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async createOrder(
+        req: AuthenticatedRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
         try {
-            const { userId, shippingAddress } = req.body;
-
+            const userId = resolveUserId(req, 'body');
             if (!userId) {
-                res.status(400).json({
+                res.status(403).json({
                     success: false,
-                    message: 'userId é obrigatório',
+                    message: 'Acesso negado. Você só pode acessar seus próprios pedidos.',
                 });
                 return;
             }
+
+            const { shippingAddress } = req.body;
 
             if (!shippingAddress) {
                 res.status(400).json({
@@ -119,7 +160,11 @@ class OrderController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async getAllOrders(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async getAllOrders(
+        req: AuthenticatedRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
         try {
             const status = req.query.status as OrderStatus | undefined;
 
@@ -141,7 +186,11 @@ class OrderController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async updateStatus(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async updateStatus(
+        req: AuthenticatedRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
         try {
             const orderId = parseInt(req.params.id);
             const { status } = req.body;
@@ -180,7 +229,11 @@ class OrderController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async deleteOrder(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async deleteOrder(
+        req: AuthenticatedRequest,
+        res: Response,
+        next: NextFunction
+    ): Promise<void> {
         try {
             const orderId = parseInt(req.params.id);
 

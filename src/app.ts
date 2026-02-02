@@ -5,7 +5,6 @@ import swaggerSpec from './config/swagger';
 import productRoutes from './routes/product';
 import cartRoutes from './routes/cart';
 import orderRoutes from './routes/order';
-import adminRoutes from './routes/admin';
 import userRoutes from './routes/user';
 
 const app = express();
@@ -22,7 +21,6 @@ app.get('/api-docs.json', (_req: Request, res: Response) => {
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
 
 app.get('/', (_req: Request, res: Response) => {

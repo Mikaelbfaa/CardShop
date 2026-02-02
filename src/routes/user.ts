@@ -28,4 +28,11 @@ router.patch(
 
 router.post('/logout', AuthMiddleware.verifyToken, UserController.logoutUser);
 
+router.delete(
+    '/:id',
+    AuthMiddleware.verifyToken,
+    AuthMiddleware.isAdmin,
+    UserController.deleteUser
+);
+
 export default router;
