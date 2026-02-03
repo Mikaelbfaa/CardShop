@@ -7,9 +7,7 @@ function resolveUserId(req: AuthenticatedRequest, source: 'query' | 'body'): num
     const tokenUserId = req.userId!;
     const tokenRole = req.userRole;
     const paramUserId =
-        source === 'query'
-            ? parseInt(req.query.userId as string)
-            : parseInt(req.body.userId);
+        source === 'query' ? parseInt(req.query.userId as string) : parseInt(req.body.userId);
 
     // No explicit userId provided, or same as token → use own
     if (!paramUserId || isNaN(paramUserId) || paramUserId === tokenUserId) {
@@ -117,11 +115,7 @@ class OrderController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async createOrder(
-        req: AuthenticatedRequest,
-        res: Response,
-        next: NextFunction
-    ): Promise<void> {
+    async createOrder(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = resolveUserId(req, 'body');
             if (!userId) {
@@ -229,11 +223,7 @@ class OrderController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async deleteOrder(
-        req: AuthenticatedRequest,
-        res: Response,
-        next: NextFunction
-    ): Promise<void> {
+    async deleteOrder(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
         try {
             const orderId = parseInt(req.params.id);
 

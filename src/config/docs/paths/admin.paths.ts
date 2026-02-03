@@ -29,7 +29,10 @@ export const adminPaths: OpenAPIV3.PathsObject = {
                                 type: 'object',
                                 properties: {
                                     success: { type: 'boolean' },
-                                    count: { type: 'integer', description: 'Quantidade de pedidos' },
+                                    count: {
+                                        type: 'integer',
+                                        description: 'Quantidade de pedidos',
+                                    },
                                     data: {
                                         type: 'array',
                                         items: { $ref: '#/components/schemas/Order' },
@@ -93,8 +96,7 @@ export const adminPaths: OpenAPIV3.PathsObject = {
         patch: {
             tags: ['Admin'],
             summary: 'Atualizar status',
-            description:
-                'Atualiza o status de um pedido. Endpoint exclusivo para administradores.',
+            description: 'Atualiza o status de um pedido. Endpoint exclusivo para administradores.',
             security: [{ bearerAuth: [] }],
             parameters: [
                 {

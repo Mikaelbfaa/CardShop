@@ -38,7 +38,10 @@ export const productPaths: OpenAPIV3.PathsObject = {
                                 type: 'object',
                                 properties: {
                                     success: { type: 'boolean' },
-                                    count: { type: 'integer', description: 'Quantidade de produtos' },
+                                    count: {
+                                        type: 'integer',
+                                        description: 'Quantidade de produtos',
+                                    },
                                     data: {
                                         type: 'array',
                                         items: { $ref: '#/components/schemas/Product' },
@@ -99,7 +102,8 @@ export const productPaths: OpenAPIV3.PathsObject = {
                     },
                 },
                 '400': {
-                    description: 'Dados de entrada inválidos (campos obrigatórios, valores negativos, tipo de carta incompatível)',
+                    description:
+                        'Dados de entrada inválidos (campos obrigatórios, valores negativos, tipo de carta incompatível)',
                     content: {
                         'application/json': {
                             schema: {

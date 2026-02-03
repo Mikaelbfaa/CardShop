@@ -6,9 +6,7 @@ function resolveUserId(req: AuthenticatedRequest, source: 'query' | 'body'): num
     const tokenUserId = req.userId!;
     const tokenRole = req.userRole;
     const paramUserId =
-        source === 'query'
-            ? parseInt(req.query.userId as string)
-            : parseInt(req.body.userId);
+        source === 'query' ? parseInt(req.query.userId as string) : parseInt(req.body.userId);
 
     // No explicit userId provided, or same as token → use own
     if (!paramUserId || isNaN(paramUserId) || paramUserId === tokenUserId) {
@@ -104,11 +102,7 @@ class CartController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async updateItem(
-        req: AuthenticatedRequest,
-        res: Response,
-        next: NextFunction
-    ): Promise<void> {
+    async updateItem(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = resolveUserId(req, 'query');
             if (!userId) {
@@ -156,11 +150,7 @@ class CartController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async removeItem(
-        req: AuthenticatedRequest,
-        res: Response,
-        next: NextFunction
-    ): Promise<void> {
+    async removeItem(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = resolveUserId(req, 'query');
             if (!userId) {
@@ -199,11 +189,7 @@ class CartController {
      * @param res - Objeto de resposta Express.
      * @param next - Função para passar erros ao middleware.
      */
-    async clearCart(
-        req: AuthenticatedRequest,
-        res: Response,
-        next: NextFunction
-    ): Promise<void> {
+    async clearCart(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
         try {
             const userId = resolveUserId(req, 'query');
             if (!userId) {

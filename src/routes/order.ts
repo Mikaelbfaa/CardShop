@@ -9,7 +9,12 @@ router.get('/', AuthMiddleware.verifyToken, orderController.getOrdersByUser);
 router.post('/', AuthMiddleware.verifyToken, orderController.createOrder);
 
 // Admin-only routes
-router.get('/all', AuthMiddleware.verifyToken, AuthMiddleware.isAdmin, orderController.getAllOrders);
+router.get(
+    '/all',
+    AuthMiddleware.verifyToken,
+    AuthMiddleware.isAdmin,
+    orderController.getAllOrders
+);
 router.patch(
     '/:id/status',
     AuthMiddleware.verifyToken,

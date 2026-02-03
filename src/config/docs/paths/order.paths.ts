@@ -5,7 +5,8 @@ export const orderPaths: OpenAPIV3.PathsObject = {
         get: {
             tags: ['Orders'],
             summary: 'Listar pedidos do usuário',
-            description: 'Retorna todos os pedidos de um usuário específico, incluindo itens e produtos.',
+            description:
+                'Retorna todos os pedidos de um usuário específico, incluindo itens e produtos.',
             security: [{ bearerAuth: [] }],
             parameters: [
                 {
@@ -27,7 +28,10 @@ export const orderPaths: OpenAPIV3.PathsObject = {
                                 type: 'object',
                                 properties: {
                                     success: { type: 'boolean' },
-                                    count: { type: 'integer', description: 'Quantidade de pedidos' },
+                                    count: {
+                                        type: 'integer',
+                                        description: 'Quantidade de pedidos',
+                                    },
                                     data: {
                                         type: 'array',
                                         items: { $ref: '#/components/schemas/Order' },
@@ -103,7 +107,8 @@ export const orderPaths: OpenAPIV3.PathsObject = {
                     },
                 },
                 '400': {
-                    description: 'Dados inválidos (userId ou shippingAddress obrigatórios, carrinho vazio)',
+                    description:
+                        'Dados inválidos (userId ou shippingAddress obrigatórios, carrinho vazio)',
                     content: {
                         'application/json': {
                             schema: {
@@ -156,7 +161,8 @@ export const orderPaths: OpenAPIV3.PathsObject = {
         get: {
             tags: ['Orders'],
             summary: 'Buscar pedido por ID',
-            description: 'Retorna os detalhes de um pedido específico, incluindo todos os itens e produtos.',
+            description:
+                'Retorna os detalhes de um pedido específico, incluindo todos os itens e produtos.',
             security: [{ bearerAuth: [] }],
             parameters: [
                 {

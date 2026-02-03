@@ -1,18 +1,21 @@
 import { Router } from 'express';
 import * as UserController from '../controllers/user';
 import AuthMiddleware from '../middleware/auth';
+import RateLimitMiddleware from '../middleware/rateLimit';
 import ValidationMiddleware from '../middleware/validation';
 
 const router = Router();
 
 router.post(
     '/register',
+    RateLimitMiddleware.strict,
     ValidationMiddleware.validateRequiredFields(['name', 'email', 'password', 'cpf']),
     UserController.registerUser
 );
 
 router.post(
     '/login',
+    RateLimitMiddleware.strict,
     ValidationMiddleware.validateRequiredFields(['email', 'password']),
     UserController.loginUser
 );
