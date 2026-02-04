@@ -17,6 +17,78 @@ describe('OrderService', () => {
         sinon.restore();
     });
 
+    describe('getAllOrders', () => {
+        it('deve retornar todos os pedidos com filtro de status', async () => {
+            const mockOrders = [
+                {
+                    id: 1,
+                    userId: 1,
+                    status: 'PENDING' as const,
+                    shippingAddress: 'Rua A, 123',
+                    totalPrice: 100,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    items: [],
+                },
+                {
+                    id: 2,
+                    userId: 2,
+                    status: 'PENDING' as const,
+                    shippingAddress: 'Rua B, 456',
+                    totalPrice: 200,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    items: [],
+                },
+            ];
+
+            sinon.stub(orderRepository, 'findAll').resolves(mockOrders as any);
+
+            const result = await orderService.getAllOrders({ status: 'PENDING' });
+
+            expect(result).to.be.an('array');
+            expect(result).to.have.lengthOf(2);
+            expect(result[0].status).to.equal('PENDING');
+            expect(result[1].status).to.equal('PENDING');
+        });
+    });
+
+    describe('getOrderById', () => {
+        it('deve retornar pedido por ID', async () => {
+            const mockOrder = {
+                id: 1,
+                userId: 1,
+                status: 'PENDING' as const,
+                shippingAddress: 'Rua Teste, 123',
+                totalPrice: 150.5,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                items: [
+                    {
+                        orderId: 1,
+                        productId: 1,
+                        quantity: 2,
+                        unitPrice: 75.25,
+                        product: {
+                            id: 1,
+                            name: 'Dark Magician',
+                        },
+                    },
+                ],
+            };
+
+            sinon.stub(orderRepository, 'findById').resolves(mockOrder as any);
+
+            const result = await orderService.getOrderById(1);
+
+            expect(result).to.not.be.null;
+            expect(result!.id).to.equal(1);
+            expect(result!.status).to.equal('PENDING');
+            expect(result!.totalPrice).to.equal(150.5);
+            expect(result!.items).to.have.lengthOf(1);
+        });
+    });
+
     describe('updateOrderStatus', () => {
         it('deve permitir transição PENDING para PROCESSING', async () => {
             const pendingOrder = {

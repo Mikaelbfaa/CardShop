@@ -73,6 +73,69 @@ describe('UserService', () => {
         });
     });
 
+    describe('findUserById', () => {
+        it('deve retornar usuário por ID', async () => {
+            const mockUser = {
+                id: 1,
+                email: 'teste@email.com',
+                name: 'Teste',
+                cpf: '12345678900',
+                phone: '11999999999',
+                address: 'Rua Teste, 123',
+                role: 'CUSTOMER' as const,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            };
+
+            sinon.stub(UserRepository, 'findById').resolves(mockUser);
+
+            const result = await userService.findUserById(1);
+
+            expect(result).to.not.be.null;
+            expect(result!.id).to.equal(1);
+            expect(result!.email).to.equal('teste@email.com');
+            expect(result!.name).to.equal('Teste');
+            expect(result).to.not.have.property('password');
+        });
+    });
+
+    describe('deleteUser', () => {
+        it('deve deletar usuário com sucesso', async () => {
+            const existingUser = {
+                id: 1,
+                email: 'teste@email.com',
+                name: 'Teste',
+                cpf: '12345678900',
+                phone: null,
+                address: null,
+                role: 'CUSTOMER' as const,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            };
+
+            const deletedUser = {
+                id: 1,
+                email: 'teste@email.com',
+                name: 'Teste',
+                cpf: '12345678900',
+                phone: null,
+                address: null,
+                role: 'CUSTOMER' as const,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            };
+
+            sinon.stub(UserRepository, 'findById').resolves(existingUser);
+            sinon.stub(UserRepository, 'delete').resolves(deletedUser);
+
+            const result = await userService.deleteUser(1);
+
+            expect(result).to.not.be.null;
+            expect(result.id).to.equal(1);
+            expect(result.email).to.equal('teste@email.com');
+        });
+    });
+
     describe('authenticateUser', () => {
         it('deve autenticar usuário e retornar token sem senha', async () => {
             const userWithPassword = {

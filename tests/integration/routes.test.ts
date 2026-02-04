@@ -39,6 +39,33 @@ describe('Rotas da API (integração)', () => {
     });
 
     describe('GET /api/products/:id', () => {
+        it('deve retornar 200 ao buscar produto existente', async () => {
+            const mockProduct = {
+                id: 1,
+                name: 'Dark Magician',
+                description: 'Mago Negro',
+                price: 29.99 as any,
+                stock: 10,
+                game: 'yugioh' as any,
+                cardType: 'MONSTER' as any,
+                rarity: 'Ultra Rare',
+                image: null,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            };
+
+            sinon.stub(productRepository, 'findById').resolves(mockProduct);
+
+            const res = await supertest(app).get('/api/products/1');
+
+            expect(res.status).to.equal(200);
+            expect(res.body.success).to.be.true;
+            expect(res.body.data).to.be.an('object');
+            expect(res.body.data.id).to.equal(1);
+            expect(res.body.data.name).to.equal('Dark Magician');
+            expect(res.body.data.game).to.equal('yugioh');
+        });
+
         it('deve retornar 404 quando produto não existe', async () => {
             sinon.stub(productRepository, 'findById').resolves(null);
 

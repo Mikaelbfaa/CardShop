@@ -50,6 +50,31 @@ describe('ValidationMiddleware', () => {
         });
     });
 
+    describe('validateBody', () => {
+        it('deve retornar 400 quando body está vazio', () => {
+            const req = {
+                body: {},
+            } as any;
+
+            const res = {
+                status: sinon.stub().returnsThis(),
+                json: sinon.stub(),
+            } as any;
+
+            const next = sinon.stub();
+
+            validationMiddleware.validateBody(req, res, next);
+
+            expect(res.status.calledWith(400)).to.be.true;
+            expect(res.json.calledOnce).to.be.true;
+            expect(res.json.firstCall.args[0]).to.deep.include({
+                success: false,
+                message: 'Corpo da requisição não pode estar vazio',
+            });
+            expect(next.called).to.be.false;
+        });
+    });
+
     describe('validateRequiredFields', () => {
         it('deve retornar 400 com lista de campos ausentes', () => {
             const middleware = validationMiddleware.validateRequiredFields([
