@@ -27,3 +27,7 @@ build/
 *.swo
 *~
 /src/generated/prisma
+
+# Coverage
+coverage/
+.nyc_output/

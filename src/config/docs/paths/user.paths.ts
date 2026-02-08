@@ -295,8 +295,7 @@ export const userPaths: OpenAPIV3.PathsObject = {
         post: {
             tags: ['Users'],
             summary: 'Logout',
-            description:
-                'Realiza o logout do usuário. O token JWT deve ser invalidado no cliente.',
+            description: 'Realiza o logout do usuário. O token JWT deve ser invalidado no cliente.',
             security: [{ bearerAuth: [] }],
             responses: {
                 '200': {

@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 import 'dotenv/config';
 
 const pool = new Pool({
@@ -16,14 +17,17 @@ const prisma = new PrismaClient({
 async function main() {
     console.log('Iniciando seed do banco de dados...');
 
+    const SALT_ROUNDS = 10;
+
     // Criar usuários
+    const adminPassword = await bcrypt.hash('admin123', SALT_ROUNDS);
     const admin = await prisma.user.upsert({
         where: { email: 'admin@cardshop.com' },
-        update: {},
+        update: { password: adminPassword },
         create: {
             name: 'Administrador',
             email: 'admin@cardshop.com',
-            password: 'admin123', // Em produção, usar hash
+            password: adminPassword,
             cpf: '00000000000',
             phone: '11999999999',
             address: 'Rua Admin, 1 - São Paulo, SP',
@@ -32,13 +36,14 @@ async function main() {
     });
     console.log(`Usuário admin criado: ${admin.email} (ID: ${admin.id})`);
 
+    const customerPassword = await bcrypt.hash('cliente123', SALT_ROUNDS);
     const customer = await prisma.user.upsert({
         where: { email: 'cliente@cardshop.com' },
-        update: {},
+        update: { password: customerPassword },
         create: {
             name: 'Cliente Teste',
             email: 'cliente@cardshop.com',
-            password: 'cliente123', // Em produção, usar hash
+            password: customerPassword,
             cpf: '11111111111',
             phone: '11988888888',
             address: 'Rua Cliente, 100 - São Paulo, SP',

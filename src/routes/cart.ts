@@ -1,12 +1,13 @@
 import express from 'express';
 import cartController from '../controllers/cart';
+import AuthMiddleware from '../middleware/auth';
 
 const router = express.Router();
 
-router.get('/', cartController.getCart);
-router.post('/items', cartController.addItem);
-router.put('/items/:productId', cartController.updateItem);
-router.delete('/items/:productId', cartController.removeItem);
-router.delete('/', cartController.clearCart);
+router.get('/', AuthMiddleware.verifyToken, cartController.getCart);
+router.post('/items', AuthMiddleware.verifyToken, cartController.addItem);
+router.put('/items/:productId', AuthMiddleware.verifyToken, cartController.updateItem);
+router.delete('/items/:productId', AuthMiddleware.verifyToken, cartController.removeItem);
+router.delete('/', AuthMiddleware.verifyToken, cartController.clearCart);
 
 export default router;

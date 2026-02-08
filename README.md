@@ -318,6 +318,7 @@ npm install
 # Configurar variáveis de ambiente (ver seção acima)
 
 # Gerar Prisma Client e aplicar schema
+npm run db:generate
 npm run db:push
 
 # Popular banco com dados iniciais
@@ -337,15 +338,18 @@ npm start
 
 ### Scripts Disponíveis
 
-| Script | Descrição |
-|--------|-----------|
-| `npm run dev` | Servidor de desenvolvimento |
-| `npm run build` | Compila TypeScript |
-| `npm start` | Executa versão compilada |
-| `npm run db:push` | Aplica schema ao banco |
-| `npm run db:generate` | Gera Prisma Client |
-| `npm run db:seed` | Popula banco com dados iniciais |
-| `npm run db:studio` | Abre Prisma Studio (GUI) |
+| Script | Comando | Descrição |
+|--------|---------|-----------|
+| `npm run dev` | `ts-node-dev` | Servidor de desenvolvimento |
+| `npm run build` | `npx prisma generate && tsc` | Compila TypeScript |
+| `npm start` | `node dist/server.js` | Executa versão compilada |
+| `npm run db:push` | `npx prisma db push` | Aplica schema ao banco |
+| `npm run db:generate` | `npx prisma generate` | Gera Prisma Client |
+| `npm run db:migrate` | `npx prisma migrate dev` | Cria e aplica migração |
+| `npm run db:migrate:prod` | `npx prisma migrate deploy` | Aplica migrações em produção |
+| `npm run db:seed` | `ts-node prisma/seed.ts` | Popula banco com dados iniciais |
+| `npm run db:studio` | `npx prisma studio` | Abre Prisma Studio (GUI) |
+| `npm test` | `mocha` | Executa todos os testes |
 
 ---
 
