@@ -28,6 +28,74 @@ describe('AuthMiddleware', () => {
             expect(next.called).to.be.false;
         });
 
+        it('deve retornar 401 quando Authorization não contém Bearer', async () => {
+            const req = {
+                headers: {
+                    authorization: 'Basic some-token',
+                },
+            } as any;
+
+            const res = {
+                status: sinon.stub().returnsThis(),
+                json: sinon.stub(),
+            } as any;
+
+            const next = sinon.stub();
+
+            await authMiddleware.verifyToken(req, res, next);
+
+            expect(res.status.calledWith(401)).to.be.true;
+            expect(res.json.firstCall.args[0]).to.deep.include({
+                success: false,
+                message: 'Formato do token inválido.',
+            });
+            expect(next.called).to.be.false;
+        });
+
+        it('deve retornar 401 quando token está vazio após Bearer', async () => {
+            const req = {
+                headers: {
+                    authorization: 'Bearer ',
+                },
+            } as any;
+
+            const res = {
+                status: sinon.stub().returnsThis(),
+                json: sinon.stub(),
+            } as any;
+
+            const next = sinon.stub();
+
+            await authMiddleware.verifyToken(req, res, next);
+
+            expect(res.status.calledWith(401)).to.be.true;
+            expect(next.called).to.be.false;
+        });
+
+        it('deve retornar 401 quando token é inválido/expirado', async () => {
+            const req = {
+                headers: {
+                    authorization: 'Bearer invalid-token-here',
+                },
+            } as any;
+
+            const res = {
+                status: sinon.stub().returnsThis(),
+                json: sinon.stub(),
+            } as any;
+
+            const next = sinon.stub();
+
+            await authMiddleware.verifyToken(req, res, next);
+
+            expect(res.status.calledWith(401)).to.be.true;
+            expect(res.json.firstCall.args[0]).to.deep.include({
+                success: false,
+                message: 'Token inválido ou expirado.',
+            });
+            expect(next.called).to.be.false;
+        });
+
         it('deve injetar userId e chamar next() com token válido', async () => {
             const token = jwt.sign(
                 { userId: 42, role: 'CUSTOMER' },

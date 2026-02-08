@@ -74,6 +74,28 @@ describe('UserService', () => {
     });
 
     describe('findUserById', () => {
+        it('deve lançar erro quando userId não é fornecido', async () => {
+            try {
+                await userService.findUserById(0);
+                expect.fail('deveria ter lançado erro');
+            } catch (error) {
+                expect((error as Error).message).to.equal(
+                    'Erro ao buscar perfil: userId é obrigatório'
+                );
+            }
+        });
+
+        it('deve lançar erro quando repository falha', async () => {
+            sinon.stub(UserRepository, 'findById').rejects(new Error('DB error'));
+
+            try {
+                await userService.findUserById(1);
+                expect.fail('deveria ter lançado erro');
+            } catch (error) {
+                expect((error as Error).message).to.equal('DB error');
+            }
+        });
+
         it('deve retornar usuário por ID', async () => {
             const mockUser = {
                 id: 1,
@@ -99,7 +121,106 @@ describe('UserService', () => {
         });
     });
 
+    describe('updateUserProfile', () => {
+        it('deve atualizar perfil sem senha com sucesso', async () => {
+            const existingUser = {
+                id: 1,
+                email: 'teste@email.com',
+                name: 'Teste',
+                cpf: '12345678900',
+                phone: null,
+                address: null,
+                role: 'CUSTOMER' as const,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            };
+
+            const updatedUser = {
+                ...existingUser,
+                name: 'Novo Nome',
+            };
+
+            sinon.stub(UserRepository, 'findById').resolves(existingUser);
+            sinon.stub(UserRepository, 'update').resolves(updatedUser);
+
+            const result = await userService.updateUserProfile(1, { name: 'Novo Nome' } as any);
+
+            expect(result.name).to.equal('Novo Nome');
+        });
+
+        it('deve atualizar perfil com hash de senha', async () => {
+            const existingUser = {
+                id: 1,
+                email: 'teste@email.com',
+                name: 'Teste',
+                cpf: '12345678900',
+                phone: null,
+                address: null,
+                role: 'CUSTOMER' as const,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            };
+
+            sinon.stub(UserRepository, 'findById').resolves(existingUser);
+            sinon.stub(bcrypt, 'hash' as any).resolves('new_hashed_password');
+            const updateStub = sinon.stub(UserRepository, 'update').resolves(existingUser);
+
+            await userService.updateUserProfile(1, { password: 'novaSenha' } as any);
+
+            expect(updateStub.calledOnce).to.be.true;
+            expect(updateStub.firstCall.args[1].password).to.equal('new_hashed_password');
+        });
+
+        it('deve lançar erro quando userId não é fornecido', async () => {
+            try {
+                await userService.updateUserProfile(0, { name: 'Teste' } as any);
+                expect.fail('deveria ter lançado erro');
+            } catch (error) {
+                expect((error as Error).message).to.equal(
+                    'Erro ao atualizar perfil: userId é obrigatório'
+                );
+            }
+        });
+
+        it('deve lançar erro quando usuário não existe', async () => {
+            sinon.stub(UserRepository, 'findById').resolves(null);
+
+            try {
+                await userService.updateUserProfile(999, { name: 'Teste' } as any);
+                expect.fail('deveria ter lançado erro');
+            } catch (error) {
+                expect((error as Error).message).to.equal(
+                    'Erro ao atualizar perfil: Usuário não encontrado'
+                );
+            }
+        });
+    });
+
     describe('deleteUser', () => {
+        it('deve lançar erro quando userId não é fornecido', async () => {
+            try {
+                await userService.deleteUser(0);
+                expect.fail('deveria ter lançado erro');
+            } catch (error) {
+                expect((error as Error).message).to.equal(
+                    'Erro ao deletar usuário: userId é obrigatório'
+                );
+            }
+        });
+
+        it('deve lançar erro quando usuário não existe', async () => {
+            sinon.stub(UserRepository, 'findById').resolves(null);
+
+            try {
+                await userService.deleteUser(999);
+                expect.fail('deveria ter lançado erro');
+            } catch (error) {
+                expect((error as Error).message).to.equal(
+                    'Erro ao deletar usuário: Usuário não encontrado'
+                );
+            }
+        });
+
         it('deve deletar usuário com sucesso', async () => {
             const existingUser = {
                 id: 1,
