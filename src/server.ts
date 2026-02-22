@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
+        // Garante conexão ao banco antes de aceitar requisições HTTP
         await prisma.$connect();
         console.log('Conectado ao banco de dados PostgreSQL via Prisma');
 
@@ -19,6 +20,8 @@ async function startServer() {
     }
 }
 
+// Graceful shutdown: encerra conexão ao banco antes de sair
+// SIGINT = Ctrl+C (desenvolvimento), SIGTERM = sinal de encerramento (container/systemd)
 process.on('SIGINT', async () => {
     await prisma.$disconnect();
     console.log('Conexão com o banco de dados encerrada');

@@ -10,11 +10,13 @@ class UserService {
      */
     async registerNewUser(userData: CreateUserInput): Promise<Omit<User, 'password'>> {
         try {
+            // Verifica duplicidade de email antes de criar (campo unique no banco)
             const existingUser = await UserRepository.findByEmail(userData.email);
             if (existingUser) {
                 throw new Error('E-mail já registrado.');
             }
 
+            // bcrypt salt rounds: custo computacional do hash (10 = ~10 hashes/sec, bom equilíbrio)
             const SALT_ROUNDS = 10;
             const hashedPassword = await bcrypt.hash(userData.password, SALT_ROUNDS);
 
@@ -41,6 +43,8 @@ class UserService {
         try {
             const user = await UserRepository.findByEmail(email);
 
+            // Mensagem idêntica para usuário não encontrado e senha incorreta:
+            // previne enumeração de usuários (atacante não descobre quais emails existem)
             if (!user) {
                 throw new Error('Credenciais inválidas.');
             }
@@ -51,10 +55,12 @@ class UserService {
                 throw new Error('Credenciais inválidas.');
             }
 
+            // Payload do JWT inclui userId e role para autorização nas rotas protegidas
             const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, {
                 expiresIn: JWT_EXPIRES_IN as string,
             } as jwt.SignOptions);
 
+            // Desestrutura para remover senha antes de retornar os dados do usuário
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { password: _pwd, ...userWithoutPassword } = user;
 
@@ -73,6 +79,8 @@ class UserService {
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
+            // Retorno sem await: erros do repositório NÃO são capturados pelo try-catch,
+            // propagando com a mensagem original (sem o prefixo 'Erro ao buscar perfil:')
             return UserRepository.findById(userId);
         } catch (error) {
             throw new Error(`Erro ao buscar perfil: ${(error as Error).message}`);
@@ -88,17 +96,21 @@ class UserService {
         updateData: Partial<CreateUserInput>
     ): Promise<Omit<User, 'password'>> {
         try {
+            // Validação de parâmetro obrigatório
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
 
+            // Garante que o usuário existe antes de tentar atualizar
             const existingUser = await UserRepository.findById(userId);
             if (!existingUser) {
                 throw new Error('Usuário não encontrado');
             }
 
+            // Cópia dos dados para não mutar o objeto original
             const dataToUpdate: Partial<CreateUserInput> = { ...updateData };
 
+            // Aplica hash na senha apenas se ela foi incluída na atualização
             if (dataToUpdate.password) {
                 const SALT_ROUNDS = 10;
                 dataToUpdate.password = await bcrypt.hash(dataToUpdate.password, SALT_ROUNDS);
@@ -117,10 +129,12 @@ class UserService {
      */
     async deleteUser(userId: number): Promise<Omit<User, 'password'>> {
         try {
+            // Validação de parâmetro obrigatório
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
 
+            // Garante que o usuário existe antes de tentar deletar
             const existingUser = await UserRepository.findById(userId);
             if (!existingUser) {
                 throw new Error('Usuário não encontrado');

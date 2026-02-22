@@ -40,6 +40,7 @@ class OrderService {
      */
     async getOrderById(orderId: number): Promise<OrderWithItems | null> {
         try {
+            // Validação de parâmetro obrigatório
             if (!orderId) {
                 throw new Error('orderId é obrigatório');
             }
@@ -58,10 +59,12 @@ class OrderService {
      */
     async getOrdersByUser(userId: number): Promise<OrderWithItems[]> {
         try {
+            // Validação de parâmetro obrigatório
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
 
+            // Acesso direto ao Prisma (bypassa UserRepository) para verificação de existência
             const user = await prisma.user.findUnique({ where: { id: userId } });
             if (!user) {
                 throw new Error('Usuário não encontrado');
@@ -83,24 +86,29 @@ class OrderService {
      */
     async createOrder(userId: number, shippingAddress: string): Promise<OrderWithItems> {
         try {
+            // Validação de parâmetros obrigatórios
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
 
+            // Rejeita string vazia ou composta apenas de espaços
             if (!shippingAddress || shippingAddress.trim() === '') {
                 throw new Error('Endereço de entrega é obrigatório');
             }
 
+            // Verifica se o usuário existe no banco antes de prosseguir
             const user = await prisma.user.findUnique({ where: { id: userId } });
             if (!user) {
                 throw new Error('Usuário não encontrado');
             }
 
+            // Não permite criar pedido se o carrinho estiver vazio ou não existir
             const cart = await cartRepository.findByUserId(userId);
             if (!cart || cart.items.length === 0) {
                 throw new Error('Carrinho está vazio');
             }
 
+            // Pré-validação de estoque antes de iniciar a transação (evita lock desnecessário)
             for (const item of cart.items) {
                 if (item.quantity > item.product.stock) {
                     throw new Error(
@@ -109,10 +117,12 @@ class OrderService {
                 }
             }
 
+            // Calcula total convertendo Decimal (Prisma) para number com Number()
             const totalPrice = cart.items.reduce((sum, item) => {
                 return sum + Number(item.product.price) * item.quantity;
             }, 0);
 
+            // Transação atômica: criar pedido + decrementar estoque + limpar carrinho
             const order = await prisma.$transaction(async (tx) => {
                 const newOrder = await tx.order.create({
                     data: {
@@ -147,6 +157,7 @@ class OrderService {
                     });
                 }
 
+                // Remove apenas os itens do carrinho, não o carrinho em si (será reutilizado)
                 await tx.cartItem.deleteMany({
                     where: { cartId: cart.id },
                 });
@@ -170,6 +181,7 @@ class OrderService {
      */
     async updateOrderStatus(orderId: number, status: OrderStatus): Promise<OrderWithItems> {
         try {
+            // Validação de parâmetros obrigatórios
             if (!orderId) {
                 throw new Error('orderId é obrigatório');
             }
@@ -178,6 +190,7 @@ class OrderService {
                 throw new Error('status é obrigatório');
             }
 
+            // Primeiro valida se o status é um valor válido do enum OrderStatus
             const validStatuses: OrderStatus[] = [
                 'PENDING',
                 'PROCESSING',
@@ -194,6 +207,7 @@ class OrderService {
                 throw new Error('Pedido não encontrado');
             }
 
+            // Depois valida a máquina de estados: verifica se a transição é permitida
             const allowedTransitions = VALID_STATUS_TRANSITIONS[order.status];
             if (!allowedTransitions.includes(status)) {
                 throw new Error(
@@ -219,10 +233,12 @@ class OrderService {
      */
     async deleteOrder(orderId: number): Promise<boolean> {
         try {
+            // Validação de parâmetro obrigatório
             if (!orderId) {
                 throw new Error('orderId é obrigatório');
             }
 
+            // Retorna false ao invés de lançar erro quando não encontrado (padrão do controller)
             const order = await orderRepository.findById(orderId);
             if (!order) {
                 return false;

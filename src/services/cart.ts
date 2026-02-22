@@ -14,10 +14,12 @@ class CartService {
      */
     async getCart(userId: number): Promise<CartWithItems> {
         try {
+            // Validação de parâmetro obrigatório
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
 
+            // Verifica se o usuário existe antes de buscar/criar carrinho
             const user = await prisma.user.findUnique({ where: { id: userId } });
             if (!user) {
                 throw new Error('Usuário não encontrado');
@@ -39,6 +41,7 @@ class CartService {
      */
     async addToCart(userId: number, data: AddItemDTO): Promise<CartWithItems> {
         try {
+            // Validação de parâmetros obrigatórios
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
@@ -47,10 +50,12 @@ class CartService {
                 throw new Error('productId é obrigatório');
             }
 
+            // Rejeita quantidade zero, negativa ou não fornecida
             if (!data.quantity || data.quantity < 1) {
                 throw new Error('Quantidade deve ser no mínimo 1');
             }
 
+            // Verifica se produto e usuário existem no banco antes de manipular o carrinho
             const product = await prisma.product.findUnique({ where: { id: data.productId } });
             if (!product) {
                 throw new Error('Produto não encontrado');
@@ -64,15 +69,18 @@ class CartService {
             const cart = await cartRepository.findOrCreateByUserId(userId);
             const existingItem = await cartRepository.findCartItem(cart.id, data.productId);
 
+            // Quantidade é somada à existente no carrinho, não substituída
             const currentQuantityInCart = existingItem?.quantity || 0;
             const newTotalQuantity = currentQuantityInCart + data.quantity;
 
+            // Valida estoque considerando a soma (existente + nova), não apenas a nova quantidade
             if (newTotalQuantity > product.stock) {
                 throw new Error(
                     `Estoque insuficiente. Disponível: ${product.stock}, No carrinho: ${currentQuantityInCart}`
                 );
             }
 
+            // Se o item já existe no carrinho, atualiza a quantidade total; senão, adiciona novo
             if (existingItem) {
                 await cartRepository.updateItemQuantity(cart.id, data.productId, newTotalQuantity);
             } else {
@@ -100,6 +108,7 @@ class CartService {
         quantity: number
     ): Promise<CartWithItems> {
         try {
+            // Validação de parâmetros obrigatórios
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
@@ -108,10 +117,12 @@ class CartService {
                 throw new Error('productId é obrigatório');
             }
 
+            // Quantidade mínima permitida no carrinho
             if (quantity < 1) {
                 throw new Error('Quantidade deve ser no mínimo 1');
             }
 
+            // Verifica existência de carrinho, item e produto antes de atualizar
             const cart = await cartRepository.findByUserId(userId);
             if (!cart) {
                 throw new Error('Carrinho não encontrado');
@@ -127,6 +138,7 @@ class CartService {
                 throw new Error('Produto não encontrado');
             }
 
+            // Aqui a quantity é absoluta (substitui), diferente do addToCart que soma
             if (quantity > product.stock) {
                 throw new Error(`Estoque insuficiente. Disponível: ${product.stock}`);
             }
@@ -148,6 +160,7 @@ class CartService {
      */
     async removeFromCart(userId: number, productId: number): Promise<CartWithItems> {
         try {
+            // Validação de parâmetros obrigatórios
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
@@ -156,6 +169,7 @@ class CartService {
                 throw new Error('productId é obrigatório');
             }
 
+            // Verifica existência de carrinho e item antes de tentar remover
             const cart = await cartRepository.findByUserId(userId);
             if (!cart) {
                 throw new Error('Carrinho não encontrado');
@@ -182,10 +196,12 @@ class CartService {
      */
     async clearCart(userId: number): Promise<CartWithItems> {
         try {
+            // Validação de parâmetro obrigatório
             if (!userId) {
                 throw new Error('userId é obrigatório');
             }
 
+            // Verifica existência do carrinho antes de limpar
             const cart = await cartRepository.findByUserId(userId);
             if (!cart) {
                 throw new Error('Carrinho não encontrado');

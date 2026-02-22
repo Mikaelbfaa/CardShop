@@ -30,6 +30,7 @@ app.get('/', (_req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+// Error handler global — Express identifica como middleware de erro pela assinatura de 4 parâmetros
 app.use((err: Error & { status?: number }, _req: Request, res: Response, _next: NextFunction) => {
     console.error(err.stack);
     const status = err.status || 500;
@@ -41,6 +42,7 @@ app.use((err: Error & { status?: number }, _req: Request, res: Response, _next: 
     });
 });
 
+// Handler 404 catch-all — deve ficar após todas as rotas registradas
 app.use((_req: Request, res: Response) => {
     res.status(404).json({
         error: {

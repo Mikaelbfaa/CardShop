@@ -4,8 +4,11 @@ import AuthMiddleware from '../middleware/auth';
 
 const router = express.Router();
 
+// Rotas públicas (não exigem autenticação)
 router.get('/', productController.getAllProducts);
 router.get('/:id', productController.getProductById);
+
+// Rotas administrativas (exigem autenticação + role ADMIN)
 router.post(
     '/',
     AuthMiddleware.verifyToken,

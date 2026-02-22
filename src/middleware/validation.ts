@@ -34,7 +34,8 @@ class ValidationMiddleware {
     }
 
     /**
-     * Validar campos obrigatórios
+     * Validar campos obrigatórios.
+     * Factory function: recebe a lista de campos e retorna o middleware configurado.
      */
     validateRequiredFields(requiredFields: string[]) {
         return (req: Request, res: Response, next: NextFunction): void => {

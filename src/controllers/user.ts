@@ -28,6 +28,7 @@ export const registerUser = async (req: Request, res: Response): Promise<Respons
         });
     } catch (error: unknown) {
         const err = error as Error;
+        // Status HTTP derivado do conteúdo da mensagem de erro do service
         const status = err.message.includes('E-mail já registrado') ? 409 : 500;
         return res.status(status).json({
             success: false,
@@ -59,6 +60,7 @@ export const loginUser = async (req: Request, res: Response): Promise<Response> 
         });
     } catch (error: unknown) {
         const err = error as Error;
+        // Status HTTP derivado do conteúdo da mensagem de erro do service
         const status = err.message.includes('Credenciais inválidas') ? 401 : 500;
         return res.status(status).json({
             success: false,
@@ -136,6 +138,7 @@ export const updateUserProfile = async (
         });
     } catch (error: unknown) {
         const err = error as Error;
+        // Status HTTP derivado do conteúdo da mensagem de erro do service
         const status = err.message.includes('E-mail já registrado') ? 409 : 500;
         return res.status(status).json({
             success: false,
@@ -181,6 +184,7 @@ export const deleteUser = async (req: Request, res: Response): Promise<Response>
         });
     } catch (error: unknown) {
         const err = error as Error;
+        // Status HTTP derivado do conteúdo da mensagem de erro do service
         const status = err.message.includes('não encontrado') ? 404 : 500;
         return res.status(status).json({
             success: false,

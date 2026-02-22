@@ -3,6 +3,11 @@ import { AuthenticatedRequest } from '../middleware/auth';
 import orderService from '../services/order';
 import { OrderStatus } from '@prisma/client';
 
+/**
+ * Resolve o userId a partir do token JWT ou do parâmetro explícito (query/body).
+ * Admins podem operar nos pedidos de outros usuários; usuários comuns, apenas nos próprios.
+ * @returns userId resolvido, ou null se o acesso não for autorizado.
+ */
 function resolveUserId(req: AuthenticatedRequest, source: 'query' | 'body'): number | null {
     const tokenUserId = req.userId!;
     const tokenRole = req.userRole;

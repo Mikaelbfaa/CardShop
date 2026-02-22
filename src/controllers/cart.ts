@@ -2,6 +2,11 @@ import { Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth';
 import cartService from '../services/cart';
 
+/**
+ * Resolve o userId a partir do token JWT ou do parâmetro explícito (query/body).
+ * Admins podem operar no carrinho de outros usuários; usuários comuns, apenas no próprio.
+ * @returns userId resolvido, ou null se o acesso não for autorizado.
+ */
 function resolveUserId(req: AuthenticatedRequest, source: 'query' | 'body'): number | null {
     const tokenUserId = req.userId!;
     const tokenRole = req.userRole;

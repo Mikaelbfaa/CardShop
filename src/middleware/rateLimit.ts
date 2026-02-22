@@ -8,7 +8,7 @@ class RateLimitMiddleware {
     global = rateLimit({
         windowMs: rateLimitConfig.global.windowMs,
         max: rateLimitConfig.global.max,
-        standardHeaders: 'draft-7',
+        standardHeaders: 'draft-7', // Cabeçalhos RateLimit-* no padrão IETF draft-7
         legacyHeaders: false,
         handler: (_req, res) => {
             res.status(429).json({

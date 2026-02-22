@@ -5,6 +5,7 @@ import productRepository, {
 } from '../repository/product';
 import { Product, CardType } from '@prisma/client';
 
+// Tipos de carta válidos por jogo — usados para validação cruzada game ↔ cardType
 const YUGIOH_CARD_TYPES: CardType[] = ['MONSTER', 'SPELL', 'TRAP'];
 const MTG_CARD_TYPES: CardType[] = [
     'CREATURE',
@@ -40,6 +41,7 @@ class ProductService {
      */
     async getProductById(productId: string): Promise<Product | null> {
         try {
+            // Validação de parâmetro obrigatório
             if (!productId) {
                 throw new Error('ID do produto é obrigatório');
             }
@@ -59,8 +61,10 @@ class ProductService {
      */
     async createProduct(productData: CreateProductDTO): Promise<Product> {
         try {
+            // Valida campos obrigatórios, valores e compatibilidade game/cardType
             this.validateProductData(productData);
 
+            // Verifica duplicidade de nome (campo unique no banco)
             const existingProduct = await productRepository.findByName(productData.name);
             if (existingProduct) {
                 throw new Error('Já existe um produto com este nome');
@@ -82,15 +86,18 @@ class ProductService {
      */
     async updateProduct(productId: string, updateData: UpdateProductDTO): Promise<Product | null> {
         try {
+            // Rejeita requisição sem dados de atualização (body vazio)
             if (!updateData || Object.keys(updateData).length === 0) {
                 throw new Error('Dados de atualização são obrigatórios');
             }
 
+            // Retorna null se produto não existe (controller converte para 404)
             const existingProduct = await productRepository.findById(productId);
             if (!existingProduct) {
                 return null;
             }
 
+            // Valida preço e estoque apenas se foram enviados (update parcial)
             if (updateData.price !== undefined && updateData.price < 0) {
                 throw new Error('Preço não pode ser negativo');
             }
@@ -99,6 +106,8 @@ class ProductService {
                 throw new Error('Estoque não pode ser negativo');
             }
 
+            // Mescla game/cardType do update com os valores existentes para validação cruzada
+            // (ex: alterar só o cardType ainda precisa ser compatível com o game atual)
             const finalGame = updateData.game || existingProduct.game;
             const finalCardType = updateData.cardType ?? existingProduct.cardType;
 
@@ -121,6 +130,7 @@ class ProductService {
      */
     async deleteProduct(productId: string): Promise<boolean | null> {
         try {
+            // Retorna null se produto não existe (controller converte para 404)
             const existingProduct = await productRepository.findById(productId);
             if (!existingProduct) {
                 return null;
@@ -131,6 +141,7 @@ class ProductService {
         } catch (error) {
             const err = error as Error;
             const msg = err.message.toLowerCase();
+            // Prisma não expõe violação de FK como erro tipado no delete — detectamos via string
             if (msg.includes('foreign key') || msg.includes('fkey') || msg.includes('restrict')) {
                 throw new Error(
                     'Produto não pode ser deletado pois está em uso (carrinho ou pedido)'
@@ -146,6 +157,7 @@ class ProductService {
      * @throws Error se dados inválidos (campos obrigatórios, valores negativos, jogo inválido, tipo de carta incompatível)
      */
     validateProductData(productData: CreateProductDTO): void {
+        // Itera sobre campos obrigatórios e lança erro no primeiro ausente
         const requiredFields: (keyof CreateProductDTO)[] = ['name', 'price', 'stock', 'game'];
 
         for (const field of requiredFields) {
@@ -154,6 +166,7 @@ class ProductService {
             }
         }
 
+        // Validação de regras de negócio: preço e estoque não negativos
         if (productData.price < 0) {
             throw new Error('Preço não pode ser negativo');
         }
@@ -162,11 +175,13 @@ class ProductService {
             throw new Error('Estoque não pode ser negativo');
         }
 
+        // Valida se o jogo informado é um dos suportados pela plataforma
         const validGames = ['mtg', 'yugioh'];
         if (!validGames.includes(productData.game.toLowerCase())) {
             throw new Error('Jogo inválido. Opções: mtg, yugioh');
         }
 
+        // cardType é opcional, mas se informado deve ser compatível com o jogo
         if (productData.cardType) {
             this.validateCardTypeForGame(productData.cardType, productData.game);
         }
