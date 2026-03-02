@@ -1,0 +1,57 @@
+@import 'tailwindcss';
+
+@theme inline {
+    --color-brand-lime: #ceff00;
+    --color-brand-lime-alt: #dfff00;
+    --color-brand-pink: #ff3366;
+    --color-brand-pink-alt: #ff0055;
+    --color-brand-purple: #7c3aed;
+    --color-gray-900: #111827;
+    --color-gray-600: #4b5563;
+    --color-gray-500: #6b7280;
+    --color-gray-400: #9ca3af;
+    --color-gray-100: #f3f4f6;
+    --color-page-bg: #f5f5f5;
+    --font-anton: var(--font-family-anton);
+    --font-archivo: var(--font-family-archivo);
+    --font-archivo-black: var(--font-family-archivo-black);
+    --font-inter: var(--font-family-inter);
+}
+
+body {
+    background-color: var(--color-page-bg);
+    color: var(--color-gray-900);
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee {
+    animation: marquee 20s linear infinite;
+}
+
+.comic-shadow {
+    box-shadow: 4px 4px 0px black;
+}
+
+.comic-shadow-sm {
+    box-shadow: 2px 2px 0px black;
+}
+
+.comic-outline {
+    outline: 2px solid black;
+}
+
+.comic-outline-4 {
+    outline: 4px solid black;
+}
+
+.comic-outline-1 {
+    outline: 1px solid black;
+}

@@ -1,0 +1,60 @@
+import { FilterType, Product } from './types';
+
+export const FILTER_OPTIONS: { label: FilterType; cardType: string | null }[] = [
+    { label: 'TODOS', cardType: null },
+    { label: 'MONSTROS', cardType: 'MONSTER' },
+    { label: 'MAGIAS', cardType: 'SPELL' },
+    { label: 'ARMADILHAS', cardType: 'TRAP' },
+    { label: 'TERRENOS', cardType: 'LAND' },
+    { label: 'CRIATURAS', cardType: 'CREATURE' },
+];
+
+export const MOCK_PRODUCTS: Product[] = [
+    {
+        id: 1,
+        name: 'Blue-Eyes White Dragon',
+        description: 'Carta lendária de Yu-Gi-Oh!',
+        price: 1250.0,
+        image: '/images/cards/blue-eyes-white-dragon.png',
+        game: 'yugioh',
+        cardType: 'MONSTER',
+        rarity: 'Ultra Rare',
+        stock: 3,
+        badge: 'NOVO',
+    },
+    {
+        id: 2,
+        name: 'Black Lotus Proxy',
+        description: 'A carta mais icônica de Magic.',
+        price: 45.0,
+        oldPrice: 89.9,
+        image: '/images/cards/black-lotus-proxy.png',
+        game: 'mtg',
+        cardType: 'LAND',
+        rarity: 'Mythic Rare',
+        stock: 12,
+        badge: 'PROMO',
+    },
+    {
+        id: 3,
+        name: 'Dark Magician',
+        description: 'O mago das trevas.',
+        price: 320.0,
+        image: '/images/cards/dark-magician.png',
+        game: 'yugioh',
+        cardType: 'MONSTER',
+        rarity: 'Ultra Rare',
+        stock: 5,
+    },
+    {
+        id: 4,
+        name: 'Charizard Custom Card',
+        description: 'Card customizado de Charizard.',
+        price: 150.0,
+        image: '/images/cards/charizard.png',
+        game: 'yugioh',
+        cardType: 'CREATURE',
+        rarity: 'Rare',
+        stock: 8,
+    },
+];
