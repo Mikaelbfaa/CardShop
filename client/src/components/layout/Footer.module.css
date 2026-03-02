@@ -1,0 +1,101 @@
+.footer {
+    background-color: black;
+    border-top: 8px solid var(--color-brand-lime-alt);
+}
+
+.inner {
+    padding: 48px 32px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+@media (min-width: 768px) {
+    .content {
+        flex-direction: row;
+    }
+}
+
+.brandName {
+    font-family: var(--font-archivo-black);
+    font-size: 30px;
+}
+
+.brandNameWhite {
+    color: white;
+}
+
+.brandNameHighlight {
+    color: var(--color-brand-lime-alt);
+}
+
+.brandDescription {
+    color: var(--color-gray-400);
+    font-family: var(--font-inter);
+    font-size: 16px;
+    margin-top: 8px;
+    max-width: 320px;
+}
+
+.socialTitle {
+    color: var(--color-brand-lime-alt);
+    font-family: var(--font-inter);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+}
+
+.socialList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.socialLink {
+    color: var(--color-gray-400);
+    font-family: var(--font-inter);
+    font-size: 16px;
+    transition: color 0.15s ease;
+}
+
+.socialLink:hover {
+    color: white;
+}
+
+.separator {
+    border-top: 1px solid #1f2937;
+    margin-top: 32px;
+    padding-top: 32px;
+}
+
+.bottomBar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+@media (min-width: 640px) {
+    .bottomBar {
+        flex-direction: row;
+    }
+}
+
+.copyright {
+    color: var(--color-gray-500);
+    font-family: var(--font-inter);
+    font-size: 14px;
+}
+
+.paymentIcons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}

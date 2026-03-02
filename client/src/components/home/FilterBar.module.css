@@ -1,0 +1,38 @@
+.bar {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    background-color: white;
+}
+
+.track {
+    padding: 16px 24px;
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+}
+
+.filterButton {
+    border-radius: 9999px;
+    padding: 8px 20px;
+    font-family: var(--font-archivo);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.15s ease, background-color 0.15s ease;
+    background-color: white;
+    color: var(--color-gray-900);
+}
+
+.filterButton:hover {
+    background-color: var(--color-gray-100);
+}
+
+.filterButton[data-active='true'] {
+    background-color: black;
+    color: var(--color-brand-lime);
+}
+
+.filterButton[data-active='true']:hover {
+    background-color: black;
+}

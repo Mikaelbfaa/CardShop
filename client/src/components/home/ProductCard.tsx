@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import type { Product } from '@/lib/types';
 import { formatPrice } from '@/lib/utils';
+import styles from './ProductCard.module.css';
 
 interface ProductCardProps {
     product: Product;
@@ -34,11 +35,11 @@ export default function ProductCard({ product, showStar }: ProductCardProps) {
     return (
         <div
             ref={cardRef}
-            className="relative bg-white comic-outline comic-shadow flex flex-col"
+            className={`${styles.card} comic-outline comic-shadow`}
         >
             {/* Image Area */}
             <div
-                className="relative h-[256px] bg-gray-100 border-b-2 border-black overflow-hidden"
+                className={styles.imageArea}
                 onMouseEnter={handleMouseEnter}
                 onMouseMove={updatePos}
                 onMouseLeave={() => setHovered(false)}
@@ -48,19 +49,17 @@ export default function ProductCard({ product, showStar }: ProductCardProps) {
                     src={product.image}
                     alt={product.name}
                     fill
-                    className="object-cover"
+                    className={styles.cardImage}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
 
                 {/* Badge */}
-                {product.badge === 'NOVO' && (
-                    <span className="absolute top-3 left-3 bg-black text-white font-archivo text-[10px] font-bold uppercase px-2 py-1">
-                        NOVO
-                    </span>
-                )}
-                {product.badge === 'PROMO' && (
-                    <span className="absolute top-3 left-3 bg-brand-pink text-white font-archivo text-[10px] font-bold uppercase px-2 py-1 comic-outline-1">
-                        PROMO
+                {product.badge && (
+                    <span
+                        className={`${styles.badge}${product.badge === 'PROMO' ? ' comic-outline-1' : ''}`}
+                        data-type={product.badge.toLowerCase()}
+                    >
+                        {product.badge}
                     </span>
                 )}
 
@@ -71,36 +70,32 @@ export default function ProductCard({ product, showStar }: ProductCardProps) {
                         alt=""
                         width={32}
                         height={32}
-                        className="absolute top-2 right-2 rotate-[12deg]"
+                        className={styles.starDecoration}
                     />
                 )}
             </div>
 
             {/* Info */}
-            <div className="p-4 flex flex-col gap-1 flex-1">
-                <h3 className="font-archivo text-[18px] font-bold text-gray-900 leading-tight">
-                    {product.name}
-                </h3>
-                <p className="font-archivo text-[14px] text-gray-500">
+            <div className={styles.info}>
+                <h3 className={styles.cardName}>{product.name}</h3>
+                <p className={styles.cardMeta}>
                     {gameLabel} &bull; {product.rarity || 'Common'}
                 </p>
 
                 {/* Price Row */}
-                <div className="flex items-center justify-between mt-auto pt-2">
-                    <div className="flex items-center gap-2">
+                <div className={styles.priceRow}>
+                    <div className={styles.priceGroup}>
                         {hasPromo && product.oldPrice && (
-                            <span className="font-archivo text-[12px] text-gray-400 line-through">
+                            <span className={styles.oldPrice}>
                                 {formatPrice(product.oldPrice)}
                             </span>
                         )}
-                        <span
-                            className={`font-anton text-[20px] ${hasPromo ? 'text-brand-pink' : 'text-gray-900'}`}
-                        >
+                        <span className={styles.price} data-promo={hasPromo}>
                             {formatPrice(product.price)}
                         </span>
                     </div>
                     <button
-                        className="w-8 h-8 rounded-full bg-brand-lime comic-outline-1 flex items-center justify-center hover:scale-110 transition-transform"
+                        className={`${styles.addButton} comic-outline-1`}
                         aria-label={`Adicionar ${product.name} ao carrinho`}
                     >
                         <Image src="/icons/plus.svg" alt="" width={12} height={12} />
@@ -111,18 +106,17 @@ export default function ProductCard({ product, showStar }: ProductCardProps) {
             {/* Floating popover preview — positioned at mouse entry point */}
             {product.fullImage && (
                 <div
-                    className={`absolute z-50 pointer-events-none transition-opacity duration-300 ease-out ${
-                        hovered ? 'opacity-100' : 'opacity-0'
-                    }`}
+                    className={styles.popover}
+                    data-visible={hovered}
                     style={{ left: popoverPos.x, top: popoverPos.y }}
                 >
-                    <div className="w-[350px] -translate-x-1/2 -translate-y-1/2 rounded-lg overflow-hidden shadow-2xl border-2 border-black bg-white">
+                    <div className={styles.popoverInner}>
                         <Image
                             src={product.fullImage}
                             alt={product.name}
                             width={350}
                             height={490}
-                            className="w-full h-auto object-contain"
+                            className={styles.popoverImage}
                             sizes="350px"
                         />
                     </div>

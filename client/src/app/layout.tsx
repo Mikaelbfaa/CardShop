@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Anton, Archivo, Archivo_Black, Inter } from 'next/font/google';
 import './globals.css';
+import styles from './Layout.module.css';
 import AnnouncementBar from '@/components/layout/AnnouncementBar';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -48,7 +49,7 @@ export default function RootLayout({
             lang="pt-BR"
             className={`${anton.variable} ${archivo.variable} ${archivoBlack.variable} ${inter.variable}`}
         >
-            <body className="font-archivo antialiased overflow-x-clip">
+            <body className={styles.body}>
                 <AnnouncementBar />
                 <Navbar />
                 <main>{children}</main>

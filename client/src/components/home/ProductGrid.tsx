@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import type { Product } from '@/lib/types';
 import ProductCard from './ProductCard';
+import styles from './ProductGrid.module.css';
 
 interface ProductGridProps {
     products: Product[];
@@ -19,22 +20,17 @@ export default function ProductGrid({ products }: ProductGridProps) {
     }, [products]);
 
     return (
-        <section className="mx-auto max-w-[1232px] px-6 py-16">
+        <section className={`${styles.section} container`}>
             {/* Header */}
-            <div className="flex items-center justify-between mb-8">
-                <h2 className="font-anton text-[36px] text-gray-900 uppercase">
-                    TENDÊNCIAS AGORA
-                </h2>
-                <a
-                    href="/"
-                    className="font-archivo text-[14px] font-bold uppercase underline text-gray-900 hover:text-brand-pink transition-colors"
-                >
+            <div className={styles.header}>
+                <h2 className={styles.title}>TENDÊNCIAS AGORA</h2>
+                <a href="/" className={styles.viewAll}>
                     VER TUDO
                 </a>
             </div>
 
             {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className={styles.grid}>
                 {products.map((product, index) => (
                     <ProductCard key={product.id} product={product} showStar={index === 1} />
                 ))}

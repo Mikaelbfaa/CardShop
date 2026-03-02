@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import styles from './Footer.module.css';
 
 const SOCIAL_LINKS = [
     { label: 'Instagram', href: '#' },
@@ -8,16 +9,16 @@ const SOCIAL_LINKS = [
 
 export default function Footer() {
     return (
-        <footer className="bg-black border-t-8 border-brand-lime-alt">
-            <div className="mx-auto max-w-[1232px] px-8 py-12">
-                <div className="flex flex-col md:flex-row justify-between gap-8">
+        <footer className={styles.footer}>
+            <div className={`${styles.inner} container`}>
+                <div className={styles.content}>
                     {/* Left - Brand */}
                     <div>
-                        <div className="font-archivo-black text-[30px]">
-                            <span className="text-white">CARD</span>
-                            <span className="text-brand-lime-alt">SHOP</span>
+                        <div className={styles.brandName}>
+                            <span className={styles.brandNameWhite}>CARD</span>
+                            <span className={styles.brandNameHighlight}>SHOP</span>
                         </div>
-                        <p className="text-gray-400 font-inter text-[16px] mt-2 max-w-[320px]">
+                        <p className={styles.brandDescription}>
                             O melhor marketplace de cartas colecionáveis do Brasil. Yu-Gi-Oh!,
                             Magic: The Gathering e muito mais.
                         </p>
@@ -25,16 +26,11 @@ export default function Footer() {
 
                     {/* Right - Social */}
                     <div>
-                        <h3 className="text-brand-lime-alt font-inter text-[14px] font-bold uppercase tracking-wider mb-4">
-                            SOCIAL
-                        </h3>
-                        <ul className="flex flex-col gap-2">
+                        <h3 className={styles.socialTitle}>SOCIAL</h3>
+                        <ul className={styles.socialList}>
                             {SOCIAL_LINKS.map((link) => (
                                 <li key={link.label}>
-                                    <a
-                                        href={link.href}
-                                        className="text-gray-400 font-inter text-[16px] hover:text-white transition-colors"
-                                    >
+                                    <a href={link.href} className={styles.socialLink}>
                                         {link.label}
                                     </a>
                                 </li>
@@ -44,12 +40,12 @@ export default function Footer() {
                 </div>
 
                 {/* Separator */}
-                <div className="border-t border-[#1F2937] mt-8 pt-8">
-                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p className="text-gray-500 font-inter text-[14px]">
+                <div className={styles.separator}>
+                    <div className={styles.bottomBar}>
+                        <p className={styles.copyright}>
                             &copy; 2026 CardShop. Todos os direitos reservados.
                         </p>
-                        <div className="flex items-center gap-4">
+                        <div className={styles.paymentIcons}>
                             <Image
                                 src="/icons/truck.svg"
                                 alt="Entrega"

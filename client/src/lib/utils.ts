@@ -4,7 +4,3 @@ export function formatPrice(value: number): string {
         currency: 'BRL',
     });
 }
-
-export function cn(...classes: (string | boolean | undefined | null)[]): string {
-    return classes.filter(Boolean).join(' ');
-}
