@@ -5,6 +5,7 @@ export interface Product {
     price: number;
     oldPrice?: number;
     image: string;
+    fullImage?: string;
     game: 'mtg' | 'yugioh';
     cardType: string;
     rarity?: string;

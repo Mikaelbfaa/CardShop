@@ -48,7 +48,7 @@ export default function RootLayout({
             lang="pt-BR"
             className={`${anton.variable} ${archivo.variable} ${archivoBlack.variable} ${inter.variable}`}
         >
-            <body className="font-archivo antialiased">
+            <body className="font-archivo antialiased overflow-x-clip">
                 <AnnouncementBar />
                 <Navbar />
                 <main>{children}</main>

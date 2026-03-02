@@ -63,30 +63,18 @@ export default function HeroSection() {
                     />
 
                     {/* Main Image Frame */}
-                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[2deg] bg-white p-2 comic-outline-4 comic-shadow z-10">
+                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rotate-[2deg] comic-outline-4 comic-shadow z-10">
                         <div className="relative w-[240px] h-[320px] lg:w-[320px] lg:h-[420px] overflow-hidden">
                             <Image
-                                src="/images/cards/colecionador.png"
-                                alt="Colecionador segurando cartas"
+                                src="/images/cards/utopia-sprawl.jpg"
+                                alt="Utopia Sprawl - Enchantment Aura"
                                 fill
                                 className="object-cover"
-                                style={{ mixBlendMode: 'saturation' }}
                                 priority
                             />
                         </div>
                     </div>
 
-                    {/* Small Card Overlay */}
-                    <div className="absolute top-6 right-6 lg:top-4 lg:right-8 rotate-[12deg] outline outline-4 outline-white shadow-lg z-20">
-                        <div className="relative w-[80px] h-[110px] lg:w-[100px] lg:h-[140px]">
-                            <Image
-                                src="/images/cards/carta-rara.png"
-                                alt="Carta rara"
-                                fill
-                                className="object-cover"
-                            />
-                        </div>
-                    </div>
 
                     {/* Price Sticker */}
                     <div className="absolute bottom-12 left-4 lg:bottom-16 lg:left-8 bg-brand-lime rotate-[-6deg] comic-outline comic-shadow px-4 py-2 z-20">

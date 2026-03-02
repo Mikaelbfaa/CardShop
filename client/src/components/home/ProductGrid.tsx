@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect } from 'react';
 import type { Product } from '@/lib/types';
 import ProductCard from './ProductCard';
 
@@ -6,6 +9,15 @@ interface ProductGridProps {
 }
 
 export default function ProductGrid({ products }: ProductGridProps) {
+    useEffect(() => {
+        products.forEach((p) => {
+            if (p.fullImage) {
+                const img = new window.Image();
+                img.src = p.fullImage;
+            }
+        });
+    }, [products]);
+
     return (
         <section className="mx-auto max-w-[1232px] px-6 py-16">
             {/* Header */}
