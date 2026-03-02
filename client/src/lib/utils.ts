@@ -4,3 +4,7 @@ export function formatPrice(value: number): string {
         currency: 'BRL',
     });
 }
+
+export function getGameLabel(game: 'mtg' | 'yugioh'): string {
+    return game === 'yugioh' ? 'Yu-Gi-Oh!' : 'Magic: The Gathering';
+}

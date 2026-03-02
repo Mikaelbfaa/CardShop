@@ -11,6 +11,8 @@ export interface Product {
     rarity?: string;
     stock: number;
     badge?: 'NOVO' | 'PROMO';
+    cardSubtypes?: string;
+    edition?: string;
 }
 
 export type FilterType =

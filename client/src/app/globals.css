@@ -12,6 +12,8 @@
     --color-gray-600: #4b5563;
     --color-gray-500: #6b7280;
     --color-gray-400: #9ca3af;
+    --color-gray-300: #d1d5db;
+    --color-gray-200: #e5e7eb;
     --color-gray-100: #f3f4f6;
 
     /* Page */
@@ -22,6 +24,7 @@
     --font-archivo: var(--font-family-archivo);
     --font-archivo-black: var(--font-family-archivo-black);
     --font-inter: var(--font-family-inter);
+    --font-mono: var(--font-family-roboto-mono);
 
     /* Layout */
     --max-width: 1232px;

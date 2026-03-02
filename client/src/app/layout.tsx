@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Anton, Archivo, Archivo_Black, Inter } from 'next/font/google';
+import { Anton, Archivo, Archivo_Black, Inter, Roboto_Mono } from 'next/font/google';
 import './globals.css';
 import styles from './Layout.module.css';
 import AnnouncementBar from '@/components/layout/AnnouncementBar';
@@ -34,6 +34,13 @@ const inter = Inter({
     display: 'swap',
 });
 
+const robotoMono = Roboto_Mono({
+    weight: ['400', '700'],
+    subsets: ['latin'],
+    variable: '--font-family-roboto-mono',
+    display: 'swap',
+});
+
 export const metadata: Metadata = {
     title: 'CardShop - Seu Marketplace de Cartas',
     description: 'O melhor marketplace para colecionadores exigentes de Yu-Gi-Oh! e Magic: The Gathering.',
@@ -47,7 +54,7 @@ export default function RootLayout({
     return (
         <html
             lang="pt-BR"
-            className={`${anton.variable} ${archivo.variable} ${archivoBlack.variable} ${inter.variable}`}
+            className={`${anton.variable} ${archivo.variable} ${archivoBlack.variable} ${inter.variable} ${robotoMono.variable}`}
         >
             <body className={styles.body}>
                 <AnnouncementBar />

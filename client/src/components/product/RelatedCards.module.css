@@ -1,0 +1,235 @@
+/* ===== Section ===== */
+.section {
+    padding-top: 48px;
+    border-top: 4px solid black;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.headerLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.title {
+    display: flex;
+    align-items: flex-start;
+}
+
+.titleText {
+    font-family: var(--font-archivo-black);
+    font-size: 36px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 40px;
+    color: var(--color-gray-900);
+}
+
+.titleHighlight {
+    font-family: var(--font-archivo-black);
+    font-size: 36px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 40px;
+    color: black;
+    background: var(--color-brand-lime-alt);
+    padding: 0 8px;
+    margin-left: 4px;
+}
+
+.subtitle {
+    font-family: var(--font-inter);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    color: var(--color-gray-500);
+}
+
+.viewAll {
+    font-family: var(--font-inter);
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 24px;
+    color: var(--color-gray-900);
+    border-bottom: 2px solid black;
+    padding-bottom: 2px;
+}
+
+.viewAll:hover {
+    opacity: 0.7;
+}
+
+/* ===== Card Grid ===== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+}
+
+/* ===== Card ===== */
+.card {
+    position: relative;
+    background: white;
+    outline-offset: -2px;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.cardImageWrapper {
+    padding: 18px 18px 0;
+}
+
+.cardImageBg {
+    position: relative;
+    height: 325px;
+    background: var(--color-gray-100);
+    overflow: hidden;
+}
+
+.cardImage {
+    object-fit: cover;
+    mix-blend-mode: multiply;
+}
+
+/* Badge */
+.cardBadge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    font-family: var(--font-inter);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    color: white;
+}
+
+.badgeNew {
+    background: black;
+}
+
+.badgeSale {
+    background: var(--color-brand-pink-alt);
+}
+
+/* Card Info */
+.cardInfo {
+    padding: 0 18px 18px;
+}
+
+.cardName {
+    font-family: var(--font-archivo-black);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22.5px;
+    color: var(--color-gray-900);
+    padding-bottom: 4px;
+}
+
+.cardMeta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    color: var(--color-gray-500);
+    padding-bottom: 16px;
+}
+
+.cardPriceRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+}
+
+.cardPriceGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.cardPrice {
+    font-family: var(--font-inter);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 28px;
+    color: var(--color-gray-900);
+}
+
+.cardPricePromo {
+    color: var(--color-brand-pink-alt);
+}
+
+.cardOldPrice {
+    font-family: var(--font-inter);
+    font-size: 12px;
+    font-weight: 400;
+    text-decoration: line-through;
+    line-height: 16px;
+    color: var(--color-gray-400);
+}
+
+.cardAddBtn {
+    padding: 8px;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardAddBtnIcon {
+    width: 8px;
+    height: 8px;
+    background: white;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .titleText,
+    .titleHighlight {
+        font-size: 28px;
+        line-height: 32px;
+    }
+}
+
+@media (max-width: 640px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .titleText,
+    .titleHighlight {
+        font-size: 24px;
+        line-height: 28px;
+    }
+
+    .cardImageBg {
+        height: 250px;
+    }
+}
