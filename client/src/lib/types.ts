@@ -23,6 +23,18 @@ export type FilterType =
     | 'TERRENOS'
     | 'CRIATURAS';
 
+export interface CartItem {
+    id: number;
+    name: string;
+    image: string;
+    price: number;
+    quantity: number;
+    game?: 'mtg' | 'yugioh';
+    category: string;
+    details?: string;
+    rarity?: string;
+}
+
 export interface ApiResponse<T> {
     success: boolean;
     data: T;

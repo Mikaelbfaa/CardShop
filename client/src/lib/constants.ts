@@ -1,4 +1,4 @@
-import { FilterType, Product } from './types';
+import { CartItem, FilterType, Product } from './types';
 
 export const FILTER_OPTIONS: { label: FilterType; cardType: string | null }[] = [
     { label: 'TODOS', cardType: null },
@@ -77,6 +77,39 @@ export const MOCK_PRODUCTS: Product[] = [
         badge: 'PROMO',
         cardSubtypes: 'DRAGON / RITUAL / EFFECT',
         edition: '1st Edition',
+    },
+];
+
+export const MOCK_CART_ITEMS: CartItem[] = [
+    {
+        id: 1,
+        name: 'Black Lotus (Proxy Art)',
+        image: '/images/cards/black-lotus-proxy.png',
+        price: 45.0,
+        quantity: 1,
+        game: 'mtg',
+        category: 'Magic: The Gathering',
+        details: 'Condição: NM (Near Mint) • Idioma: PT-BR',
+    },
+    {
+        id: 2,
+        name: 'Blue-Eyes White Dragon',
+        image: '/images/cards/blue-eyes-white-dragon.png',
+        price: 120.0,
+        quantity: 1,
+        game: 'yugioh',
+        category: 'Yu-Gi-Oh!',
+        details: 'Edição: LOB-001 • 1ª Edição',
+        rarity: 'RARE',
+    },
+    {
+        id: 3,
+        name: 'Pro-Matte Sleeves (60un)',
+        image: '/images/cards/sleeves-pro-matte.jpg',
+        price: 25.0,
+        quantity: 2,
+        category: 'Acessórios',
+        details: 'Cor: Preto Fosco',
     },
 ];
 
