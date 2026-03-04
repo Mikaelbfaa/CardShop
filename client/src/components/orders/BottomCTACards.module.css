@@ -1,0 +1,154 @@
+.ctaRow {
+    display: flex;
+    gap: 24px;
+}
+
+.ctaCard {
+    flex: 1;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    outline: 4px solid black;
+    outline-offset: -4px;
+    box-shadow: 4px 4px 0 black;
+}
+
+.tradeInCard {
+    background: var(--color-brand-pink);
+}
+
+.tradeInContent {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tradeInHeading {
+    font-family: var(--font-archivo-black);
+    font-size: 30px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 36px;
+    color: white;
+}
+
+.tradeInText {
+    font-family: var(--font-inter);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    color: white;
+    max-width: 320px;
+    padding-bottom: 16px;
+}
+
+.tradeInButton {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 12px 24px;
+    background: white;
+    outline: 2px solid black;
+    outline-offset: -2px;
+    box-shadow: 4px 4px 0 black;
+    font-family: var(--font-archivo-black);
+    font-size: 14px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 20px;
+    color: black;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tradeInButton:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 black;
+}
+
+.circleLime {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    right: -20px;
+    bottom: -40px;
+    background: var(--color-brand-lime);
+    border-radius: 9999px;
+    border: 4px solid black;
+    opacity: 0.5;
+}
+
+.circlePurple {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    right: 20px;
+    top: -16px;
+    background: #8b5cf6;
+    border-radius: 9999px;
+    border: 4px solid black;
+    opacity: 0.5;
+}
+
+.supportCard {
+    background: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.supportContent {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.supportBadge {
+    display: inline-block;
+    width: fit-content;
+    padding: 2px 8px;
+    background: var(--color-brand-lime);
+    outline: 1px solid black;
+    outline-offset: -1px;
+    font-family: var(--font-inter);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 16px;
+    color: var(--color-gray-900);
+}
+
+.supportHeading {
+    font-family: var(--font-archivo-black);
+    font-size: 30px;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: 36px;
+    color: white;
+}
+
+.supportText {
+    font-family: var(--font-inter);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: var(--color-gray-400);
+}
+
+.chatCircle {
+    width: 64px;
+    height: 64px;
+    background: white;
+    border-radius: 9999px;
+    outline: 2px solid black;
+    outline-offset: -2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .ctaRow {
+        flex-direction: column;
+    }
+}

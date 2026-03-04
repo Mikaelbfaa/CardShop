@@ -41,3 +41,28 @@ export interface ApiResponse<T> {
     message?: string;
     count?: number;
 }
+
+export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+
+export interface OrderItem {
+    id: number;
+    quantity: number;
+    unitPrice: number;
+    product: {
+        name: string;
+        image: string;
+        game: 'mtg' | 'yugioh';
+        cardType: string;
+        rarity?: string;
+    };
+}
+
+export interface Order {
+    id: number;
+    code: string;
+    totalPrice: number;
+    status: OrderStatus;
+    createdAt: string;
+    isNew?: boolean;
+    items: OrderItem[];
+}
