@@ -7,9 +7,10 @@ import styles from './ProductGrid.module.css';
 
 interface ProductGridProps {
     products: Product[];
+    loading?: boolean;
 }
 
-export default function ProductGrid({ products }: ProductGridProps) {
+export default function ProductGrid({ products, loading }: ProductGridProps) {
     useEffect(() => {
         products.forEach((p) => {
             if (p.fullImage) {
@@ -30,11 +31,17 @@ export default function ProductGrid({ products }: ProductGridProps) {
             </div>
 
             {/* Grid */}
-            <div className={styles.grid}>
-                {products.map((product, index) => (
-                    <ProductCard key={product.id} product={product} showStar={index === 1} />
-                ))}
-            </div>
+            {loading ? (
+                <p className={styles.loading}>Carregando produtos...</p>
+            ) : products.length === 0 ? (
+                <p className={styles.empty}>Nenhum produto encontrado.</p>
+            ) : (
+                <div className={styles.grid}>
+                    {products.map((product, index) => (
+                        <ProductCard key={product.id} product={product} showStar={index === 1} />
+                    ))}
+                </div>
+            )}
         </section>
     );
 }

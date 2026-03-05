@@ -22,8 +22,32 @@ export async function fetchProducts(cardType?: string | null): Promise<Product[]
             throw new Error(json.message || 'Erro ao buscar produtos');
         }
 
-        return json.data;
+        return json.data.map((p) => ({
+            ...p,
+            price: Number(p.price),
+            oldPrice: p.oldPrice ? Number(p.oldPrice) : undefined,
+        }));
     } catch {
         return [];
+    }
+}
+
+export async function fetchProductById(id: string): Promise<Product | null> {
+    try {
+        const res = await fetch(`${BASE_URL}/products/${id}`);
+
+        if (!res.ok) return null;
+
+        const json: ApiResponse<Product> = await res.json();
+
+        if (!json.success) return null;
+
+        return {
+            ...json.data,
+            price: Number(json.data.price),
+            oldPrice: json.data.oldPrice ? Number(json.data.oldPrice) : undefined,
+        };
+    } catch {
+        return null;
     }
 }

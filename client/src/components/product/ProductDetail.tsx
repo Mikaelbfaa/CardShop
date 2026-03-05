@@ -20,14 +20,19 @@ const DETAIL_THUMBS = [
 ];
 
 export default function ProductDetail({ product }: ProductDetailProps) {
-    const [selectedImage, setSelectedImage] = useState(product.image);
+    const mainImage = product.fullImage || product.image;
+    const [selectedImage, setSelectedImage] = useState(mainImage);
     const [quantity, setQuantity] = useState(1);
 
     const gameLabel = getGameLabel(product.game);
     const inStock = product.stock > 0;
     const hasPromo = product.badge === 'PROMO';
 
-    const thumbnails = [product.image, ...DETAIL_THUMBS];
+    const thumbnails = [
+        mainImage,
+        ...(product.image !== mainImage ? [product.image] : []),
+        ...DETAIL_THUMBS,
+    ];
 
     const relatedProducts = MOCK_RELATED_PRODUCTS.filter((p) => p.game === product.game);
 

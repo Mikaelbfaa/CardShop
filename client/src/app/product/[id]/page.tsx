@@ -1,14 +1,51 @@
 'use client';
 
-import { use } from 'react';
-import { getProductById } from '@/lib/constants';
+import { use, useRef, useReducer } from 'react';
+import { fetchProductById } from '@/lib/api';
 import ProductDetail from '@/components/product/ProductDetail';
+import type { Product } from '@/lib/types';
+
+interface State {
+    product: Product | null;
+    loading: boolean;
+}
+
+type Action = { type: 'SUCCESS'; product: Product | null };
+
+function reducer(_state: State, action: Action): State {
+    return { product: action.product, loading: false };
+}
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
-    const product = getProductById(Number(id));
+    const [state, dispatch] = useReducer(reducer, { product: null, loading: true });
+    const fetchRef = useRef<Promise<Product | null> | null>(null);
 
-    if (!product) {
+    if (fetchRef.current == null) {
+        fetchRef.current = fetchProductById(id).then((product) => {
+            dispatch({ type: 'SUCCESS', product });
+            return product;
+        });
+    }
+
+    if (state.loading) {
+        return (
+            <div
+                style={{
+                    maxWidth: 'var(--max-width)',
+                    margin: '0 auto',
+                    padding: '96px 32px',
+                    textAlign: 'center',
+                }}
+            >
+                <p style={{ color: 'var(--color-gray-500)', fontSize: '18px' }}>
+                    Carregando produto...
+                </p>
+            </div>
+        );
+    }
+
+    if (!state.product) {
         return (
             <div
                 style={{
@@ -34,5 +71,5 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         );
     }
 
-    return <ProductDetail product={product} />;
+    return <ProductDetail product={state.product} />;
 }

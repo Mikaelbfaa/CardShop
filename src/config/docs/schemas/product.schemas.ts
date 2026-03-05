@@ -64,7 +64,33 @@ export const Product: OpenAPIV3.SchemaObject = {
         image: {
             type: 'string',
             nullable: true,
-            description: 'URL da imagem da carta',
+            description: 'URL da imagem da carta (miniatura)',
+        },
+        oldPrice: {
+            type: 'number',
+            format: 'decimal',
+            nullable: true,
+            description: 'Preço antigo do produto (para promoções)',
+        },
+        fullImage: {
+            type: 'string',
+            nullable: true,
+            description: 'URL da imagem completa da carta',
+        },
+        badge: {
+            type: 'string',
+            nullable: true,
+            description: 'Badge do produto (ex: NOVO, PROMO)',
+        },
+        cardSubtypes: {
+            type: 'string',
+            nullable: true,
+            description: 'Subtipos da carta (ex: DRAGON / RITUAL / EFFECT)',
+        },
+        edition: {
+            type: 'string',
+            nullable: true,
+            description: 'Edição da carta (ex: 1st Edition)',
         },
         createdAt: {
             type: 'string',
@@ -111,7 +137,27 @@ export const CreateProduct: OpenAPIV3.SchemaObject = {
         },
         image: {
             type: 'string',
-            description: 'URL da imagem da carta',
+            description: 'URL da imagem da carta (miniatura)',
+        },
+        oldPrice: {
+            type: 'number',
+            description: 'Preço antigo do produto (para promoções, deve ser >= 0)',
+        },
+        fullImage: {
+            type: 'string',
+            description: 'URL da imagem completa da carta',
+        },
+        badge: {
+            type: 'string',
+            description: 'Badge do produto (ex: NOVO, PROMO)',
+        },
+        cardSubtypes: {
+            type: 'string',
+            description: 'Subtipos da carta (ex: DRAGON / RITUAL / EFFECT)',
+        },
+        edition: {
+            type: 'string',
+            description: 'Edição da carta (ex: 1st Edition)',
         },
     },
     required: ['name', 'price', 'stock', 'game'],
@@ -148,7 +194,28 @@ export const UpdateProduct: OpenAPIV3.SchemaObject = {
         },
         image: {
             type: 'string',
-            description: 'URL da imagem da carta',
+            description: 'URL da imagem da carta (miniatura)',
+        },
+        oldPrice: {
+            type: 'number',
+            nullable: true,
+            description: 'Preço antigo do produto (para promoções, deve ser >= 0)',
+        },
+        fullImage: {
+            type: 'string',
+            description: 'URL da imagem completa da carta',
+        },
+        badge: {
+            type: 'string',
+            description: 'Badge do produto (ex: NOVO, PROMO)',
+        },
+        cardSubtypes: {
+            type: 'string',
+            description: 'Subtipos da carta (ex: DRAGON / RITUAL / EFFECT)',
+        },
+        edition: {
+            type: 'string',
+            description: 'Edição da carta (ex: 1st Edition)',
         },
     },
 };

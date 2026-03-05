@@ -47,3 +47,12 @@
         grid-template-columns: repeat(4, 1fr);
     }
 }
+
+.loading,
+.empty {
+    font-family: var(--font-archivo);
+    font-size: 18px;
+    color: var(--color-gray-500);
+    text-align: center;
+    padding: 64px 0;
+}

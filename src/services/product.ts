@@ -106,6 +106,10 @@ class ProductService {
                 throw new Error('Estoque não pode ser negativo');
             }
 
+            if (updateData.oldPrice !== undefined && updateData.oldPrice !== null && updateData.oldPrice < 0) {
+                throw new Error('Preço antigo não pode ser negativo');
+            }
+
             // Mescla game/cardType do update com os valores existentes para validação cruzada
             // (ex: alterar só o cardType ainda precisa ser compatível com o game atual)
             const finalGame = updateData.game || existingProduct.game;
@@ -173,6 +177,10 @@ class ProductService {
 
         if (productData.stock < 0) {
             throw new Error('Estoque não pode ser negativo');
+        }
+
+        if (productData.oldPrice !== undefined && productData.oldPrice < 0) {
+            throw new Error('Preço antigo não pode ser negativo');
         }
 
         // Valida se o jogo informado é um dos suportados pela plataforma
