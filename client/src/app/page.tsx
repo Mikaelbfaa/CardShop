@@ -48,7 +48,7 @@ export default function HomePage() {
 
     return (
         <>
-            <HeroSection />
+            <HeroSection products={state.products} />
             <FilterBar activeFilter={activeFilter} onFilterChange={handleFilterChange} />
             <ProductGrid products={state.products} loading={state.loading} />
         </>
