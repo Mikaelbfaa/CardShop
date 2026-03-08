@@ -3,9 +3,12 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { Product } from '@/lib/types';
 import { formatPrice, getGameLabel } from '@/lib/utils';
 import { MOCK_RELATED_PRODUCTS } from '@/lib/constants';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCart } from '@/contexts/CartContext';
 import RelatedCards from './RelatedCards';
 import styles from './ProductDetail.module.css';
 
@@ -23,6 +26,12 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     const mainImage = product.fullImage || product.image;
     const [selectedImage, setSelectedImage] = useState(mainImage);
     const [quantity, setQuantity] = useState(1);
+    const [adding, setAdding] = useState(false);
+    const [added, setAdded] = useState(false);
+    const [feedback, setFeedback] = useState('');
+    const { isAuthenticated } = useAuth();
+    const { addItem } = useCart();
+    const router = useRouter();
 
     const gameLabel = getGameLabel(product.game);
     const inStock = product.stock > 0;
@@ -45,9 +54,27 @@ export default function ProductDetail({ product }: ProductDetailProps) {
         });
     }
 
-    function handleAddToCart() {
-        // Placeholder — will be wired to POST /api/cart/items
-        console.log(`Add to cart: product ${product.id}, quantity ${quantity}`);
+    async function handleAddToCart() {
+        if (!isAuthenticated) {
+            router.push('/login');
+            return;
+        }
+        if (adding) return;
+        setAdding(true);
+        setFeedback('');
+        try {
+            await addItem(product.id, quantity);
+            setAdded(true);
+            setFeedback('Adicionado ao carrinho!');
+            setTimeout(() => {
+                setAdded(false);
+                setFeedback('');
+            }, 3000);
+        } catch (err) {
+            setFeedback(err instanceof Error ? err.message : 'Erro ao adicionar');
+        } finally {
+            setAdding(false);
+        }
     }
 
     return (
@@ -191,12 +218,12 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
                             {/* Add to Cart */}
                             <button
-                                className={`${styles.addToCartBtn} comic-shadow`}
+                                className={`${styles.addToCartBtn}${added ? ` ${styles.addToCartBtnPop}` : ''} comic-shadow`}
                                 onClick={handleAddToCart}
-                                disabled={!inStock}
+                                disabled={!inStock || adding}
                             >
                                 <span className={styles.addToCartText}>
-                                    Adicionar ao Carrinho
+                                    {adding ? 'Adicionando...' : added ? 'Adicionado ✓' : 'Adicionar ao Carrinho'}
                                 </span>
                                 <Image
                                     src="/icons/lightning.svg"
@@ -222,6 +249,20 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                             </button>
                         </div>
                     </div>
+
+                    {/* Feedback */}
+                    {feedback && (
+                        <p
+                            style={{
+                                fontFamily: 'var(--font-inter)',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                color: feedback.includes('Erro') ? '#dc2626' : '#16a34a',
+                            }}
+                        >
+                            {feedback}
+                        </p>
+                    )}
 
                     {/* Guarantee Banner */}
                     <div className={styles.guarantee}>

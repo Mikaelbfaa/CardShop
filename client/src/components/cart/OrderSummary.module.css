@@ -102,6 +102,20 @@
     margin-top: 2px;
 }
 
+.shippingSection {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.shippingLabel {
+    font-family: var(--font-archivo);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    letter-spacing: 0.5px;
+}
+
 .checkoutButton {
     display: flex;
     align-items: center;

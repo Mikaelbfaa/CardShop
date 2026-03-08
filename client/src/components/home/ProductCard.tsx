@@ -3,8 +3,11 @@
 import { useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import type { Product } from '@/lib/types';
 import { formatPrice, getGameLabel } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCart } from '@/contexts/CartContext';
 import styles from './ProductCard.module.css';
 
 interface ProductCardProps {
@@ -15,9 +18,34 @@ interface ProductCardProps {
 export default function ProductCard({ product, showStar }: ProductCardProps) {
     const [hovered, setHovered] = useState(false);
     const [popoverPos, setPopoverPos] = useState({ x: 0, y: 0 });
+    const [adding, setAdding] = useState(false);
+    const [added, setAdded] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
+    const { isAuthenticated } = useAuth();
+    const { addItem } = useCart();
+    const router = useRouter();
     const gameLabel = getGameLabel(product.game);
     const hasPromo = product.badge === 'PROMO';
+
+    const handleAddToCart = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!isAuthenticated) {
+            router.push('/login');
+            return;
+        }
+        if (adding || added) return;
+        setAdding(true);
+        try {
+            await addItem(product.id, 1);
+            setAdded(true);
+            setTimeout(() => setAdded(false), 800);
+        } catch {
+            // Silently fail on grid cards
+        } finally {
+            setAdding(false);
+        }
+    };
 
     const updatePos = useCallback((e: React.MouseEvent) => {
         if (!cardRef.current) return;
@@ -97,11 +125,16 @@ export default function ProductCard({ product, showStar }: ProductCardProps) {
                             </span>
                         </div>
                         <button
-                            className={`${styles.addButton} comic-outline-1`}
+                            className={`${styles.addButton}${added ? ` ${styles.addButtonPop}` : ''} comic-outline-1`}
                             aria-label={`Adicionar ${product.name} ao carrinho`}
-                            onClick={(e) => e.preventDefault()}
+                            onClick={handleAddToCart}
+                            disabled={adding}
                         >
-                            <Image src="/icons/plus.svg" alt="" width={12} height={12} />
+                            {added ? (
+                                <span className={styles.addedCheck}>✓</span>
+                            ) : (
+                                <Image src="/icons/plus.svg" alt="" width={12} height={12} />
+                            )}
                         </button>
                     </div>
                 </div>

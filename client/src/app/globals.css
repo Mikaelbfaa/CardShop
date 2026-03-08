@@ -25,6 +25,7 @@
     --font-archivo-black: var(--font-family-archivo-black);
     --font-inter: var(--font-family-inter);
     --font-mono: var(--font-family-roboto-mono);
+    --font-bangers: var(--font-family-bangers);
 
     /* Layout */
     --max-width: 1232px;

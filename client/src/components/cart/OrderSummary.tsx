@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
 import styles from './OrderSummary.module.css';
@@ -7,13 +8,27 @@ import styles from './OrderSummary.module.css';
 interface OrderSummaryProps {
     subtotal: number;
     itemCount: number;
+    onCheckout?: (shippingAddress: string) => void;
+    disabled?: boolean;
 }
 
-export default function OrderSummary({ subtotal, itemCount }: OrderSummaryProps) {
+export default function OrderSummary({
+    subtotal,
+    itemCount,
+    onCheckout,
+    disabled,
+}: OrderSummaryProps) {
+    const [shippingAddress, setShippingAddress] = useState('');
     const freeShipping = subtotal >= 200;
     const shipping = freeShipping ? 0 : 15;
     const discount = 0;
     const total = subtotal - discount + shipping;
+
+    const handleCheckout = () => {
+        if (onCheckout && shippingAddress.trim()) {
+            onCheckout(shippingAddress.trim());
+        }
+    };
 
     return (
         <aside className={styles.wrapper}>
@@ -53,8 +68,28 @@ export default function OrderSummary({ subtotal, itemCount }: OrderSummaryProps)
                 </div>
             </div>
 
-            <button className={styles.checkoutButton}>
-                <span>FINALIZAR PEDIDO</span>
+            {onCheckout && (
+                <div className={styles.shippingSection}>
+                    <label className={styles.shippingLabel} htmlFor="shipping-address">
+                        ENDEREÇO DE ENTREGA
+                    </label>
+                    <input
+                        id="shipping-address"
+                        type="text"
+                        className={styles.input}
+                        placeholder="Rua, número, bairro, cidade - UF"
+                        value={shippingAddress}
+                        onChange={(e) => setShippingAddress(e.target.value)}
+                    />
+                </div>
+            )}
+
+            <button
+                className={styles.checkoutButton}
+                onClick={handleCheckout}
+                disabled={disabled || (onCheckout && !shippingAddress.trim())}
+            >
+                <span>{disabled ? 'PROCESSANDO...' : 'FINALIZAR PEDIDO'}</span>
                 <Image src="/icons/arrow-right.svg" alt="" width={16} height={16} />
             </button>
 

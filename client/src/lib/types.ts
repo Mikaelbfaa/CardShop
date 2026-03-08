@@ -66,3 +66,68 @@ export interface Order {
     isNew?: boolean;
     items: OrderItem[];
 }
+
+/* ===== Auth Types ===== */
+
+export interface AuthUser {
+    id: number;
+    name: string;
+    email: string;
+    role: 'CUSTOMER' | 'ADMIN';
+}
+
+export interface LoginResponse {
+    token: string;
+    user: AuthUser;
+}
+
+export interface RegisterPayload {
+    name: string;
+    email: string;
+    password: string;
+    cpf: string;
+}
+
+/* ===== Backend Response Types (used only in api.ts for mapping) ===== */
+
+export interface BackendCartItem {
+    quantity: number;
+    product: {
+        id: number;
+        name: string;
+        image: string | null;
+        price: string | number;
+        game: 'mtg' | 'yugioh';
+        cardType: string;
+        rarity?: string;
+    };
+}
+
+export interface BackendCart {
+    id: number;
+    userId: number;
+    items: BackendCartItem[];
+}
+
+export interface BackendOrderItem {
+    id: number;
+    quantity: number;
+    unitPrice: string | number;
+    product: {
+        id: number;
+        name: string;
+        image: string | null;
+        game: 'mtg' | 'yugioh';
+        cardType: string;
+        rarity?: string;
+    };
+}
+
+export interface BackendOrder {
+    id: number;
+    totalPrice: string | number;
+    status: OrderStatus;
+    createdAt: string;
+    shippingAddress?: string;
+    items: BackendOrderItem[];
+}

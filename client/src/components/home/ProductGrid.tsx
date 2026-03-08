@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import Link from 'next/link';
 import type { Product } from '@/lib/types';
 import ProductCard from './ProductCard';
 import styles from './ProductGrid.module.css';
@@ -25,9 +26,9 @@ export default function ProductGrid({ products, loading }: ProductGridProps) {
             {/* Header */}
             <div className={styles.header}>
                 <h2 className={styles.title}>TENDÊNCIAS AGORA</h2>
-                <a href="/" className={styles.viewAll}>
+                <Link href="/" className={styles.viewAll}>
                     VER TUDO
-                </a>
+                </Link>
             </div>
 
             {/* Grid */}

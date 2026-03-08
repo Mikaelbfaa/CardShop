@@ -139,18 +139,18 @@ export default function HeroSection({ products = [] }: HeroSectionProps) {
                     </p>
 
                     <div className={styles.ctaRow}>
-                        <a
+                        <Link
                             href="/"
                             className={`${styles.ctaButton} ${styles.ctaPrimary} comic-outline comic-shadow`}
                         >
                             COMPRAR YU-GI-OH!
-                        </a>
-                        <a
+                        </Link>
+                        <Link
                             href="/"
                             className={`${styles.ctaButton} ${styles.ctaSecondary} comic-outline comic-shadow`}
                         >
                             COMPRAR MTG
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
