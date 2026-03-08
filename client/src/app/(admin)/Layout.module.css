@@ -1,0 +1,37 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--color-gray-100);
+}
+
+.announcementBar {
+    background: black;
+    border-bottom: 2px solid var(--color-brand-lime);
+    padding: 8px 16px 10px;
+    text-align: center;
+}
+
+.announcementText {
+    font-family: var(--font-inter);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-brand-lime);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    line-height: 16px;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.main {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}

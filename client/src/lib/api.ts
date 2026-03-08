@@ -1,6 +1,8 @@
 import {
+    AdminOrder,
     ApiResponse,
     AuthUser,
+    BackendAdminOrder,
     BackendCart,
     BackendCartItem,
     BackendOrder,
@@ -8,6 +10,7 @@ import {
     LoginResponse,
     Order,
     OrderItem,
+    OrderStatus,
     Product,
     RegisterPayload,
 } from './types';
@@ -86,6 +89,40 @@ export async function fetchProductById(id: string): Promise<Product | null> {
     } catch {
         return null;
     }
+}
+
+/* ===== Admin product functions ===== */
+
+export async function deleteProduct(id: number): Promise<void> {
+    const res = await authFetch(`${BASE_URL}/products/${id}`, {
+        method: 'DELETE',
+    });
+
+    if (!res.ok) {
+        const json = await res.json();
+        throw new Error(json.message || 'Erro ao excluir produto');
+    }
+}
+
+export async function updateProduct(
+    id: number,
+    data: Partial<Pick<Product, 'name' | 'description' | 'price' | 'stock' | 'game' | 'cardType' | 'rarity' | 'image' | 'edition'>>
+): Promise<Product> {
+    const res = await authFetch(`${BASE_URL}/products/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+    });
+
+    const json: ApiResponse<Product> = await res.json();
+    if (!res.ok || !json.success) {
+        throw new Error(json.message || 'Erro ao atualizar produto');
+    }
+
+    return {
+        ...json.data,
+        price: Number(json.data.price),
+        oldPrice: json.data.oldPrice ? Number(json.data.oldPrice) : undefined,
+    };
 }
 
 /* ===== Auth functions ===== */
@@ -257,6 +294,7 @@ function mapBackendOrder(order: BackendOrder): Order {
             game: item.product.game,
             cardType: item.product.cardType,
             rarity: item.product.rarity,
+            edition: item.product.edition,
         },
     }));
 
@@ -266,12 +304,27 @@ function mapBackendOrder(order: BackendOrder): Order {
         totalPrice: Number(order.totalPrice),
         status: order.status,
         createdAt: order.createdAt,
+        shippingAddress: order.shippingAddress,
         isNew: hoursDiff < 24,
         items,
     };
 }
 
 /* ===== Order functions ===== */
+
+export async function fetchOrderById(id: string): Promise<Order | null> {
+    try {
+        const res = await authFetch(`${BASE_URL}/orders/${id}`);
+        if (!res.ok) return null;
+
+        const json: ApiResponse<BackendOrder> = await res.json();
+        if (!json.success) return null;
+
+        return mapBackendOrder(json.data);
+    } catch {
+        return null;
+    }
+}
 
 export async function fetchOrders(): Promise<Order[]> {
     const res = await authFetch(`${BASE_URL}/orders`);
@@ -298,4 +351,58 @@ export async function createOrder(shippingAddress: string): Promise<Order> {
     }
 
     return mapBackendOrder(json.data);
+}
+
+/* ===== Admin Order functions ===== */
+
+function mapBackendAdminOrder(order: BackendAdminOrder): AdminOrder {
+    return {
+        ...mapBackendOrder(order),
+        user: order.user,
+    };
+}
+
+export async function fetchAllOrders(status?: OrderStatus): Promise<AdminOrder[]> {
+    const params = new URLSearchParams();
+    if (status) params.set('status', status);
+
+    const url = `${BASE_URL}/orders/all${params.toString() ? `?${params}` : ''}`;
+    const res = await authFetch(url);
+
+    if (!res.ok) {
+        throw new Error('Erro ao buscar pedidos');
+    }
+
+    const json: ApiResponse<BackendAdminOrder[]> = await res.json();
+    if (!json.success) throw new Error(json.message || 'Erro ao buscar pedidos');
+
+    return json.data.map(mapBackendAdminOrder);
+}
+
+export async function updateOrderStatus(
+    id: number,
+    status: OrderStatus
+): Promise<AdminOrder> {
+    const res = await authFetch(`${BASE_URL}/orders/${id}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+    });
+
+    const json: ApiResponse<BackendAdminOrder> = await res.json();
+    if (!res.ok || !json.success) {
+        throw new Error(json.message || 'Erro ao atualizar status');
+    }
+
+    return mapBackendAdminOrder(json.data);
+}
+
+export async function deleteOrder(id: number): Promise<void> {
+    const res = await authFetch(`${BASE_URL}/orders/${id}`, {
+        method: 'DELETE',
+    });
+
+    if (!res.ok) {
+        const json = await res.json();
+        throw new Error(json.message || 'Erro ao excluir pedido');
+    }
 }

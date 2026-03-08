@@ -31,6 +31,25 @@ export const ORDER_STATUS_CONFIG: Record<
 
 export const ORDERS_PER_PAGE = 5;
 
+export const VALID_STATUS_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
+    PENDING: ['PROCESSING', 'CANCELLED'],
+    PROCESSING: ['SHIPPED', 'CANCELLED'],
+    SHIPPED: ['DELIVERED'],
+    DELIVERED: [],
+    CANCELLED: [],
+};
+
+export const ADMIN_ORDER_STATUS_CONFIG: Record<
+    OrderStatus,
+    { label: string; color: string; bg: string }
+> = {
+    PENDING: { label: 'PENDENTE', color: '#854d0e', bg: '#fde047' },
+    PROCESSING: { label: 'PROCESSANDO', color: '#1e40af', bg: '#60a5fa' },
+    SHIPPED: { label: 'ENVIADO', color: '#6b21a8', bg: '#c084fc' },
+    DELIVERED: { label: 'ENTREGUE', color: '#166534', bg: '#4ade80' },
+    CANCELLED: { label: 'CANCELADO', color: '#991b1b', bg: '#ef4444' },
+};
+
 export const MOCK_RELATED_PRODUCTS: Product[] = [
     {
         id: 101,

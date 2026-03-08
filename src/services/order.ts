@@ -138,6 +138,9 @@ class OrderService {
                         },
                     },
                     include: {
+                        user: {
+                            select: { name: true, email: true },
+                        },
                         items: {
                             include: {
                                 product: true,

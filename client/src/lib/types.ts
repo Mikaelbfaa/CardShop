@@ -54,6 +54,7 @@ export interface OrderItem {
         game: 'mtg' | 'yugioh';
         cardType: string;
         rarity?: string;
+        edition?: string;
     };
 }
 
@@ -63,6 +64,7 @@ export interface Order {
     totalPrice: number;
     status: OrderStatus;
     createdAt: string;
+    shippingAddress?: string;
     isNew?: boolean;
     items: OrderItem[];
 }
@@ -120,6 +122,7 @@ export interface BackendOrderItem {
         game: 'mtg' | 'yugioh';
         cardType: string;
         rarity?: string;
+        edition?: string;
     };
 }
 
@@ -130,4 +133,13 @@ export interface BackendOrder {
     createdAt: string;
     shippingAddress?: string;
     items: BackendOrderItem[];
+}
+
+export interface BackendAdminOrder extends BackendOrder {
+    userId: number;
+    user: { name: string; email: string };
+}
+
+export interface AdminOrder extends Order {
+    user: { name: string; email: string };
 }

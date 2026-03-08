@@ -27,3 +27,14 @@ export function formatOrderDate(dateString: string): string {
     ];
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
+
+export function formatOrderDateFull(dateString: string): string {
+    const date = new Date(dateString);
+    const monthsFull = [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro',
+    ];
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `Realizado em ${date.getDate()} de ${monthsFull[date.getMonth()]} de ${date.getFullYear()} às ${hours}:${minutes}`;
+}

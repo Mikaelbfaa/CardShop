@@ -29,10 +29,16 @@ export interface CreateOrderDTO {
 }
 
 /**
- * Tipo de pedido com itens e produtos incluídos.
+ * Tipo de pedido com itens, produtos e dados do usuário.
  */
 export type OrderWithItems = Prisma.OrderGetPayload<{
     include: {
+        user: {
+            select: {
+                name: true;
+                email: true;
+            };
+        };
         items: {
             include: {
                 product: true;
@@ -65,6 +71,9 @@ class OrderRepository {
         return prisma.order.findMany({
             where,
             include: {
+                user: {
+                    select: { name: true, email: true },
+                },
                 items: {
                     include: {
                         product: true,
@@ -86,6 +95,9 @@ class OrderRepository {
         return prisma.order.findUnique({
             where: { id },
             include: {
+                user: {
+                    select: { name: true, email: true },
+                },
                 items: {
                     include: {
                         product: true,
@@ -104,6 +116,9 @@ class OrderRepository {
         return prisma.order.findMany({
             where: { userId },
             include: {
+                user: {
+                    select: { name: true, email: true },
+                },
                 items: {
                     include: {
                         product: true,
@@ -136,6 +151,9 @@ class OrderRepository {
                 },
             },
             include: {
+                user: {
+                    select: { name: true, email: true },
+                },
                 items: {
                     include: {
                         product: true,
@@ -162,6 +180,9 @@ class OrderRepository {
             where: { id },
             data: { status },
             include: {
+                user: {
+                    select: { name: true, email: true },
+                },
                 items: {
                     include: {
                         product: true,
