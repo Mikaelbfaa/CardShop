@@ -240,3 +240,24 @@
 .logoutButton:hover {
     color: var(--color-brand-pink);
 }
+
+/* Admin button */
+.adminButton {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--color-brand-lime);
+    border: 2px solid black;
+    box-shadow: 2px 2px 0px 0px black;
+    font-family: var(--font-archivo-black);
+    font-size: 12px;
+    color: black;
+    text-decoration: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.adminButton:hover {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px 0px black;
+}

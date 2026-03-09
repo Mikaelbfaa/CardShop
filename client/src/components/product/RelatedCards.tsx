@@ -84,7 +84,7 @@ export default function RelatedCards({ products }: RelatedCardsProps) {
                                         )}
                                     </div>
                                     <div className={styles.cardAddBtn}>
-                                        <div className={styles.cardAddBtnIcon} />
+                                        <span className={styles.cardAddBtnIcon}>+</span>
                                     </div>
                                 </div>
                             </div>

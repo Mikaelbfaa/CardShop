@@ -6,90 +6,25 @@ import Image from 'next/image';
 import { fetchProducts, deleteProduct, updateProduct } from '@/lib/api';
 import { formatPrice, getGameLabel } from '@/lib/utils';
 import type { Product } from '@/lib/types';
+import {
+    Plus,
+    TrendingUp,
+    AlertTriangle,
+    Search,
+    SlidersHorizontal,
+    ChevronDown,
+    Pencil,
+    Trash2,
+    ChevronLeft,
+    ChevronRight,
+    X,
+} from 'lucide-react';
 import styles from './Products.module.css';
 
 /* ===== Constants ===== */
 
 const LOW_STOCK_THRESHOLD = 5;
 const ITEMS_PER_PAGE = 10;
-
-/* ===== Inline Icons ===== */
-
-const PlusIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-        <line x1="12" y1="5" x2="12" y2="19" />
-        <line x1="5" y1="12" x2="19" y2="12" />
-    </svg>
-);
-
-const TrendUpIcon = () => (
-    <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="13 1 7.5 6.5 4.5 3.5 1 7" />
-        <polyline points="9 1 13 1 13 5" />
-    </svg>
-);
-
-const AlertIcon = () => (
-    <svg width="15" height="13" viewBox="0 0 15 13" fill="none" stroke="#dc2626" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M6.57 1.5l-5.5 9.5a1 1 0 00.87 1.5h11a1 1 0 00.87-1.5l-5.5-9.5a1 1 0 00-1.74 0z" />
-        <line x1="7.44" y1="5" x2="7.44" y2="7.5" />
-        <line x1="7.44" y1="10" x2="7.45" y2="10" />
-    </svg>
-);
-
-const SearchIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-);
-
-const FilterIcon = () => (
-    <svg width="12" height="10" viewBox="0 0 12 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-        <line x1="0" y1="2" x2="12" y2="2" />
-        <line x1="2" y1="5" x2="10" y2="5" />
-        <line x1="4" y1="8" x2="8" y2="8" />
-    </svg>
-);
-
-const ChevronDownIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="6 9 12 15 18 9" />
-    </svg>
-);
-
-const EditIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-    </svg>
-);
-
-const TrashIcon = () => (
-    <svg width="14" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="3 6 5 6 21 6" />
-        <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-    </svg>
-);
-
-const ChevronLeftIcon = () => (
-    <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="6 1 1 6 6 11" />
-    </svg>
-);
-
-const ChevronRightIcon = () => (
-    <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="2 1 7 6 2 11" />
-    </svg>
-);
-
-const CloseIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-);
 
 /* ===== Helpers ===== */
 
@@ -214,7 +149,7 @@ function EditModal({
                 <div className={styles.modalHeader}>
                     <h2 className={styles.modalTitle}>Editar Produto</h2>
                     <button className={styles.modalClose} onClick={onClose}>
-                        <CloseIcon />
+                        <X size={20} />
                     </button>
                 </div>
                 <form onSubmit={handleSubmit} className={styles.modalBody}>
@@ -309,7 +244,7 @@ function DeleteModal({
                 <div className={styles.modalHeader}>
                     <h2 className={styles.modalTitle}>Excluir Produto</h2>
                     <button className={styles.modalClose} onClick={onClose}>
-                        <CloseIcon />
+                        <X size={20} />
                     </button>
                 </div>
                 <div className={styles.modalBody}>
@@ -442,7 +377,7 @@ export default function AdminProductsPage() {
                 </div>
                 <div className={styles.addButtonWrap}>
                     <button className={styles.addButton}>
-                        <PlusIcon />
+                        <Plus size={20} strokeWidth={3} />
                         <span>ADICIONAR CARTA</span>
                     </button>
                 </div>
@@ -456,7 +391,7 @@ export default function AdminProductsPage() {
                     accentColor="#8b5cf6"
                     footer={
                         <span className={styles.statPositive}>
-                            <TrendUpIcon /> {products.length} produtos cadastrados
+                            <TrendingUp size={14} color="#16a34a" /> {products.length} produtos cadastrados
                         </span>
                     }
                 />
@@ -475,7 +410,7 @@ export default function AdminProductsPage() {
                     footer={
                         lowStockCount > 0 ? (
                             <span className={styles.statNegative}>
-                                <AlertIcon /> Requer atenção
+                                <AlertTriangle size={14} color="#dc2626" /> Requer atenção
                             </span>
                         ) : (
                             <span className={styles.statNeutral}>Tudo em ordem</span>
@@ -488,7 +423,7 @@ export default function AdminProductsPage() {
             <div className={styles.toolbar}>
                 <div className={styles.searchWrap}>
                     <span className={styles.searchIcon}>
-                        <SearchIcon />
+                        <Search size={18} color="#6b7280" />
                     </span>
                     <input
                         type="text"
@@ -510,7 +445,7 @@ export default function AdminProductsPage() {
                             <option value="mtg">MTG</option>
                         </select>
                         <span className={styles.selectChevron}>
-                            <ChevronDownIcon />
+                            <ChevronDown size={16} color="#6b7280" />
                         </span>
                     </div>
                     <div className={styles.selectWrap}>
@@ -525,7 +460,7 @@ export default function AdminProductsPage() {
                             <option value="out_of_stock">Esgotado</option>
                         </select>
                         <span className={styles.selectChevron}>
-                            <ChevronDownIcon />
+                            <ChevronDown size={16} color="#6b7280" />
                         </span>
                     </div>
                     <button
@@ -536,7 +471,7 @@ export default function AdminProductsPage() {
                             setStatusFilter('');
                         }}
                     >
-                        <FilterIcon />
+                        <SlidersHorizontal size={12} />
                         <span>Limpar</span>
                     </button>
                 </div>
@@ -659,7 +594,7 @@ export default function AdminProductsPage() {
                                                         setEditProduct(product)
                                                     }
                                                 >
-                                                    <EditIcon />
+                                                    <Pencil size={18} />
                                                 </button>
                                                 <button
                                                     className={`${styles.actionBtn} ${styles.actionBtnDanger}`}
@@ -668,7 +603,7 @@ export default function AdminProductsPage() {
                                                         setDeleteTarget(product)
                                                     }
                                                 >
-                                                    <TrashIcon />
+                                                    <Trash2 size={16} />
                                                 </button>
                                             </td>
                                         </tr>
@@ -692,7 +627,7 @@ export default function AdminProductsPage() {
                             disabled={safePage <= 1}
                             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                         >
-                            <ChevronLeftIcon />
+                            <ChevronLeft size={14} />
                         </button>
                         {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                             let pageNum: number;
@@ -720,7 +655,7 @@ export default function AdminProductsPage() {
                             disabled={safePage >= totalPages}
                             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                         >
-                            <ChevronRightIcon />
+                            <ChevronRight size={14} />
                         </button>
                     </div>
                 </div>

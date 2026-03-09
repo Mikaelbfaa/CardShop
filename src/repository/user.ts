@@ -85,6 +85,31 @@ class UserRepository {
     }
 
     /**
+     * Buscar todos os usuários (sem senha).
+     * @returns Lista de usuários.
+     */
+    async findAll(): Promise<Omit<User, 'password'>[]> {
+        return prisma.user.findMany({
+            select: this.userSelectFields,
+            orderBy: { createdAt: 'desc' },
+        }) as Promise<Omit<User, 'password'>[]>;
+    }
+
+    /**
+     * Atualizar role do usuário.
+     * @param id - ID do usuário.
+     * @param role - Novo role.
+     * @returns Usuário atualizado (sem senha).
+     */
+    async updateRole(id: number, role: Role): Promise<Omit<User, 'password'>> {
+        return prisma.user.update({
+            where: { id },
+            data: { role },
+            select: this.userSelectFields,
+        }) as Promise<Omit<User, 'password'>>;
+    }
+
+    /**
      * Deletar usuário.
      * @param id - ID do usuário.
      * @returns Usuário deletado (sem senha).

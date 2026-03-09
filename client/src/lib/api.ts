@@ -1,5 +1,6 @@
 import {
     AdminOrder,
+    AdminUser,
     ApiResponse,
     AuthUser,
     BackendAdminOrder,
@@ -404,5 +405,48 @@ export async function deleteOrder(id: number): Promise<void> {
     if (!res.ok) {
         const json = await res.json();
         throw new Error(json.message || 'Erro ao excluir pedido');
+    }
+}
+
+/* ===== Admin User functions ===== */
+
+export async function fetchAllUsers(): Promise<AdminUser[]> {
+    const res = await authFetch(`${BASE_URL}/users`);
+
+    if (!res.ok) {
+        throw new Error('Erro ao buscar usuários');
+    }
+
+    const json: ApiResponse<AdminUser[]> = await res.json();
+    if (!json.success) throw new Error(json.message || 'Erro ao buscar usuários');
+
+    return json.data;
+}
+
+export async function updateUserRole(
+    id: number,
+    role: 'CUSTOMER' | 'ADMIN'
+): Promise<AdminUser> {
+    const res = await authFetch(`${BASE_URL}/users/${id}/role`, {
+        method: 'PATCH',
+        body: JSON.stringify({ role }),
+    });
+
+    const json: ApiResponse<AdminUser> = await res.json();
+    if (!res.ok || !json.success) {
+        throw new Error(json.message || 'Erro ao atualizar role');
+    }
+
+    return json.data;
+}
+
+export async function deleteUser(id: number): Promise<void> {
+    const res = await authFetch(`${BASE_URL}/users/${id}`, {
+        method: 'DELETE',
+    });
+
+    if (!res.ok) {
+        const json = await res.json();
+        throw new Error(json.message || 'Erro ao excluir usuário');
     }
 }

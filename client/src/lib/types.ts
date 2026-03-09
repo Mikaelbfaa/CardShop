@@ -143,3 +143,17 @@ export interface BackendAdminOrder extends BackendOrder {
 export interface AdminOrder extends Order {
     user: { name: string; email: string };
 }
+
+/* ===== Admin User Types ===== */
+
+export interface AdminUser {
+    id: number;
+    name: string;
+    email: string;
+    cpf: string;
+    phone: string | null;
+    address: string | null;
+    role: 'CUSTOMER' | 'ADMIN';
+    createdAt: string;
+    updatedAt: string;
+}

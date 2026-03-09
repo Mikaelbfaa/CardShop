@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { Product } from '@/lib/types';
 import { formatPrice, getGameLabel } from '@/lib/utils';
-import { MOCK_RELATED_PRODUCTS } from '@/lib/constants';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 import RelatedCards from './RelatedCards';
@@ -14,15 +13,10 @@ import styles from './ProductDetail.module.css';
 
 interface ProductDetailProps {
     product: Product;
+    relatedProducts?: Product[];
 }
 
-const DETAIL_THUMBS = [
-    '/images/cards/detail/thumb-1.png',
-    '/images/cards/detail/thumb-2.png',
-    '/images/cards/detail/thumb-3.png',
-];
-
-export default function ProductDetail({ product }: ProductDetailProps) {
+export default function ProductDetail({ product, relatedProducts = [] }: ProductDetailProps) {
     const mainImage = product.fullImage || product.image;
     const [selectedImage, setSelectedImage] = useState(mainImage);
     const [quantity, setQuantity] = useState(1);
@@ -40,10 +34,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     const thumbnails = [
         mainImage,
         ...(product.image !== mainImage ? [product.image] : []),
-        ...DETAIL_THUMBS,
     ];
-
-    const relatedProducts = MOCK_RELATED_PRODUCTS.filter((p) => p.game === product.game);
 
     function handleQuantityChange(delta: number) {
         setQuantity((prev) => {

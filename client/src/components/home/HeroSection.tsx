@@ -57,7 +57,7 @@ export default function HeroSection({ products = [] }: HeroSectionProps) {
     const renderDeck = () => {
         if (!hasProducts) {
             return (
-                <div className={`${styles.mainFrame} comic-outline-4 comic-shadow`}>
+                <div className={styles.mainFrame}>
                     <div className={styles.mainFrameInner}>
                         <Image
                             src="/images/cards/utopia-sprawl.jpg"
@@ -95,7 +95,7 @@ export default function HeroSection({ products = [] }: HeroSectionProps) {
                                 tabIndex={isTop && !isExiting ? 0 : -1}
                             >
                                 <div
-                                    className={`${styles.mainFrame} comic-outline-4 comic-shadow`}
+                                    className={styles.mainFrame}
                                 >
                                     <div className={styles.mainFrameInner}>
                                         <Image
@@ -175,10 +175,6 @@ export default function HeroSection({ products = [] }: HeroSectionProps) {
 
                     <div className={`${styles.priceSticker} comic-outline comic-shadow`}>
                         <span className={styles.priceStickerText}>{currentPrice}</span>
-                    </div>
-
-                    <div className={styles.hotBadge}>
-                        <span className={styles.hotBadgeText}>HOT</span>
                     </div>
 
                     <Image

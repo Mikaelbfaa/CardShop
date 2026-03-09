@@ -1,31 +1,33 @@
 'use client';
 
 import { use, useRef, useReducer } from 'react';
-import { fetchProductById } from '@/lib/api';
+import { fetchProductById, fetchProducts } from '@/lib/api';
 import ProductDetail from '@/components/product/ProductDetail';
 import type { Product } from '@/lib/types';
 
 interface State {
     product: Product | null;
+    allProducts: Product[];
     loading: boolean;
 }
 
-type Action = { type: 'SUCCESS'; product: Product | null };
+type Action = { type: 'SUCCESS'; product: Product | null; allProducts: Product[] };
 
 function reducer(_state: State, action: Action): State {
-    return { product: action.product, loading: false };
+    return { product: action.product, allProducts: action.allProducts, loading: false };
 }
 
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
-    const [state, dispatch] = useReducer(reducer, { product: null, loading: true });
-    const fetchRef = useRef<Promise<Product | null> | null>(null);
+    const [state, dispatch] = useReducer(reducer, { product: null, allProducts: [], loading: true });
+    const fetchRef = useRef<Promise<void> | null>(null);
 
     if (fetchRef.current == null) {
-        fetchRef.current = fetchProductById(id).then((product) => {
-            dispatch({ type: 'SUCCESS', product });
-            return product;
-        });
+        fetchRef.current = Promise.all([fetchProductById(id), fetchProducts()]).then(
+            ([product, allProducts]) => {
+                dispatch({ type: 'SUCCESS', product, allProducts });
+            }
+        );
     }
 
     if (state.loading) {
@@ -71,5 +73,10 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         );
     }
 
-    return <ProductDetail product={state.product} />;
+    const relatedProducts = state.allProducts
+        .filter((p) => p.id !== state.product!.id && p.game === state.product!.game)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 4);
+
+    return <ProductDetail product={state.product} relatedProducts={relatedProducts} />;
 }

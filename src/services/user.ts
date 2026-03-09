@@ -1,10 +1,46 @@
 import UserRepository, { CreateUserInput } from '../repository/user';
-import { User } from '@prisma/client';
+import { User, Role } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET, JWT_EXPIRES_IN } from '../config/server';
 
 class UserService {
+    /**
+     * Retorna todos os usuários (admin)
+     */
+    async getAllUsers(): Promise<Omit<User, 'password'>[]> {
+        try {
+            return await UserRepository.findAll();
+        } catch (error) {
+            throw new Error(`Erro ao buscar usuários: ${(error as Error).message}`);
+        }
+    }
+
+    /**
+     * Atualiza o role de um usuário (admin)
+     */
+    async updateUserRole(userId: number, role: Role): Promise<Omit<User, 'password'>> {
+        try {
+            if (!userId) {
+                throw new Error('userId é obrigatório');
+            }
+
+            const validRoles: Role[] = ['CUSTOMER', 'ADMIN'];
+            if (!validRoles.includes(role)) {
+                throw new Error('Role inválido');
+            }
+
+            const existingUser = await UserRepository.findById(userId);
+            if (!existingUser) {
+                throw new Error('Usuário não encontrado');
+            }
+
+            return await UserRepository.updateRole(userId, role);
+        } catch (error) {
+            throw new Error(`Erro ao atualizar role: ${(error as Error).message}`);
+        }
+    }
+
     /**
      * Cadastra um novo usuário no sistema
      */

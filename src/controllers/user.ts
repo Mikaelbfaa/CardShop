@@ -158,6 +158,62 @@ export const logoutUser = async (_req: Request, res: Response): Promise<Response
 };
 
 /**
+ * Retorna todos os usuários (admin).
+ */
+export const getAllUsers = async (_req: Request, res: Response): Promise<Response> => {
+    try {
+        const users = await UserService.getAllUsers();
+
+        return res.status(200).json({
+            success: true,
+            data: users,
+            count: users.length,
+        });
+    } catch {
+        return res.status(500).json({
+            success: false,
+            message: 'Erro ao buscar usuários',
+        });
+    }
+};
+
+/**
+ * Atualiza o role de um usuário (admin).
+ */
+export const updateUserRole = async (req: Request, res: Response): Promise<Response> => {
+    const userId = parseInt(req.params.id, 10);
+    const { role } = req.body;
+
+    if (isNaN(userId)) {
+        return res.status(400).json({
+            success: false,
+            message: 'ID de usuário inválido',
+        });
+    }
+
+    try {
+        const updatedUser = await UserService.updateUserRole(userId, role);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Role atualizado com sucesso',
+            data: updatedUser,
+        });
+    } catch (error: unknown) {
+        const err = error as Error;
+        const status = err.message.includes('não encontrado')
+            ? 404
+            : err.message.includes('inválido')
+              ? 400
+              : 500;
+        return res.status(status).json({
+            success: false,
+            message: err.message || 'Erro interno ao atualizar role',
+        });
+    }
+};
+
+/**
  * Deleta um usuário pelo ID (admin).
  */
 export const deleteUser = async (req: Request, res: Response): Promise<Response> => {

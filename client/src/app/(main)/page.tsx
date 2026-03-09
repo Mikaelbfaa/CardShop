@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useRef, useReducer } from 'react';
+import { Suspense, useState, useRef, useReducer, useMemo } from 'react';
+import { useSearchParams } from 'next/navigation';
 import HeroSection from '@/components/home/HeroSection';
 import FilterBar from '@/components/home/FilterBar';
 import ProductGrid from '@/components/home/ProductGrid';
@@ -24,7 +25,10 @@ function productsReducer(_state: ProductsState, action: ProductsAction): Product
     }
 }
 
-export default function HomePage() {
+function HomeContent() {
+    const searchParams = useSearchParams();
+    const gameFilter = searchParams.get('game');
+    const isLancamentos = searchParams.get('view') === 'lancamentos';
     const [activeFilter, setActiveFilter] = useState<FilterType>('TODOS');
     const [state, dispatch] = useReducer(productsReducer, { products: [], loading: true });
     const initialFetch = useRef<Promise<Product[]> | null>(null);
@@ -46,11 +50,35 @@ export default function HomePage() {
         dispatch({ type: 'FETCH_SUCCESS', products: data });
     };
 
+    const shuffledProducts = useMemo(() => {
+        const shuffled = [...state.products];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.products.length]);
+
+    const displayedProducts = useMemo(() => {
+        if (gameFilter) return state.products.filter((p) => p.game === gameFilter);
+        if (isLancamentos) return shuffledProducts.slice(0, 8);
+        return state.products;
+    }, [state.products, shuffledProducts, gameFilter, isLancamentos]);
+
     return (
         <>
-            <HeroSection products={state.products} />
+            <HeroSection products={displayedProducts} />
             <FilterBar activeFilter={activeFilter} onFilterChange={handleFilterChange} />
-            <ProductGrid products={state.products} loading={state.loading} />
+            <ProductGrid products={displayedProducts} loading={state.loading} />
         </>
+    );
+}
+
+export default function HomePage() {
+    return (
+        <Suspense>
+            <HomeContent />
+        </Suspense>
     );
 }

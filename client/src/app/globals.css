@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 /* ===== Design Tokens ===== */
 :root {
     /* Brand Colors */

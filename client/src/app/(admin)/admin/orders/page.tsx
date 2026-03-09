@@ -11,75 +11,22 @@ import {
     ADMIN_ORDER_STATUS_CONFIG,
 } from '@/lib/constants';
 import type { AdminOrder, OrderStatus } from '@/lib/types';
+import {
+    Search,
+    SlidersHorizontal,
+    ChevronDown,
+    Eye,
+    Download,
+    Trash2,
+    ChevronLeft,
+    ChevronRight,
+    X,
+} from 'lucide-react';
 import styles from './Orders.module.css';
 
 /* ===== Constants ===== */
 
 const ORDERS_PER_PAGE = 5;
-
-/* ===== Inline Icons ===== */
-
-const SearchIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-    </svg>
-);
-
-const FilterIcon = () => (
-    <svg width="12" height="10" viewBox="0 0 12 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-        <line x1="0" y1="2" x2="12" y2="2" />
-        <line x1="2" y1="5" x2="10" y2="5" />
-        <line x1="4" y1="8" x2="8" y2="8" />
-    </svg>
-);
-
-const ChevronDownIcon = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="6 9 12 15 18 9" />
-    </svg>
-);
-
-const EyeIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-        <circle cx="12" cy="12" r="3" />
-    </svg>
-);
-
-const DownloadIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-        <polyline points="7 10 12 15 17 10" />
-        <line x1="12" y1="15" x2="12" y2="3" />
-    </svg>
-);
-
-const TrashIcon = () => (
-    <svg width="14" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="3 6 5 6 21 6" />
-        <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
-    </svg>
-);
-
-const ChevronLeftIcon = () => (
-    <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="6 1 1 6 6 11" />
-    </svg>
-);
-
-const ChevronRightIcon = () => (
-    <svg width="8" height="12" viewBox="0 0 8 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="2 1 7 6 2 11" />
-    </svg>
-);
-
-const CloseIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-);
 
 /* ===== Status Dropdown ===== */
 
@@ -151,7 +98,7 @@ function DeleteModal({
                 <div className={styles.modalHeader}>
                     <h2 className={styles.modalTitle}>Excluir Pedido</h2>
                     <button className={styles.modalClose} onClick={onClose}>
-                        <CloseIcon />
+                        <X size={20} />
                     </button>
                 </div>
                 <div className={styles.modalBody}>
@@ -313,7 +260,7 @@ export default function AdminOrdersPage() {
                     </p>
                 </div>
                 <button className={styles.exportButton} onClick={handleExportCSV}>
-                    <DownloadIcon />
+                    <Download size={18} />
                     <span>EXPORTAR CSV</span>
                 </button>
             </div>
@@ -323,7 +270,7 @@ export default function AdminOrdersPage() {
                 <span className={styles.toolbarDecoration} />
                 <div className={styles.searchWrap}>
                     <span className={styles.searchIcon}>
-                        <SearchIcon />
+                        <Search size={18} color="#6b7280" />
                     </span>
                     <input
                         type="text"
@@ -347,7 +294,7 @@ export default function AdminOrdersPage() {
                             ))}
                         </select>
                         <span className={styles.selectChevron}>
-                            <ChevronDownIcon />
+                            <ChevronDown size={16} color="#6b7280" />
                         </span>
                     </div>
                     <div className={styles.selectWrap}>
@@ -363,7 +310,7 @@ export default function AdminOrdersPage() {
                             <option value="quarter">Últimos 90 dias</option>
                         </select>
                         <span className={styles.selectChevron}>
-                            <ChevronDownIcon />
+                            <ChevronDown size={16} color="#6b7280" />
                         </span>
                     </div>
                     <button
@@ -374,7 +321,7 @@ export default function AdminOrdersPage() {
                             setDateFilter('');
                         }}
                     >
-                        <FilterIcon />
+                        <SlidersHorizontal size={12} />
                         <span>Limpar</span>
                     </button>
                 </div>
@@ -472,14 +419,14 @@ export default function AdminOrdersPage() {
                                                         router.push(`/orders/${order.id}`)
                                                     }
                                                 >
-                                                    <EyeIcon />
+                                                    <Eye size={18} />
                                                 </button>
                                                 <button
                                                     className={`${styles.actionBtn} ${styles.actionBtnDanger}`}
                                                     title="Excluir"
                                                     onClick={() => setDeleteTarget(order)}
                                                 >
-                                                    <TrashIcon />
+                                                    <Trash2 size={16} />
                                                 </button>
                                             </td>
                                         </tr>
@@ -506,7 +453,7 @@ export default function AdminOrdersPage() {
                             disabled={safePage <= 1}
                             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                         >
-                            <ChevronLeftIcon />
+                            <ChevronLeft size={14} />
                         </button>
                         {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
                             let pageNum: number;
@@ -536,7 +483,7 @@ export default function AdminOrdersPage() {
                                 setCurrentPage((p) => Math.min(totalPages, p + 1))
                             }
                         >
-                            <ChevronRightIcon />
+                            <ChevronRight size={14} />
                         </button>
                     </div>
                 </div>

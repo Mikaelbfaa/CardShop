@@ -5,12 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
+import { LogOut, Settings } from 'lucide-react';
 import styles from './Navbar.module.css';
 
 const NAV_LINKS = [
-    { label: 'LANÇAMENTOS', href: '/' },
-    { label: 'YU-GI-OH!', href: '/' },
-    { label: 'MAGIC: THE GATHERING', href: '/' },
+    { label: 'LANÇAMENTOS', href: '/?view=lancamentos#cards' },
+    { label: 'YU-GI-OH!', href: '/?game=yugioh#cards' },
+    { label: 'MAGIC: THE GATHERING', href: '/?game=mtg#cards' },
 ];
 
 export default function Navbar() {
@@ -20,6 +21,7 @@ export default function Navbar() {
 
     // Durante loading, renderiza como deslogado para evitar hydration mismatch
     const showAuth = !loading && isAuthenticated;
+    const isAdmin = showAuth && user?.role === 'ADMIN';
     const userInitial = user?.name?.charAt(0).toUpperCase() || '?';
 
     const cartBadgeClass = [
@@ -57,6 +59,12 @@ export default function Navbar() {
 
                 {/* Right Icons */}
                 <div className={styles.desktopIcons}>
+                    {isAdmin && (
+                        <Link href="/admin/users" className={styles.adminButton} aria-label="Painel Admin">
+                            <Settings size={16} />
+                            <span>ADMIN</span>
+                        </Link>
+                    )}
                     <button className={styles.iconButton} aria-label="Buscar">
                         <Image src="/icons/search.svg" alt="Buscar" width={20} height={20} />
                     </button>
@@ -77,11 +85,7 @@ export default function Navbar() {
                                 aria-label="Sair"
                                 title="Sair"
                             >
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                                    <polyline points="16,17 21,12 16,7" />
-                                    <line x1="21" x2="9" y1="12" y2="12" />
-                                </svg>
+                                <LogOut size={16} />
                             </button>
                         </div>
                     ) : (
@@ -127,6 +131,15 @@ export default function Navbar() {
                             {link.label}
                         </Link>
                     ))}
+                    {isAdmin && (
+                        <Link
+                            href="/admin/users"
+                            className={`${styles.navLinkBase} ${styles.mobileNavLink}`}
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            PAINEL ADMIN
+                        </Link>
+                    )}
                     <div className={styles.mobileIcons}>
                         <button className={styles.iconButton} aria-label="Buscar">
                             <Image src="/icons/search.svg" alt="Buscar" width={20} height={20} />
@@ -150,11 +163,7 @@ export default function Navbar() {
                                     }}
                                     aria-label="Sair"
                                 >
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                                        <polyline points="16,17 21,12 16,7" />
-                                        <line x1="21" x2="9" y1="12" y2="12" />
-                                    </svg>
+                                    <LogOut size={16} />
                                 </button>
                             </>
                         ) : (

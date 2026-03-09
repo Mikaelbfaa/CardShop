@@ -132,6 +132,9 @@
 /* Card Info */
 .cardInfo {
     padding: 0 18px 18px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .cardName {
@@ -157,6 +160,7 @@
     justify-content: space-between;
     align-items: center;
     padding-top: 8px;
+    margin-top: auto;
 }
 
 .cardPriceGroup {
@@ -186,17 +190,21 @@
 }
 
 .cardAddBtn {
-    padding: 8px;
+    width: 32px;
+    height: 32px;
     background: black;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .cardAddBtnIcon {
-    width: 8px;
-    height: 8px;
-    background: white;
+    font-family: var(--font-inter);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    color: white;
 }
 
 /* ===== Responsive ===== */

@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { IdCard } from 'lucide-react';
 import styles from './Register.module.css';
 
 export default function RegisterPage() {
@@ -94,10 +96,7 @@ export default function RegisterPage() {
                         </label>
                         <div className={styles.inputWrapper}>
                             <span className={styles.inputIcon}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                    <circle cx="12" cy="7" r="4" />
-                                </svg>
+                                <Image src="/icons/user-filled.svg" alt="" width={16} height={16} />
                             </span>
                             <input
                                 id="name"
@@ -117,10 +116,7 @@ export default function RegisterPage() {
                         </label>
                         <div className={styles.inputWrapper}>
                             <span className={styles.inputIcon}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <rect width="20" height="16" x="2" y="4" rx="2" />
-                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                                </svg>
+                                <Image src="/icons/email-filled.svg" alt="" width={16} height={16} />
                             </span>
                             <input
                                 id="reg-email"
@@ -140,10 +136,7 @@ export default function RegisterPage() {
                         </label>
                         <div className={styles.inputWrapper}>
                             <span className={styles.inputIcon}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <rect width="20" height="14" x="2" y="5" rx="2" />
-                                    <line x1="2" x2="22" y1="10" y2="10" />
-                                </svg>
+                                <IdCard size={16} color="#9CA3AF" />
                             </span>
                             <input
                                 id="cpf"
@@ -163,10 +156,7 @@ export default function RegisterPage() {
                         </label>
                         <div className={styles.inputWrapper}>
                             <span className={styles.inputIcon}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                                </svg>
+                                <Image src="/icons/lock-filled.svg" alt="" width={16} height={16} />
                             </span>
                             <input
                                 id="reg-password"
@@ -186,9 +176,7 @@ export default function RegisterPage() {
                         </label>
                         <div className={styles.inputWrapper}>
                             <span className={styles.inputIcon}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
-                                </svg>
+                                <Image src="/icons/lock-reset-filled.svg" alt="" width={16} height={16} />
                             </span>
                             <input
                                 id="confirm-password"
@@ -225,21 +213,6 @@ export default function RegisterPage() {
                         {loading ? 'CRIANDO CONTA...' : 'CRIAR CONTA'}
                     </button>
                 </form>
-
-                <div className={styles.dividerSection}>
-                    <div className={styles.divider}>
-                        <span className={styles.dividerText}>Ou continue com</span>
-                    </div>
-
-                    <div className={styles.socialButtons}>
-                        <button className={styles.socialButton} type="button">
-                            <div className={styles.socialIcon} />
-                        </button>
-                        <button className={styles.socialButton} type="button">
-                            <div className={styles.socialIcon} />
-                        </button>
-                    </div>
-                </div>
 
                 <div className={styles.loginSection}>
                     <p className={styles.loginText}>

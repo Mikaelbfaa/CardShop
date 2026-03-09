@@ -28,7 +28,7 @@ build/
 *~
 /src/generated/prisma
 imgs/
-temp/
+assets/
 templates/
 
 # Coverage
