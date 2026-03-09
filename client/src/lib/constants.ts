@@ -1,4 +1,4 @@
-import { FilterType, OrderStatus, Product } from './types';
+import { FilterType, OrderStatus } from './types';
 
 export const FILTER_OPTIONS: { label: FilterType; cardType: string | null }[] = [
     { label: 'TODOS', cardType: null },
@@ -49,57 +49,3 @@ export const ADMIN_ORDER_STATUS_CONFIG: Record<
     DELIVERED: { label: 'ENTREGUE', color: '#166534', bg: '#4ade80' },
     CANCELLED: { label: 'CANCELADO', color: '#991b1b', bg: '#ef4444' },
 };
-
-export const MOCK_RELATED_PRODUCTS: Product[] = [
-    {
-        id: 101,
-        name: 'Dark Magician',
-        description: 'O mago supremo em termos de ataque e defesa.',
-        price: 89.9,
-        image: '/images/cards/detail/related-1.png',
-        game: 'yugioh',
-        cardType: 'MONSTER',
-        rarity: 'Ultra Rare',
-        cardSubtypes: 'Spellcaster',
-        stock: 12,
-        badge: 'NOVO',
-    },
-    {
-        id: 102,
-        name: 'Red-Eyes Black Dragon',
-        description: 'Um dragão feroz com um ataque mortal.',
-        price: 210.0,
-        oldPrice: 250.0,
-        image: '/images/cards/detail/related-2.png',
-        game: 'yugioh',
-        cardType: 'MONSTER',
-        rarity: 'Secret Rare',
-        cardSubtypes: 'Dragon',
-        stock: 5,
-        badge: 'PROMO',
-    },
-    {
-        id: 103,
-        name: 'Stardust Dragon',
-        description: 'Dragão synchro que protege suas cartas da destruição.',
-        price: 450.0,
-        image: '/images/cards/detail/related-3.png',
-        game: 'yugioh',
-        cardType: 'MONSTER',
-        rarity: 'Ghost Rare',
-        cardSubtypes: 'Synchro',
-        stock: 2,
-    },
-    {
-        id: 104,
-        name: 'Exodia the Forbidden',
-        description: 'Uma das cinco peças que garantem a vitória automática.',
-        price: 120.0,
-        image: '/images/cards/detail/related-4.png',
-        game: 'yugioh',
-        cardType: 'MONSTER',
-        rarity: 'Ultra Rare',
-        cardSubtypes: 'Spellcaster',
-        stock: 3,
-    },
-];
