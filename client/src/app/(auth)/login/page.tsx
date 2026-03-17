@@ -1,10 +1,19 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, useCallback, FormEvent } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import styles from './Login.module.css';
+
+const LOGIN_VARIANTS = [
+    { src: '/images/login1.jpg', color: '#c27c36', glow: 'rgba(194, 124, 54, 0.3)' },
+    { src: '/images/login2.jpg', color: '#1a5276', glow: 'rgba(26, 82, 118, 0.3)' },
+    { src: '/images/login3.jpg', color: '#7b2d8e', glow: 'rgba(123, 45, 142, 0.3)' },
+    { src: '/images/login4.jpg', color: '#8b1a1a', glow: 'rgba(139, 26, 26, 0.3)' },
+    { src: '/images/login5.jpg', color: '#2d6b30', glow: 'rgba(45, 107, 48, 0.3)' },
+];
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -13,6 +22,17 @@ export default function LoginPage() {
     const [loading, setLoading] = useState(false);
     const { login } = useAuth();
     const router = useRouter();
+    const [activeIndex, setActiveIndex] = useState(0);
+    const variant = LOGIN_VARIANTS[activeIndex];
+
+    const nextSlide = useCallback(() => {
+        setActiveIndex((prev) => (prev + 1) % LOGIN_VARIANTS.length);
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(nextSlide, 5000);
+        return () => clearInterval(interval);
+    }, [nextSlide]);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -50,7 +70,7 @@ export default function LoginPage() {
                                 de volta.
                             </h1>
                             <p className={styles.subtitle}>
-                                Entre para gerenciar sua coleção e batalhar.
+                                Entre para gerenciar e aumentar sua coleção
                             </p>
                         </div>
 
@@ -108,25 +128,45 @@ export default function LoginPage() {
                             </p>
                         </div>
 
-                        <div className={styles.socialProof}>
-                            <div className={styles.avatars}>
-                                <div className={styles.avatar} />
-                                <div className={styles.avatar} />
-                                <div className={styles.avatar} />
-                            </div>
-                            <span className={styles.socialText}>Junte-se a 12k+ duelistas</span>
-                        </div>
                     </div>
                 </div>
             </div>
 
             {/* Right Panel - Decorative */}
-            <div className={styles.rightPanel}>
-                <div className={styles.purpleBlur} />
-                <div className={styles.decorCard1} />
-                <div className={styles.decorCard2} />
-                <span className={styles.hotBadge}>HOT</span>
-                <span className={styles.rareDropBadge}>RARE DROP</span>
+            <div
+                className={styles.rightPanel}
+                style={{
+                    background: `linear-gradient(135deg, ${variant.color}15 0%, ${variant.color}30 50%, ${variant.color}10 100%)`,
+                }}
+            >
+                <div
+                    className={styles.colorBlur}
+                    style={{ background: variant.color }}
+                />
+                <div
+                    className={styles.colorBlurSecondary}
+                    style={{ background: variant.color }}
+                />
+                <div className={styles.decorCard} style={{ boxShadow: `12px 12px 0px ${variant.color}80` }}>
+                    {LOGIN_VARIANTS.map((v, i) => (
+                        <Image
+                            key={v.src}
+                            src={v.src}
+                            alt="Card art"
+                            width={531}
+                            height={1620}
+                            className={`${styles.cardImage} ${i === activeIndex ? styles.cardImageActive : ''}`}
+                            priority={i === 0}
+                        />
+                    ))}
+                </div>
+                <div className={styles.floatingBadgeTop} style={{ background: variant.color }}>
+                    PLANESWALKER
+                </div>
+                <div className={styles.floatingBadgeBottom}>
+                    NOVA COLEÇÃO
+                </div>
+                <div className={styles.decorDots} />
                 <div className={styles.limeStar} />
                 <div className={styles.marquee}>
                     <div className={`${styles.marqueeTrack} animate-marquee`}>

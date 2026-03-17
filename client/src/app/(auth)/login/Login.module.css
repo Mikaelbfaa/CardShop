@@ -4,7 +4,7 @@
     background: #f9fafb;
 }
 
-/* ===== Left Panel ===== */
+/*  Left Panel  */
 .leftPanel {
     width: 56%;
     background: white;
@@ -232,40 +232,8 @@
     color: #4b5563;
 }
 
-/* Social proof */
-.socialProof {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-top: 16px;
-}
 
-.avatars {
-    display: flex;
-}
-
-.avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 9999px;
-    border: 2px solid white;
-    background: #d1d5db;
-    margin-left: -8px;
-}
-
-.avatar:first-child {
-    margin-left: 0;
-}
-
-.socialText {
-    font-family: var(--font-inter);
-    font-size: 12px;
-    font-weight: 500;
-    color: #6b7280;
-    line-height: 16px;
-}
-
-/* ===== Right Panel ===== */
+/*  Right Panel  */
 .rightPanel {
     flex: 1;
     background: #f3f4f6;
@@ -274,75 +242,106 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background 1s ease;
 }
 
-.purpleBlur {
+.colorBlur {
     position: absolute;
-    width: 800px;
-    height: 800px;
-    background: #7c3aed;
+    width: 600px;
+    height: 600px;
     border-radius: 9999px;
-    filter: blur(200px);
-    opacity: 0.15;
+    filter: blur(180px);
+    opacity: 0.25;
+    top: 10%;
+    left: 10%;
+    transition: background 1s ease;
 }
 
-.decorCard1 {
+.colorBlurSecondary {
     position: absolute;
-    width: 320px;
-    height: 448px;
-    background: linear-gradient(180deg, #d89f5b 0%, #c27c36 100%);
-    border-radius: 8px;
-    outline: 4px solid black;
-    outline-offset: -4px;
-    box-shadow: 12px 12px 0px black;
-    transform: rotate(-6deg);
-}
-
-.decorCard2 {
-    position: absolute;
-    width: 288px;
+    width: 400px;
     height: 400px;
-    background: #111827;
+    border-radius: 9999px;
+    filter: blur(150px);
+    opacity: 0.15;
+    bottom: 10%;
+    right: 5%;
+    transition: background 1s ease;
+}
+
+.decorCard {
+    position: absolute;
+    width: 354px;
+    height: 70vh;
     border-radius: 8px;
     outline: 4px solid black;
     outline-offset: -4px;
-    box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.2);
-    transform: rotate(12deg);
-    top: 30%;
-    right: -5%;
+    transform: rotate(-6deg);
+    z-index: 2;
+    overflow: hidden;
+    transition: box-shadow 1s ease;
 }
 
-.hotBadge {
+.cardImage {
     position: absolute;
-    top: 15%;
-    right: 10%;
-    padding: 12px;
-    background: #ef4444;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.cardImageActive {
+    opacity: 1;
+}
+
+
+.floatingBadgeTop {
+    position: absolute;
+    top: 12%;
+    right: 8%;
+    padding: 6px 14px;
+    outline: 2px solid black;
+    outline-offset: -2px;
     box-shadow: 4px 4px 0px black;
-    border-radius: 9999px;
-    outline: 2px solid black;
-    outline-offset: -2px;
     transform: rotate(12deg);
     font-family: var(--font-archivo-black);
-    font-size: 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     color: white;
-    line-height: 16px;
+    z-index: 3;
+    transition: background 1s ease;
 }
 
-.rareDropBadge {
+.floatingBadgeBottom {
     position: absolute;
-    bottom: 12%;
-    left: 8%;
-    padding: 4px 12px;
-    background: #d1fa31;
-    box-shadow: 3px 3px 0px black;
+    bottom: 14%;
+    left: 6%;
+    padding: 6px 14px;
+    background: var(--color-brand-lime);
     outline: 2px solid black;
     outline-offset: -2px;
-    transform: rotate(-12deg);
+    box-shadow: 3px 3px 0px black;
+    transform: rotate(-8deg);
     font-family: var(--font-archivo-black);
-    font-size: 14px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     color: black;
-    line-height: 20px;
+    z-index: 3;
+}
+
+.decorDots {
+    position: absolute;
+    bottom: 25%;
+    right: 8%;
+    width: 60px;
+    height: 60px;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.15) 2px, transparent 2px);
+    background-size: 12px 12px;
+    z-index: 1;
 }
 
 .limeStar {
@@ -354,6 +353,7 @@
     background: #d1fa31;
     box-shadow: 2px 2px 0px black;
     transform: rotate(12deg);
+    z-index: 2;
 }
 
 .marquee {
@@ -366,6 +366,7 @@
     border-top: 2px solid #d1fa31;
     overflow: hidden;
     white-space: nowrap;
+    z-index: 2;
 }
 
 .marqueeTrack {
@@ -383,7 +384,7 @@
     white-space: nowrap;
 }
 
-/* ===== Responsive ===== */
+/*  Responsive  */
 @media (max-width: 1024px) {
     .rightPanel {
         display: none;
