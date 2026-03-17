@@ -17,7 +17,6 @@
 .nav {
     padding: 24px 40px;
     background: white;
-    border-bottom: 2px solid transparent;
 }
 
 .logoLink {
@@ -236,7 +235,12 @@
 /*  Right Panel  */
 .rightPanel {
     flex: 1;
-    background: #f3f4f6;
+    background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--theme-color) 8%, #f3f4f6) 0%,
+        color-mix(in srgb, var(--theme-color) 19%, #f3f4f6) 50%,
+        color-mix(in srgb, var(--theme-color) 6%, #f3f4f6) 100%
+    );
     position: relative;
     overflow: hidden;
     display: flex;
@@ -254,6 +258,7 @@
     opacity: 0.25;
     top: 10%;
     left: 10%;
+    background: var(--theme-color);
     transition: background 1s ease;
 }
 
@@ -266,6 +271,7 @@
     opacity: 0.15;
     bottom: 10%;
     right: 5%;
+    background: var(--theme-color);
     transition: background 1s ease;
 }
 
@@ -279,6 +285,7 @@
     transform: rotate(-6deg);
     z-index: 2;
     overflow: hidden;
+    box-shadow: 12px 12px 0px color-mix(in srgb, var(--theme-color) 50%, transparent);
     transition: box-shadow 1s ease;
 }
 
@@ -311,6 +318,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     color: white;
+    background: var(--theme-color);
     z-index: 3;
     transition: background 1s ease;
 }

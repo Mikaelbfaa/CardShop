@@ -17,6 +17,19 @@ function reducer(_state: State, action: Action): State {
     return { product: action.product, allProducts: action.allProducts, loading: false };
 }
 
+function pickRelated(products: Product[], current: Product): Product[] {
+    const candidates = products.filter(
+        (p) => p.id !== current.id && p.game === current.game
+    );
+    // Deterministic shuffle seeded by product id
+    const seed = current.id;
+    const shuffled = candidates
+        .map((p, i) => ({ p, key: ((seed * 2654435761 + i * 97) >>> 0) % 1000000 }))
+        .sort((a, b) => a.key - b.key)
+        .map((x) => x.p);
+    return shuffled.slice(0, 4);
+}
+
 export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
     const [state, dispatch] = useReducer(reducer, { product: null, allProducts: [], loading: true });
@@ -73,10 +86,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
         );
     }
 
-    const relatedProducts = state.allProducts
-        .filter((p) => p.id !== state.product!.id && p.game === state.product!.game)
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 4);
+    const relatedProducts = pickRelated(state.allProducts, state.product);
 
     return <ProductDetail product={state.product} relatedProducts={relatedProducts} />;
 }

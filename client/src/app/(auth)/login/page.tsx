@@ -8,11 +8,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import styles from './Login.module.css';
 
 const LOGIN_VARIANTS = [
-    { src: '/images/login1.jpg', color: '#c27c36', glow: 'rgba(194, 124, 54, 0.3)' },
-    { src: '/images/login2.jpg', color: '#1a5276', glow: 'rgba(26, 82, 118, 0.3)' },
-    { src: '/images/login3.jpg', color: '#7b2d8e', glow: 'rgba(123, 45, 142, 0.3)' },
-    { src: '/images/login4.jpg', color: '#8b1a1a', glow: 'rgba(139, 26, 26, 0.3)' },
-    { src: '/images/login5.jpg', color: '#2d6b30', glow: 'rgba(45, 107, 48, 0.3)' },
+    { src: '/images/login1.jpg', color: '#c27c36' },
+    { src: '/images/login2.jpg', color: '#1a5276' },
+    { src: '/images/login3.jpg', color: '#7b2d8e' },
+    { src: '/images/login4.jpg', color: '#8b1a1a' },
+    { src: '/images/login5.jpg', color: '#2d6b30' },
 ];
 
 export default function LoginPage() {
@@ -135,32 +135,24 @@ export default function LoginPage() {
             {/* Right Panel - Decorative */}
             <div
                 className={styles.rightPanel}
-                style={{
-                    background: `linear-gradient(135deg, ${variant.color}15 0%, ${variant.color}30 50%, ${variant.color}10 100%)`,
-                }}
+                style={{ '--theme-color': variant.color } as React.CSSProperties}
             >
-                <div
-                    className={styles.colorBlur}
-                    style={{ background: variant.color }}
-                />
-                <div
-                    className={styles.colorBlurSecondary}
-                    style={{ background: variant.color }}
-                />
-                <div className={styles.decorCard} style={{ boxShadow: `12px 12px 0px ${variant.color}80` }}>
+                <div className={styles.colorBlur} />
+                <div className={styles.colorBlurSecondary} />
+                <div className={styles.decorCard}>
                     {LOGIN_VARIANTS.map((v, i) => (
                         <Image
                             key={v.src}
                             src={v.src}
                             alt="Card art"
-                            width={531}
-                            height={1620}
+                            width={354}
+                            height={1080}
                             className={`${styles.cardImage} ${i === activeIndex ? styles.cardImageActive : ''}`}
                             priority={i === 0}
                         />
                     ))}
                 </div>
-                <div className={styles.floatingBadgeTop} style={{ background: variant.color }}>
+                <div className={styles.floatingBadgeTop}>
                     PLANESWALKER
                 </div>
                 <div className={styles.floatingBadgeBottom}>
