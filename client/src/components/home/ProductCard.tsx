@@ -10,6 +10,17 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 import styles from './ProductCard.module.css';
 
+const MANA_COLORS = ['#e03131', '#1c7ed6', '#212529', '#f8f9fa', '#2f9e44'];
+
+interface ManaParticle {
+    id: number;
+    color: string;
+    x: number;
+    y: number;
+}
+
+let particleIdCounter = 0;
+
 interface ProductCardProps {
     product: Product;
     showStar?: boolean;
@@ -20,6 +31,8 @@ export default function ProductCard({ product, showStar }: ProductCardProps) {
     const [popoverPos, setPopoverPos] = useState({ x: 0, y: 0 });
     const [adding, setAdding] = useState(false);
     const [added, setAdded] = useState(false);
+    const [tapped, setTapped] = useState(false);
+    const [particles, setParticles] = useState<ManaParticle[]>([]);
     const cardRef = useRef<HTMLDivElement>(null);
     const { isAuthenticated } = useAuth();
     const { addItem } = useCart();
@@ -47,6 +60,30 @@ export default function ProductCard({ product, showStar }: ProductCardProps) {
         }
     };
 
+    // Easter egg: Shift+click to tap/untap like MTG
+    const handleShiftClick = useCallback((e: React.MouseEvent) => {
+        if (!e.shiftKey) return;
+        e.preventDefault();
+        e.stopPropagation();
+        setTapped((prev) => !prev);
+
+        const rect = cardRef.current?.getBoundingClientRect();
+        if (!rect) return;
+        const cx = e.clientX - rect.left;
+        const cy = e.clientY - rect.top;
+
+        const newParticles: ManaParticle[] = Array.from({ length: 6 }, () => ({
+            id: ++particleIdCounter,
+            color: MANA_COLORS[Math.floor(Math.random() * MANA_COLORS.length)],
+            x: cx + (Math.random() - 0.5) * 60,
+            y: cy,
+        }));
+        setParticles((prev) => [...prev, ...newParticles]);
+        setTimeout(() => {
+            setParticles((prev) => prev.filter((p) => !newParticles.includes(p)));
+        }, 1000);
+    }, []);
+
     const updatePos = useCallback((e: React.MouseEvent) => {
         if (!cardRef.current) return;
         const rect = cardRef.current.getBoundingClientRect();
@@ -62,10 +99,15 @@ export default function ProductCard({ product, showStar }: ProductCardProps) {
     }, [updatePos]);
 
     return (
-        <Link href={`/product/${product.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Link
+            href={`/product/${product.id}`}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+            onClick={(e) => e.shiftKey && e.preventDefault()}
+        >
             <div
                 ref={cardRef}
-                className={`${styles.card} comic-outline comic-shadow`}
+                className={`${styles.card} ${tapped ? styles.cardTapped : ''} comic-outline comic-shadow`}
+                onClick={handleShiftClick}
             >
                 {/* Image Area */}
                 <div
@@ -138,6 +180,20 @@ export default function ProductCard({ product, showStar }: ProductCardProps) {
                         </button>
                     </div>
                 </div>
+
+                {/* Easter egg: MTG mana particles */}
+                {particles.map((p) => (
+                    <span
+                        key={p.id}
+                        className={styles.manaParticle}
+                        style={{
+                            left: p.x,
+                            top: p.y,
+                            backgroundColor: p.color,
+                            boxShadow: `0 0 6px ${p.color}`,
+                        }}
+                    />
+                ))}
 
                 {/* Floating popover preview — positioned at mouse entry point */}
                 {product.fullImage && (

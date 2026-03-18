@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Anton, Archivo, Archivo_Black, Bangers, Inter, Roboto_Mono } from 'next/font/google';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { CartProvider } from '@/contexts/CartContext';
+import { SearchProvider } from '@/contexts/SearchContext';
 import './globals.css';
 
 const anton = Anton({
@@ -64,7 +65,9 @@ export default function RootLayout({
         >
             <body>
                 <AuthProvider>
-                    <CartProvider>{children}</CartProvider>
+                    <CartProvider>
+                        <SearchProvider>{children}</SearchProvider>
+                    </CartProvider>
                 </AuthProvider>
             </body>
         </html>

@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import HeroSection from '@/components/home/HeroSection';
 import FilterBar from '@/components/home/FilterBar';
 import ProductGrid from '@/components/home/ProductGrid';
+import { useSearch } from '@/contexts/SearchContext';
 import { fetchProducts } from '@/lib/api';
 import { FILTER_OPTIONS } from '@/lib/constants';
 import type { FilterType, Product } from '@/lib/types';
@@ -29,6 +30,7 @@ function HomeContent() {
     const searchParams = useSearchParams();
     const gameFilter = searchParams.get('game');
     const isLancamentos = searchParams.get('view') === 'lancamentos';
+    const { searchQuery } = useSearch();
     const [activeFilter, setActiveFilter] = useState<FilterType>('TODOS');
     const [state, dispatch] = useReducer(productsReducer, { products: [], loading: true });
     const initialFetch = useRef<Promise<Product[]> | null>(null);
@@ -61,10 +63,18 @@ function HomeContent() {
     }, [state.products.length]);
 
     const displayedProducts = useMemo(() => {
-        if (gameFilter) return state.products.filter((p) => p.game === gameFilter);
-        if (isLancamentos) return shuffledProducts.slice(0, 8);
-        return state.products;
-    }, [state.products, shuffledProducts, gameFilter, isLancamentos]);
+        let filtered: Product[];
+        if (gameFilter) filtered = state.products.filter((p) => p.game === gameFilter);
+        else if (isLancamentos) filtered = shuffledProducts.slice(0, 8);
+        else filtered = state.products;
+
+        if (searchQuery.trim()) {
+            const query = searchQuery.toLowerCase().trim();
+            filtered = filtered.filter((p) => p.name.toLowerCase().includes(query));
+        }
+
+        return filtered;
+    }, [state.products, shuffledProducts, gameFilter, isLancamentos, searchQuery]);
 
     return (
         <>

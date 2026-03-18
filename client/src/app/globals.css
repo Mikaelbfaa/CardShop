@@ -139,3 +139,119 @@ ol {
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
+
+/* ===== Easter Egg: Holographic Foil Mode ===== */
+@keyframes holoShimmer {
+    0% {
+        filter: hue-rotate(0deg) brightness(1);
+    }
+    25% {
+        filter: hue-rotate(90deg) brightness(1.1);
+    }
+    50% {
+        filter: hue-rotate(180deg) brightness(1.05);
+    }
+    75% {
+        filter: hue-rotate(270deg) brightness(1.1);
+    }
+    100% {
+        filter: hue-rotate(360deg) brightness(1);
+    }
+}
+
+@keyframes holoRainbowBorder {
+    0% {
+        outline-color: #ff0000;
+        box-shadow: 4px 4px 0px #ff0000, 0 0 12px rgba(255, 0, 0, 0.3);
+    }
+    16% {
+        outline-color: #ff8800;
+        box-shadow: 4px 4px 0px #ff8800, 0 0 12px rgba(255, 136, 0, 0.3);
+    }
+    33% {
+        outline-color: #ffff00;
+        box-shadow: 4px 4px 0px #ffff00, 0 0 12px rgba(255, 255, 0, 0.3);
+    }
+    50% {
+        outline-color: #00ff00;
+        box-shadow: 4px 4px 0px #00ff00, 0 0 12px rgba(0, 255, 0, 0.3);
+    }
+    66% {
+        outline-color: #0088ff;
+        box-shadow: 4px 4px 0px #0088ff, 0 0 12px rgba(0, 136, 255, 0.3);
+    }
+    83% {
+        outline-color: #8800ff;
+        box-shadow: 4px 4px 0px #8800ff, 0 0 12px rgba(136, 0, 255, 0.3);
+    }
+    100% {
+        outline-color: #ff0000;
+        box-shadow: 4px 4px 0px #ff0000, 0 0 12px rgba(255, 0, 0, 0.3);
+    }
+}
+
+@keyframes holoRainbowBorderSm {
+    0% {
+        box-shadow: 2px 2px 0px #ff0000, 0 0 8px rgba(255, 0, 0, 0.2);
+    }
+    16% {
+        box-shadow: 2px 2px 0px #ff8800, 0 0 8px rgba(255, 136, 0, 0.2);
+    }
+    33% {
+        box-shadow: 2px 2px 0px #ffff00, 0 0 8px rgba(255, 255, 0, 0.2);
+    }
+    50% {
+        box-shadow: 2px 2px 0px #00ff00, 0 0 8px rgba(0, 255, 0, 0.2);
+    }
+    66% {
+        box-shadow: 2px 2px 0px #0088ff, 0 0 8px rgba(0, 136, 255, 0.2);
+    }
+    83% {
+        box-shadow: 2px 2px 0px #8800ff, 0 0 8px rgba(136, 0, 255, 0.2);
+    }
+    100% {
+        box-shadow: 2px 2px 0px #ff0000, 0 0 8px rgba(255, 0, 0, 0.2);
+    }
+}
+
+@keyframes holoBackground {
+    0% {
+        background-color: rgba(255, 0, 0, 0.05);
+    }
+    16% {
+        background-color: rgba(255, 136, 0, 0.05);
+    }
+    33% {
+        background-color: rgba(255, 255, 0, 0.05);
+    }
+    50% {
+        background-color: rgba(0, 255, 0, 0.05);
+    }
+    66% {
+        background-color: rgba(0, 136, 255, 0.05);
+    }
+    83% {
+        background-color: rgba(136, 0, 255, 0.05);
+    }
+    100% {
+        background-color: rgba(255, 0, 0, 0.05);
+    }
+}
+
+.holo-mode .comic-shadow {
+    animation: holoRainbowBorder 1.5s linear infinite !important;
+}
+
+.holo-mode .comic-shadow-sm {
+    animation: holoRainbowBorderSm 1.5s linear infinite !important;
+}
+
+.holo-mode .comic-outline,
+.holo-mode .comic-outline-4,
+.holo-mode .comic-outline-1 {
+    animation: holoShimmer 2s linear infinite !important;
+}
+
+.holo-mode body {
+    animation: holoBackground 1.5s linear infinite;
+}

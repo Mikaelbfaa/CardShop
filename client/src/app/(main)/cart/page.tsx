@@ -129,7 +129,28 @@ export default function CartPage() {
                     <span className={styles.titleCount}>(VAZIO)</span>
                 </div>
                 <div className={styles.emptyState}>
-                    <p className={styles.emptyText}>Seu carrinho está vazio.</p>
+                    {/* Easter egg: Exodia pieces */}
+                    <div className={styles.exodiaContainer}>
+                        <div className={`${styles.exodiaPiece} ${styles.exodiaHead}`}>
+                            <Image src="/icons/exodia/head.svg" alt="" width={64} height={90} />
+                        </div>
+                        <div className={`${styles.exodiaPiece} ${styles.exodiaLeftArm}`}>
+                            <Image src="/icons/exodia/left-arm.svg" alt="" width={56} height={78} />
+                        </div>
+                        <div className={`${styles.exodiaPiece} ${styles.exodiaRightArm}`}>
+                            <Image src="/icons/exodia/right-arm.svg" alt="" width={56} height={78} />
+                        </div>
+                        <div className={`${styles.exodiaPiece} ${styles.exodiaLeftLeg}`}>
+                            <Image src="/icons/exodia/left-leg.svg" alt="" width={56} height={78} />
+                        </div>
+                        <div className={`${styles.exodiaPiece} ${styles.exodiaRightLeg}`}>
+                            <Image src="/icons/exodia/right-leg.svg" alt="" width={56} height={78} />
+                        </div>
+                        <div className={styles.exodiaGlow} />
+                    </div>
+                    <p className={styles.exodiaText}>
+                        Você não tem todas as peças... do carrinho!
+                    </p>
                     <Link href="/" className={styles.continueLink}>
                         <Image src="/icons/arrow-left.svg" alt="" width={16} height={16} />
                         <span>CONTINUAR COMPRANDO</span>

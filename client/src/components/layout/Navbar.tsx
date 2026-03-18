@@ -1,11 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
-import { LogOut, Settings } from 'lucide-react';
+import { useSearch } from '@/contexts/SearchContext';
+import { formatPrice } from '@/lib/utils';
+import { LogOut, Settings, X } from 'lucide-react';
 import styles from './Navbar.module.css';
 
 const NAV_LINKS = [
@@ -16,13 +19,64 @@ const NAV_LINKS = [
 
 export default function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
     const { user, isAuthenticated, loading, logout } = useAuth();
     const { itemCount, bumping } = useCart();
+    const { searchQuery, setSearchQuery, products, ensureProducts } = useSearch();
+    const pathname = usePathname();
+    const isHomePage = pathname === '/';
+
+    // Easter egg: tap logo 7x for holographic mode
+    const logoClickCount = useRef(0);
+    const logoClickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [holoActive, setHoloActive] = useState(false);
+
+    const handleLogoClick = useCallback(() => {
+        if (holoActive) return;
+        logoClickCount.current += 1;
+
+        if (logoClickCount.current === 1) {
+            logoClickTimer.current = setTimeout(() => {
+                logoClickCount.current = 0;
+            }, 3000);
+        }
+
+        if (logoClickCount.current >= 7) {
+            logoClickCount.current = 0;
+            if (logoClickTimer.current) clearTimeout(logoClickTimer.current);
+            setHoloActive(true);
+            document.documentElement.classList.add('holo-mode');
+            setTimeout(() => {
+                document.documentElement.classList.remove('holo-mode');
+                setHoloActive(false);
+            }, 5000);
+        }
+    }, [holoActive]);
+
+    const searchResults = useMemo(() => {
+        if (isHomePage || !searchQuery.trim()) return [];
+        const query = searchQuery.toLowerCase().trim();
+        return products.filter((p) => p.name.toLowerCase().includes(query)).slice(0, 4);
+    }, [isHomePage, searchQuery, products]);
 
     // Durante loading, renderiza como deslogado para evitar hydration mismatch
     const showAuth = !loading && isAuthenticated;
     const isAdmin = showAuth && user?.role === 'ADMIN';
     const userInitial = user?.name?.charAt(0).toUpperCase() || '?';
+
+    const clearSearch = () => {
+        setSearchQuery('');
+        setSearchOpen(false);
+    };
+
+    const toggleSearch = () => {
+        if (searchOpen) {
+            clearSearch();
+        } else {
+            setSearchOpen(true);
+            if (!isHomePage) ensureProducts();
+        }
+    };
 
     const cartBadgeClass = [
         styles.cartBadge,
@@ -35,11 +89,11 @@ export default function Navbar() {
         <nav className={styles.nav}>
             <div className={`${styles.container} container`}>
                 {/* Logo */}
-                <Link href="/" className={styles.logoLink}>
-                    <span className={`${styles.logoPart} ${styles.logoLeft} comic-outline comic-shadow`}>
+                <Link href="/" className={styles.logoLink} onClick={handleLogoClick}>
+                    <span className={`${styles.logoPart} ${styles.logoLeft} comic-outline comic-shadow ${holoActive ? styles.logoHolo : ''}`}>
                         CARD
                     </span>
-                    <span className={`${styles.logoPart} ${styles.logoRight} comic-outline comic-shadow`}>
+                    <span className={`${styles.logoPart} ${styles.logoRight} comic-outline comic-shadow ${holoActive ? styles.logoHolo : ''}`}>
                         SHOP
                     </span>
                 </Link>
@@ -51,6 +105,7 @@ export default function Navbar() {
                             key={link.label}
                             href={link.href}
                             className={`${styles.navLinkBase} ${styles.navLink}`}
+                            onClick={clearSearch}
                         >
                             {link.label}
                         </Link>
@@ -65,7 +120,7 @@ export default function Navbar() {
                             <span>ADMIN</span>
                         </Link>
                     )}
-                    <button className={styles.iconButton} aria-label="Buscar">
+                    <button className={styles.iconButton} aria-label="Buscar" onClick={toggleSearch}>
                         <Image src="/icons/search.svg" alt="Buscar" width={20} height={20} />
                     </button>
 
@@ -141,7 +196,7 @@ export default function Navbar() {
                         </Link>
                     )}
                     <div className={styles.mobileIcons}>
-                        <button className={styles.iconButton} aria-label="Buscar">
+                        <button className={styles.iconButton} aria-label="Buscar" onClick={toggleSearch}>
                             <Image src="/icons/search.svg" alt="Buscar" width={20} height={20} />
                         </button>
 
@@ -187,6 +242,66 @@ export default function Navbar() {
                             <span className={cartBadgeClass}>{itemCount}</span>
                         </Link>
                     </div>
+                </div>
+            )}
+
+            {/* Barra de busca */}
+            {searchOpen && (
+                <div className={styles.searchBar}>
+                    <div className={`${styles.searchBarInner} container`}>
+                        <input
+                            className={styles.searchInput}
+                            type="text"
+                            placeholder="Buscar por nome..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Escape' && clearSearch()}
+                            autoFocus
+                        />
+                        <button
+                            className={styles.iconButton}
+                            onClick={clearSearch}
+                            aria-label="Fechar busca"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    {/* Resultados da busca (fora da homepage) */}
+                    {!isHomePage && searchQuery.trim() && (
+                        <div className={`${styles.searchResults} container`}>
+                            {searchResults.length > 0 ? (
+                                searchResults.map((product) => (
+                                    <Link
+                                        key={product.id}
+                                        href={`/product/${product.id}`}
+                                        className={styles.searchResultItem}
+                                        onClick={clearSearch}
+                                    >
+                                        <Image
+                                            src={product.image}
+                                            alt={product.name}
+                                            width={40}
+                                            height={56}
+                                            className={styles.searchResultImage}
+                                        />
+                                        <div className={styles.searchResultInfo}>
+                                            <span className={styles.searchResultName}>
+                                                {product.name}
+                                            </span>
+                                            <span className={styles.searchResultPrice}>
+                                                {formatPrice(product.price)}
+                                            </span>
+                                        </div>
+                                    </Link>
+                                ))
+                            ) : (
+                                <p className={styles.searchNoResults}>
+                                    Nenhum produto encontrado
+                                </p>
+                            )}
+                        </div>
+                    )}
                 </div>
             )}
         </nav>

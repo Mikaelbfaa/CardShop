@@ -36,3 +36,31 @@
 .filterButton[data-active='true']:hover {
     background-color: black;
 }
+
+/* Search field inline with filters */
+.searchField {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 9999px;
+    padding: 8px 16px;
+    background-color: white;
+    white-space: nowrap;
+    margin-left: auto;
+}
+
+.searchInput {
+    font-family: var(--font-archivo);
+    font-size: 14px;
+    font-weight: 700;
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 120px;
+    color: var(--color-gray-900);
+}
+
+.searchInput::placeholder {
+    color: var(--color-gray-500);
+    text-transform: uppercase;
+}

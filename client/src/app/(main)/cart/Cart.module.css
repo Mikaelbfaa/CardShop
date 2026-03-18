@@ -152,6 +152,140 @@
     color: var(--color-gray-500);
 }
 
+/* Easter Egg: Exodia pieces */
+.exodiaContainer {
+    position: relative;
+    width: 320px;
+    height: 280px;
+    margin: 0 auto;
+}
+
+.exodiaPiece {
+    position: absolute;
+    opacity: 0;
+    animation: exodiaGather 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.4));
+}
+
+.exodiaHead {
+    left: 50%;
+    transform: translate(-50%, -60px) rotate(-20deg);
+    animation-delay: 0s;
+}
+
+.exodiaLeftArm {
+    left: 10%;
+    top: 30%;
+    transform: translate(-80px, 0) rotate(15deg);
+    animation-delay: 0.15s;
+}
+
+.exodiaRightArm {
+    right: 10%;
+    top: 30%;
+    transform: translate(80px, 0) rotate(-15deg);
+    animation-delay: 0.3s;
+}
+
+.exodiaLeftLeg {
+    left: 20%;
+    bottom: 0;
+    transform: translate(-60px, 40px) rotate(10deg);
+    animation-delay: 0.45s;
+}
+
+.exodiaRightLeg {
+    right: 20%;
+    bottom: 0;
+    transform: translate(60px, 40px) rotate(-10deg);
+    animation-delay: 0.6s;
+}
+
+@keyframes exodiaGather {
+    0% {
+        opacity: 0;
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0deg);
+    }
+}
+
+/* Head needs special translate since it uses translate(-50%) */
+.exodiaHead {
+    animation-name: exodiaGatherHead;
+}
+
+@keyframes exodiaGatherHead {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -60px) rotate(-20deg);
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0) rotate(0deg);
+    }
+}
+
+/* Glow effect after pieces gather */
+.exodiaGlow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: exodiaGlowPulse 2s ease-out 1s forwards;
+}
+
+@keyframes exodiaGlowPulse {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+    50% {
+        width: 350px;
+        height: 350px;
+        opacity: 1;
+    }
+    100% {
+        width: 280px;
+        height: 280px;
+        opacity: 0.6;
+    }
+}
+
+.exodiaText {
+    font-family: var(--font-bangers);
+    font-size: 24px;
+    color: #d4af37;
+    text-align: center;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+    opacity: 0;
+    animation: exodiaTextFade 0.8s ease-out 1.4s forwards;
+}
+
+@keyframes exodiaTextFade {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
     .content {
