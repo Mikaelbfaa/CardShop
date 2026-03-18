@@ -1,0 +1,97 @@
+.page {
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+.headerSection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.headingWrap {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-self: flex-start;
+}
+
+.title {
+    font-family: var(--font-archivo-black);
+    font-size: 72px;
+    color: var(--color-gray-900);
+    text-transform: uppercase;
+    line-height: 72px;
+}
+
+.highlightBar {
+    position: absolute;
+    bottom: 0;
+    left: -2px;
+    width: 195px;
+    height: 16px;
+    background: var(--color-brand-lime);
+    transform: rotate(-1deg);
+    z-index: -1;
+}
+
+.subtitle {
+    max-width: 672px;
+    color: var(--color-gray-500);
+    font-family: var(--font-inter);
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+}
+
+.card {
+    background: white;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+@media (max-width: 1024px) {
+    .page {
+        padding: 32px 16px;
+    }
+
+    .title {
+        font-size: 48px;
+        line-height: 48px;
+    }
+
+    .highlightBar {
+        width: 130px;
+        height: 12px;
+    }
+
+    .card {
+        padding: 24px;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .page {
+        padding: 24px 12px;
+        gap: 32px;
+    }
+
+    .title {
+        font-size: 36px;
+        line-height: 36px;
+    }
+
+    .highlightBar {
+        width: 100px;
+        height: 10px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+}

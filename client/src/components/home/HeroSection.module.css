@@ -1,0 +1,323 @@
+.section {
+    padding: 48px 24px;
+}
+
+@media (min-width: 1024px) {
+    .section {
+        padding: 64px 24px;
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+
+@media (min-width: 1024px) {
+    .container {
+        flex-direction: row;
+        gap: 32px;
+    }
+}
+
+/* Left Side */
+.leftSide {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@media (min-width: 1024px) {
+    .leftSide {
+        width: 592px;
+    }
+}
+
+.seasonBadgeWrap {
+    display: inline-flex;
+    align-self: flex-start;
+}
+
+.seasonBadge {
+    background-color: var(--color-brand-pink);
+    color: white;
+    font-family: var(--font-archivo);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 6px 16px;
+    transform: rotate(-1deg);
+    display: inline-block;
+}
+
+.heading {
+    font-family: var(--font-anton);
+    font-size: 56px;
+    color: var(--color-gray-900);
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: -0.025em;
+}
+
+@media (min-width: 1024px) {
+    .heading {
+        font-size: 96px;
+    }
+}
+
+.subtitle {
+    font-family: var(--font-archivo);
+    font-size: 18px;
+    color: var(--color-gray-600);
+    line-height: 28px;
+    max-width: 448px;
+}
+
+@media (min-width: 1024px) {
+    .subtitle {
+        font-size: 20px;
+    }
+}
+
+.ctaRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.ctaButton {
+    font-family: var(--font-archivo);
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    transition: all 0.15s ease;
+    display: inline-block;
+}
+
+.ctaButton:hover {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+.ctaPrimary {
+    background-color: black;
+    color: var(--color-brand-lime);
+}
+
+.ctaSecondary {
+    background-color: white;
+    color: black;
+}
+
+/* Right Side - Card Collage */
+.rightSide {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: visible;
+}
+
+@media (min-width: 1024px) {
+    .rightSide {
+        width: 592px;
+        height: 520px;
+    }
+}
+
+.purpleBlob {
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-brand-purple);
+    opacity: 0.8;
+    transform: rotate(12deg);
+}
+
+.greenStar {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    transform: rotate(-12deg);
+    z-index: 10;
+}
+
+@media (min-width: 1024px) {
+    .greenStar {
+        top: 0;
+        left: 0;
+    }
+}
+
+.mainFrame {
+    position: relative;
+}
+
+.mainFrameInner {
+    position: relative;
+    width: 240px;
+    height: 320px;
+    overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+    .mainFrameInner {
+        width: 320px;
+        height: 420px;
+    }
+}
+
+.mainImage {
+    object-fit: contain;
+}
+
+.priceSticker {
+    position: absolute;
+    bottom: 48px;
+    left: 16px;
+    background-color: var(--color-brand-lime);
+    transform: rotate(-6deg);
+    padding: 8px 16px;
+    z-index: 20;
+}
+
+@media (min-width: 1024px) {
+    .priceSticker {
+        bottom: 64px;
+        left: 32px;
+    }
+}
+
+.priceStickerText {
+    font-family: var(--font-anton);
+    font-size: 20px;
+    color: black;
+}
+
+@media (min-width: 1024px) {
+    .priceStickerText {
+        font-size: 24px;
+    }
+}
+
+.hotBadge {
+    position: absolute;
+    bottom: 24px;
+    right: 48px;
+    background-color: var(--color-brand-pink);
+    width: 55px;
+    height: 55px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(12deg);
+    z-index: 20;
+}
+
+@media (min-width: 1024px) {
+    .hotBadge {
+        bottom: 32px;
+        right: 80px;
+        width: 65px;
+        height: 65px;
+    }
+}
+
+.hotBadgeText {
+    font-family: var(--font-archivo);
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+}
+
+@media (min-width: 1024px) {
+    .hotBadgeText {
+        font-size: 16px;
+    }
+}
+
+.pinkStar {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: rotate(12deg);
+    z-index: 10;
+}
+
+/* Deck Container */
+.deckContainer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 240px;
+    height: 320px;
+    z-index: 11;
+}
+
+@media (min-width: 1024px) {
+    .deckContainer {
+        width: 320px;
+        height: 420px;
+    }
+}
+
+.deckCardLink {
+    display: block;
+}
+
+/* Deck Cards */
+.deckCard {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+/* Top card (front) */
+.deckCard0 {
+    z-index: 12;
+    transform: rotate(-2deg);
+}
+
+/* Middle card */
+.deckCard1 {
+    z-index: 11;
+    transform: translate(10px, 8px) rotate(1deg) scale(0.97);
+}
+
+/* Back card */
+.deckCard2 {
+    z-index: 10;
+    transform: translate(20px, 16px) rotate(4deg) scale(0.94);
+}
+
+/* Lateral send-to-back: slide right, arc down, tuck under */
+@keyframes sendToBack {
+    0% {
+        transform: rotate(-2deg);
+        z-index: 12;
+    }
+    30% {
+        transform: translate(100px, -10px) rotate(6deg);
+        z-index: 12;
+    }
+    60% {
+        transform: translate(60px, 16px) rotate(8deg) scale(0.94);
+        z-index: 9;
+    }
+    100% {
+        transform: translate(20px, 16px) rotate(4deg) scale(0.94);
+        z-index: 9;
+    }
+}
+
+.deckCardExit {
+    animation: sendToBack 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+    pointer-events: none;
+}

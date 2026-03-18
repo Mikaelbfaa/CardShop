@@ -1,0 +1,416 @@
+.page {
+    display: flex;
+    min-height: 100vh;
+    background: #f9fafb;
+}
+
+/*  Left Panel  */
+.leftPanel {
+    width: 56%;
+    background: white;
+    border-right: 4px solid black;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.nav {
+    padding: 24px 40px;
+    background: white;
+}
+
+.logoLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+}
+
+.logoPart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    font-family: var(--font-archivo-black);
+    font-size: 24px;
+    line-height: 32px;
+    color: #111827;
+}
+
+.logoCard {
+    background: var(--color-brand-lime);
+    outline: 2px solid black;
+    outline-offset: -2px;
+    transform: rotate(-2deg);
+}
+
+.logoShop {
+    background: white;
+    outline: 2px solid black;
+    outline-offset: -2px;
+    transform: rotate(2deg);
+}
+
+.formArea {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+.formContainer {
+    width: 100%;
+    max-width: 384px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Badge */
+.badge {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 4px 12px;
+    background: #d1fa31;
+    box-shadow: 4px 4px 0px black;
+    outline: 2px solid black;
+    outline-offset: -2px;
+    transform: rotate(-2deg);
+    font-family: var(--font-inter);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: black;
+}
+
+/* Heading */
+.headingGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.heading {
+    font-family: var(--font-archivo-black);
+    font-size: 48px;
+    line-height: 48px;
+    text-transform: uppercase;
+    color: #111827;
+}
+
+.subtitle {
+    color: #6b7280;
+    font-family: var(--font-inter);
+    font-size: 16px;
+    line-height: 24px;
+    padding-top: 3px;
+}
+
+/* Form */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.fieldGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.labelRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    font-family: var(--font-inter);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 20px;
+    letter-spacing: 0.35px;
+    color: #111827;
+}
+
+.forgotLink {
+    font-family: var(--font-inter);
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    line-height: 16px;
+    text-decoration: none;
+}
+
+.forgotLink:hover {
+    text-decoration: underline;
+}
+
+.input {
+    width: 100%;
+    padding: 14px 16px;
+    background: #f9fafb;
+    outline: 2px solid black;
+    outline-offset: -2px;
+    border: none;
+    font-family: var(--font-inter);
+    font-size: 16px;
+    color: #111827;
+}
+
+.input::placeholder {
+    color: #9ca3af;
+}
+
+.input:focus {
+    outline-color: var(--color-brand-lime);
+}
+
+.submitButton {
+    width: 100%;
+    padding: 16px;
+    background: black;
+    box-shadow: 4px 4px 0px black;
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-archivo-black);
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    line-height: 28px;
+    color: white;
+    text-align: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.submitButton:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px black;
+}
+
+.submitButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 4px 4px 0px black;
+}
+
+/* Error */
+.error {
+    padding: 12px 16px;
+    background: #fef2f2;
+    border: 2px solid #ef4444;
+    font-family: var(--font-inter);
+    font-size: 14px;
+    color: #dc2626;
+}
+
+/* Footer links */
+.signupSection {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 16px;
+    text-align: center;
+}
+
+.signupText {
+    font-family: var(--font-inter);
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 20px;
+}
+
+.signupLink {
+    font-weight: 700;
+    text-decoration: underline;
+    color: #4b5563;
+}
+
+
+/*  Right Panel  */
+.rightPanel {
+    flex: 1;
+    background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--theme-color) 8%, #f3f4f6) 0%,
+        color-mix(in srgb, var(--theme-color) 19%, #f3f4f6) 50%,
+        color-mix(in srgb, var(--theme-color) 6%, #f3f4f6) 100%
+    );
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 1s ease;
+}
+
+.colorBlur {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 9999px;
+    filter: blur(180px);
+    opacity: 0.25;
+    top: 10%;
+    left: 10%;
+    background: var(--theme-color);
+    transition: background 1s ease;
+}
+
+.colorBlurSecondary {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 9999px;
+    filter: blur(150px);
+    opacity: 0.15;
+    bottom: 10%;
+    right: 5%;
+    background: var(--theme-color);
+    transition: background 1s ease;
+}
+
+.decorCard {
+    position: absolute;
+    width: 354px;
+    height: 70vh;
+    border-radius: 8px;
+    outline: 4px solid black;
+    outline-offset: -4px;
+    transform: rotate(-6deg);
+    z-index: 2;
+    overflow: hidden;
+    box-shadow: 12px 12px 0px color-mix(in srgb, var(--theme-color) 50%, transparent);
+    transition: box-shadow 1s ease;
+}
+
+.cardImage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.cardImageActive {
+    opacity: 1;
+}
+
+
+.floatingBadgeTop {
+    position: absolute;
+    top: 12%;
+    right: 8%;
+    padding: 6px 14px;
+    outline: 2px solid black;
+    outline-offset: -2px;
+    box-shadow: 4px 4px 0px black;
+    transform: rotate(12deg);
+    font-family: var(--font-archivo-black);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    background: var(--theme-color);
+    z-index: 3;
+    transition: background 1s ease;
+}
+
+.floatingBadgeBottom {
+    position: absolute;
+    bottom: 14%;
+    left: 6%;
+    padding: 6px 14px;
+    background: var(--color-brand-lime);
+    outline: 2px solid black;
+    outline-offset: -2px;
+    box-shadow: 3px 3px 0px black;
+    transform: rotate(-8deg);
+    font-family: var(--font-archivo-black);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: black;
+    z-index: 3;
+}
+
+.decorDots {
+    position: absolute;
+    bottom: 25%;
+    right: 8%;
+    width: 60px;
+    height: 60px;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.15) 2px, transparent 2px);
+    background-size: 12px 12px;
+    z-index: 1;
+}
+
+.limeStar {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    width: 40px;
+    height: 40px;
+    background: #d1fa31;
+    box-shadow: 2px 2px 0px black;
+    transform: rotate(12deg);
+    z-index: 2;
+}
+
+.marquee {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 0;
+    background: black;
+    border-top: 2px solid #d1fa31;
+    overflow: hidden;
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.marqueeTrack {
+    display: inline-flex;
+    gap: 32px;
+}
+
+.marqueeText {
+    font-family: var(--font-archivo-black);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    color: #d1fa31;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+/*  Responsive  */
+@media (max-width: 1024px) {
+    .rightPanel {
+        display: none;
+    }
+
+    .leftPanel {
+        width: 100%;
+        border-right: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .heading {
+        font-size: 36px;
+        line-height: 36px;
+    }
+
+    .formArea {
+        padding: 0 24px;
+    }
+}

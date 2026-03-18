@@ -27,6 +27,9 @@ build/
 *.swo
 *~
 /src/generated/prisma
+imgs/
+assets/
+templates/
 
 # Coverage
 coverage/

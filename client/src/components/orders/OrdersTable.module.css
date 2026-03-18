@@ -1,0 +1,72 @@
+.table {
+    min-width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+.headerRow {
+    display: flex;
+    align-items: flex-start;
+    padding-bottom: 18px;
+    border-bottom: 4px solid black;
+}
+
+.headerCell {
+    font-family: var(--font-archivo-black);
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 28px;
+    letter-spacing: 1px;
+    color: var(--color-gray-900);
+}
+
+.colOrderId {
+    width: 17.6%;
+    padding-left: 16px;
+    text-align: center;
+}
+
+.colDate {
+    width: 14.3%;
+    text-align: center;
+}
+
+.colItems {
+    width: 22.7%;
+    text-align: center;
+}
+
+.colStatus {
+    width: 15.3%;
+    text-align: center;
+}
+
+.colTotal {
+    width: 14.8%;
+    text-align: center;
+}
+
+.colAction {
+    width: 15.3%;
+    text-align: center;
+    padding-right: 16px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+}
+
+.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 64px 0;
+}
+
+.emptyText {
+    font-family: var(--font-archivo);
+    font-size: 18px;
+    color: var(--color-gray-500);
+}

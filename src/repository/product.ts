@@ -21,6 +21,11 @@ export interface CreateProductDTO {
     cardType?: CardType;
     rarity?: string;
     image?: string;
+    oldPrice?: number;
+    fullImage?: string;
+    badge?: string;
+    cardSubtypes?: string;
+    edition?: string;
 }
 
 /**
@@ -35,6 +40,11 @@ export interface UpdateProductDTO {
     cardType?: CardType;
     rarity?: string;
     image?: string;
+    oldPrice?: number | null;
+    fullImage?: string;
+    badge?: string;
+    cardSubtypes?: string;
+    edition?: string;
 }
 
 /**
@@ -109,6 +119,14 @@ class ProductRepository {
                 cardType: productData.cardType,
                 rarity: productData.rarity,
                 image: productData.image,
+                oldPrice:
+                    productData.oldPrice !== undefined
+                        ? new Prisma.Decimal(productData.oldPrice)
+                        : null,
+                fullImage: productData.fullImage,
+                badge: productData.badge,
+                cardSubtypes: productData.cardSubtypes,
+                edition: productData.edition,
             },
         });
     }
@@ -138,6 +156,15 @@ class ProductRepository {
         if (updateData.cardType !== undefined) data.cardType = updateData.cardType;
         if (updateData.rarity !== undefined) data.rarity = updateData.rarity;
         if (updateData.image !== undefined) data.image = updateData.image;
+        if (updateData.oldPrice !== undefined)
+            data.oldPrice =
+                updateData.oldPrice !== null
+                    ? new Prisma.Decimal(updateData.oldPrice)
+                    : null;
+        if (updateData.fullImage !== undefined) data.fullImage = updateData.fullImage;
+        if (updateData.badge !== undefined) data.badge = updateData.badge;
+        if (updateData.cardSubtypes !== undefined) data.cardSubtypes = updateData.cardSubtypes;
+        if (updateData.edition !== undefined) data.edition = updateData.edition;
 
         return prisma.product.update({
             where: { id: parseInt(id) },

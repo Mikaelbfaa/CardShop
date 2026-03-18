@@ -31,6 +31,21 @@ router.patch(
 
 router.post('/logout', AuthMiddleware.verifyToken, UserController.logoutUser);
 
+router.get(
+    '/',
+    AuthMiddleware.verifyToken,
+    AuthMiddleware.isAdmin,
+    UserController.getAllUsers
+);
+
+router.patch(
+    '/:id/role',
+    AuthMiddleware.verifyToken,
+    AuthMiddleware.isAdmin,
+    ValidationMiddleware.validateRequiredFields(['role']),
+    UserController.updateUserRole
+);
+
 router.delete(
     '/:id',
     AuthMiddleware.verifyToken,

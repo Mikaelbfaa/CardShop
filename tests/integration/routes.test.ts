@@ -2,10 +2,6 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import supertest from 'supertest';
 import crypto from 'crypto';
-import app from '../../src/app';
-
-import productRepository from '../../src/repository/product';
-import UserService from '../../src/services/user';
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -33,11 +29,17 @@ function makeAdminToken(userId = 99) {
 }
 
 describe('Rotas da API (integração)', () => {
+    let app: any;
+    let productRepository: any;
+    let UserService: any;
     let cartService: any;
     let orderService: any;
     let productService: any;
 
     before(() => {
+        app = require('../../src/app').default;
+        productRepository = require('../../src/repository/product').default;
+        UserService = require('../../src/services/user').default;
         cartService = require('../../src/services/cart').default;
         orderService = require('../../src/services/order').default;
         productService = require('../../src/services/product').default;

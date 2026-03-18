@@ -1,0 +1,200 @@
+.wrapper {
+    position: sticky;
+    top: 24px;
+    background-color: white;
+    outline: 4px solid black;
+    outline-offset: -4px;
+    box-shadow: 8px 8px 0 black;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tape {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%) rotate(1deg);
+    width: 120px;
+    height: 28px;
+    background-color: rgba(254, 240, 138, 0.8);
+    z-index: 1;
+}
+
+.heading {
+    font-family: var(--font-archivo-black);
+    font-size: 24px;
+    color: var(--color-gray-900);
+    letter-spacing: 0.5px;
+}
+
+.divider {
+    height: 2px;
+    background-color: var(--color-gray-900);
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-inter);
+    font-size: 14px;
+    color: var(--color-gray-900);
+}
+
+.freeBadge {
+    background-color: black;
+    color: var(--color-brand-lime);
+    font-family: var(--font-archivo);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 10px;
+}
+
+.totalSection {
+    position: relative;
+    background-color: var(--color-brand-lime);
+    outline: 2px solid black;
+    outline-offset: -2px;
+    padding: 16px;
+    margin-top: 4px;
+}
+
+.bestPriceBadge {
+    position: absolute;
+    top: -12px;
+    right: -8px;
+    background-color: #ff4081;
+    color: white;
+    font-family: var(--font-archivo);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    transform: rotate(12deg);
+    white-space: nowrap;
+}
+
+.totalRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.totalLabel {
+    font-family: var(--font-archivo);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+}
+
+.totalValue {
+    font-family: var(--font-archivo-black);
+    font-size: 28px;
+    color: var(--color-gray-900);
+}
+
+.installments {
+    font-family: var(--font-archivo);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    margin-top: 2px;
+}
+
+.shippingSection {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.shippingLabel {
+    font-family: var(--font-archivo);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    letter-spacing: 0.5px;
+}
+
+.checkoutButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 18px 24px;
+    background-color: black;
+    color: var(--color-brand-lime);
+    font-family: var(--font-archivo-black);
+    font-size: 18px;
+    letter-spacing: 1px;
+    box-shadow: 4px 4px 0 var(--color-brand-lime);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.checkoutButton:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-brand-lime);
+}
+
+.couponDivider {
+    border-top: 2px dashed var(--color-gray-300);
+}
+
+.couponSection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.couponLabel {
+    font-family: var(--font-archivo);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+}
+
+.couponInput {
+    display: flex;
+    gap: 0;
+}
+
+.input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 2px solid black;
+    font-family: var(--font-inter);
+    font-size: 13px;
+    background-color: #fafafa;
+    outline: none;
+}
+
+.input::placeholder {
+    color: var(--color-gray-400);
+    letter-spacing: 1px;
+}
+
+.input:focus {
+    border-color: var(--color-brand-lime);
+}
+
+.couponButton {
+    padding: 10px 20px;
+    background-color: white;
+    border: 2px solid black;
+    border-left: none;
+    font-family: var(--font-archivo);
+    font-size: 13px;
+    font-weight: 700;
+    transition: background-color 0.15s ease;
+}
+
+.couponButton:hover {
+    background-color: var(--color-gray-100);
+}
+
+@media (max-width: 1024px) {
+    .wrapper {
+        position: static;
+    }
+}

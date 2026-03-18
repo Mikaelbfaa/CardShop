@@ -1,0 +1,21 @@
+.bar {
+    background-color: black;
+    border-bottom: 2px solid black;
+    overflow: hidden;
+}
+
+.track {
+    display: flex;
+    white-space: nowrap;
+    padding: 8px 0;
+}
+
+.message {
+    font-family: var(--font-archivo);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--color-brand-lime);
+    margin: 0 16px;
+}

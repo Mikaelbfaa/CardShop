@@ -1,0 +1,52 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.thumbnails {
+    display: flex;
+    align-items: center;
+}
+
+.thumbnail {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    border: 2px solid white;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.thumbnail + .thumbnail,
+.thumbnail + .overflowBadge {
+    margin-left: -12px;
+}
+
+.overflowBadge {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: var(--color-gray-200);
+    border: 2px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-inter);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-gray-900);
+    flex-shrink: 0;
+}
+
+.productName {
+    font-family: var(--font-inter);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-gray-500);
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
